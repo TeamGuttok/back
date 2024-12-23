@@ -2,6 +2,9 @@ package com.app.guttokback.global.jpa;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
@@ -14,6 +17,10 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class AuditInformation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @CreatedDate
     @Comment("등록일")
     @Column(name = "REGISTER_DATE", nullable = false, updatable = false)
