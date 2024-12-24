@@ -3,6 +3,7 @@ package com.app.guttokback.user.service;
 import com.app.guttokback.global.exception.ErrorCode;
 import com.app.guttokback.global.exception.ExceptionHandler;
 import com.app.guttokback.user.domain.UserEntity;
+import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
 import com.app.guttokback.user.dto.serviceDto.UserSaveDto;
 import com.app.guttokback.user.repository.UserRepository;
 
@@ -11,10 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -58,13 +59,20 @@ public class UserService {
         userRepository.delete(userEntity);
     }
 
-    @Transactional(readOnly = true)
+    public UserDetailDto userDetail(String email) {
+        UserEntity userEntity = userFindByEmail(email);
+        return UserDetailDto.builder()
+                .email(userEntity.getEmail())
+                .nickName(userEntity.getNickName())
+                .alarm(userEntity.isAlarm())
+                .build();
+    }
+
     public UserEntity userFindByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ExceptionHandler(ErrorCode.EMAIL_NOT_FOUND));
     }
 
-    @Transactional(readOnly = true)
     public boolean isEmailDuplicate(String email) {
         return userRepository.findAll().stream()
                 .anyMatch(user -> user.getEmail().equals(email));

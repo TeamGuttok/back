@@ -1,10 +1,12 @@
 package com.app.guttokback.user.controller;
 
 import com.app.guttokback.user.dto.controllerDto.UserSaveRequestDto;
+import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
 import com.app.guttokback.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/users")
 public class UserController {
     private final UserService userService;
+
+    @GetMapping("/{email}")
+    public UserDetailDto userDetail(@PathVariable String email) {
+        return userService.userDetail(email);
+    }
 
     @PostMapping("/singup")
     public ResponseEntity<String> userSave(@RequestBody UserSaveRequestDto userSaveRequestDto) {
