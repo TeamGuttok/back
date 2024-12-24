@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -21,21 +23,13 @@ public abstract class AuditInformation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @CreatedDate
+    @CreationTimestamp
     @Comment("등록일")
     @Column(name = "REGISTER_DATE", nullable = false, updatable = false)
     private LocalDateTime registerDate;
 
-    @LastModifiedDate
+    @UpdateTimestamp
     @Comment("수정일")
     @Column(name = "UPDATE_DATE", nullable = false)
     private LocalDateTime updateDate;
-
-    public LocalDateTime getRegisterDate() {
-        return registerDate;
-    }
-
-    public LocalDateTime getUpdateDate() {
-        return updateDate;
-    }
 }
