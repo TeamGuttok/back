@@ -35,14 +35,17 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework:spring-test'
 
     // swagger
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.2.0'
 
     // security
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // Jakarta Servlet
+    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 }
 
 tasks.named('test') {
