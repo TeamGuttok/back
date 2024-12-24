@@ -22,7 +22,7 @@ public class UserService {
     @Transactional
     public void userSave(UserSaveDto userSaveDto) {
         if (isEmailDuplicate(userSaveDto.getEmail())) {
-            throw new ExceptionHandler(ErrorCode.EMAIL_NOT_FOUND);
+            throw new ExceptionHandler(ErrorCode.EMAIL_SAME_FOUND);
         }
 
         userRepository.save(UserEntity.builder()
@@ -46,7 +46,7 @@ public class UserService {
     }
 
     @Transactional
-    public void userAlarmdUpdate(String email) {
+    public void userAlarmUpdate(String email) {
         UserEntity userEntity = userFindByEmail(email);
         userEntity.alarmChange();
     }
