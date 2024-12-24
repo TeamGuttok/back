@@ -25,7 +25,7 @@ public class UserController {
         return userService.userDetail(email);
     }
 
-    @PostMapping("/singup")
+    @PostMapping("/signup")
     public ResponseEntity<String> userSave(@RequestBody UserSaveRequestDto userSaveRequestDto) {
         userService.userSave(userSaveRequestDto.userSaveDto());
         return ResponseEntity.ok("유저 저장 성공");
