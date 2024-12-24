@@ -3,9 +3,9 @@ package com.app.guttokback.user.domain;
 import com.app.guttokback.global.jpa.AuditInformation;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
@@ -37,21 +37,23 @@ public class UserEntity extends AuditInformation implements UserDetails {
     @Comment("알림여부")
     private boolean alarm;
 
+    @Builder
     public UserEntity(String password, String email, String nickName, boolean alarm) {
         this.password = password;
         this.email = email;
         this.nickName = nickName;
         this.alarm = alarm;
     }
-
-    public void update(String password, String email, String nickName) {
+    public void passwordChange(String password) {
         this.password = password;
-        this.email = email;
+    }
+
+    public void nickNameChange(String nickName) {
         this.nickName = nickName;
     }
 
     public void alarmChange() {
-        this.alarm = !alarm;
+        this.alarm = !this.alarm;
     }
 
     @Override
