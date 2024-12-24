@@ -38,11 +38,11 @@ public class UserController {
 
     @PatchMapping("alarm/{email}")
     public ResponseEntity<String> userAlarmdUpdate(@PathVariable String email) {
-        userService.userAlarmdUpdate(email);
+        userService.userAlarmUpdate(email);
         return ResponseEntity.ok("알림 수정 성공");
     }
 
-    @DeleteMapping
+    @DeleteMapping("{email}")
     public ResponseEntity<String> userDelete(@PathVariable String email) {
         userService.userDelete(email);
         return ResponseEntity.ok("유저 삭제 성공");
