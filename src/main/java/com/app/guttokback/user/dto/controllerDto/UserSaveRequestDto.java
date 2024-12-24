@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +25,14 @@ public class UserSaveRequestDto {
         private String nickName;
 
         private boolean alarm;
+
+        @Builder
+        public UserSaveRequestDto(String password, String email, String nickName, boolean alarm) {
+                this.password = password;
+                this.email = email;
+                this.nickName = nickName;
+                this.alarm = alarm;
+        }
 
         public UserSaveDto userSaveDto() {
                 return UserSaveDto.builder()
