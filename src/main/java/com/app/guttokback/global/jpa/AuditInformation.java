@@ -11,12 +11,12 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-
 import java.time.LocalDateTime;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class AuditInformation {
+public abstract class AuditInformation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +28,14 @@ public class AuditInformation {
 
     @LastModifiedDate
     @Comment("수정일")
-    @Column(name = "UPDATE_DATE")
+    @Column(name = "UPDATE_DATE", nullable = false)
     private LocalDateTime updateDate;
+
+    public LocalDateTime getRegisterDate() {
+        return registerDate;
+    }
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
 }

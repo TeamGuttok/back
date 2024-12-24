@@ -13,7 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-
+import java.util.Collections;
 
 @Entity
 @Getter
@@ -25,7 +25,7 @@ public class UserEntity extends AuditInformation implements UserDetails {
     @Comment("비밀번호")
     private String password;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false, unique = true)
     @Comment("이메일")
     private String email;
 
@@ -44,6 +44,7 @@ public class UserEntity extends AuditInformation implements UserDetails {
         this.nickName = nickName;
         this.alarm = alarm;
     }
+
     public void passwordChange(String password) {
         this.password = password;
     }
@@ -58,31 +59,31 @@ public class UserEntity extends AuditInformation implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return this.email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
     }
 }
