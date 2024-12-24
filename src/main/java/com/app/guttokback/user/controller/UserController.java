@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/users/signup")
+@RequestMapping("api/users")
 public class UserController {
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/singup")
     public ResponseEntity<String> userSave(@RequestBody UserSaveRequestDto userSaveRequestDto) {
         userService.userSave(userSaveRequestDto.userSaveDto());
         return ResponseEntity.ok("유저 저장 성공");
