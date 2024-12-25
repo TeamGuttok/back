@@ -1,7 +1,8 @@
 package com.app.guttokback.user.service;
 
+import com.app.guttokback.global.exception.CustomApplicationException;
 import com.app.guttokback.global.exception.ErrorCode;
-import com.app.guttokback.global.exception.ExceptionHandler;
+import com.app.guttokback.global.exception.GlobalExceptionHandler;
 import com.app.guttokback.user.domain.UserEntity;
 import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
 import com.app.guttokback.user.dto.serviceDto.UserSaveDto;
@@ -23,7 +24,7 @@ public class UserService {
     @Transactional
     public void userSave(UserSaveDto userSaveDto) {
         if (isEmailDuplicate(userSaveDto.getEmail())) {
-            throw new ExceptionHandler(ErrorCode.EMAIL_SAME_FOUND);
+            throw new CustomApplicationException(ErrorCode.EMAIL_SAME_FOUND);
         }
 
         userRepository.save(UserEntity.builder()
@@ -52,7 +53,6 @@ public class UserService {
         userEntity.alarmChange();
     }
 
-
     @Transactional
     public void userDelete(String email) {
         UserEntity userEntity = userFindByEmail(email);
@@ -70,7 +70,7 @@ public class UserService {
 
     public UserEntity userFindByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new ExceptionHandler(ErrorCode.EMAIL_NOT_FOUND));
+                .orElseThrow(() -> new CustomApplicationException(ErrorCode.EMAIL_NOT_FOUND));
     }
 
     public boolean isEmailDuplicate(String email) {
@@ -78,3 +78,4 @@ public class UserService {
                 .anyMatch(user -> user.getEmail().equals(email));
     }
 }
+
