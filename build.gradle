@@ -46,6 +46,10 @@ dependencies {
 
     // Jakarta Servlet
     implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+    // Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 }
 
 tasks.named('test') {
