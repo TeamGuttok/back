@@ -3,6 +3,7 @@ package com.app.guttokback.user.controller;
 import com.app.guttokback.user.dto.controllerDto.UserSaveRequestDto;
 import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
 import com.app.guttokback.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> userSave(@RequestBody UserSaveRequestDto userSaveRequestDto) {
+    public ResponseEntity<String> userSave(@Valid @RequestBody UserSaveRequestDto userSaveRequestDto) {
         userService.userSave(userSaveRequestDto.userSaveDto());
         return ResponseEntity.ok("유저 저장 성공");
     }
