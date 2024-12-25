@@ -1,6 +1,5 @@
 package com.app.guttokback.user.dto.serviceDto;
 
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
