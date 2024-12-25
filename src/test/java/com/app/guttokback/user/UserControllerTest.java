@@ -31,13 +31,13 @@ class UserControllerTest {
     @MockitoBean
     private UserService userService;
 
+    private final Long testPk = 1L;
     private final String testEmail = "test@example.com";
-    private final String testPassword = "password123";
+    private final String testPassword = "securePass123!";
     private final String testNickName = "Tester";
 
     @BeforeEach
     void setUp() {
-        // Mock Service 동작 설정
         doNothing().when(userService).userSave(any());
         doNothing().when(userService).userDelete(any());
         doNothing().when(userService).userPasswordUpdate(any(), any());
@@ -68,14 +68,14 @@ class UserControllerTest {
     @Test
     @DisplayName("비밀번호 수정 테스트")
     void testUserPasswordUpdate() throws Exception {
-        String newPassword = "newPassword123";
+        String newPassword = "newSecurePass123!";
 
-        mockMvc.perform(patch("/api/users/signup/password/{email}/{password}", testEmail, newPassword)
+        mockMvc.perform(patch("/api/users/password/{pk}/{password}", testPk, newPassword)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().string("비밀번호 수정 성공"));
 
-        verify(userService).userPasswordUpdate(testEmail, newPassword);
+        verify(userService).userPasswordUpdate(testPk, newPassword);
     }
 
     @Test
@@ -83,33 +83,33 @@ class UserControllerTest {
     void testUserNicknameUpdate() throws Exception {
         String newNickName = "UpdatedTester";
 
-        mockMvc.perform(patch("/api/users/signup/nickname/{email}/{nickName}", testEmail, newNickName)
+        mockMvc.perform(patch("/api/users/nickname/{pk}/{nickName}", testPk, newNickName)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().string("닉네임 수정 성공"));
 
-        verify(userService).userNicknameUpdate(testEmail, newNickName);
+        verify(userService).userNicknameUpdate(testPk, newNickName);
     }
 
     @Test
     @DisplayName("알림 수정 테스트")
     void testUserAlarmUpdate() throws Exception {
-        mockMvc.perform(patch("/api/users/signup/alarm/{email}", testEmail)
+        mockMvc.perform(patch("/api/users/alarm/{pk}", testPk)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().string("알림 수정 성공"));
 
-        verify(userService).userAlarmUpdate(testEmail);
+        verify(userService).userAlarmUpdate(testPk);
     }
 
     @Test
     @DisplayName("유저 삭제 테스트")
     void testUserDelete() throws Exception {
-        mockMvc.perform(delete("/api/users/signup/{email}", testEmail)
+        mockMvc.perform(delete("/api/users/{pk}", testPk)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().string("유저 삭제 성공"));
 
-        verify(userService).userDelete(testEmail);
+        verify(userService).userDelete(testPk);
     }
 }
