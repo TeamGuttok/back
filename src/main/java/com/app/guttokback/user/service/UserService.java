@@ -2,7 +2,6 @@ package com.app.guttokback.user.service;
 
 import com.app.guttokback.global.exception.CustomApplicationException;
 import com.app.guttokback.global.exception.ErrorCode;
-import com.app.guttokback.global.exception.GlobalExceptionHandler;
 import com.app.guttokback.user.domain.UserEntity;
 import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
 import com.app.guttokback.user.dto.serviceDto.UserSaveDto;
@@ -36,41 +35,42 @@ public class UserService {
     }
 
     @Transactional
-    public void userPasswordUpdate(String email, String password) {
-        UserEntity userEntity = userFindByEmail(email);
+    public void userPasswordUpdate(Long pk, String password) {
+        UserEntity userEntity = userFindById(pk);
         userEntity.passwordChange(passwordEncoder.encode(password));
     }
 
     @Transactional
-    public void userNicknameUpdate(String email, String nickName) {
-        UserEntity userEntity = userFindByEmail(email);
+    public void userNicknameUpdate(Long pk, String nickName) {
+        UserEntity userEntity = userFindById(pk);
         userEntity.nickNameChange(nickName);
     }
 
     @Transactional
-    public void userAlarmUpdate(String email) {
-        UserEntity userEntity = userFindByEmail(email);
+    public void userAlarmUpdate(Long pk) {
+        UserEntity userEntity = userFindById(pk);
         userEntity.alarmChange();
     }
 
     @Transactional
-    public void userDelete(String email) {
-        UserEntity userEntity = userFindByEmail(email);
+    public void userDelete(Long pk) {
+        UserEntity userEntity = userFindById(pk);
         userRepository.delete(userEntity);
     }
 
-    public UserDetailDto userDetail(String email) {
-        UserEntity userEntity = userFindByEmail(email);
+    public UserDetailDto userDetail(Long pk) {
+        UserEntity userEntity = userFindById(pk);
         return UserDetailDto.builder()
+                .pk(userEntity.getId())
                 .email(userEntity.getEmail())
                 .nickName(userEntity.getNickName())
                 .alarm(userEntity.isAlarm())
                 .build();
     }
 
-    public UserEntity userFindByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomApplicationException(ErrorCode.EMAIL_NOT_FOUND));
+    public UserEntity userFindById(Long pk) {
+        return userRepository.findById(pk)
+                .orElseThrow(() -> new CustomApplicationException(ErrorCode.PK_NOT_FOUND));
     }
 
     public boolean isEmailDuplicate(String email) {

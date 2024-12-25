@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserDetailDto {
 
+    private Long pk;
+
     private String email;
 
     private String nickName;
@@ -16,7 +18,8 @@ public class UserDetailDto {
     private boolean alarm;
 
     @Builder
-    public UserDetailDto(String email, String nickName, boolean alarm) {
+    public UserDetailDto(Long pk, String email, String nickName, boolean alarm) {
+        this.pk = pk;
         this.email = email;
         this.nickName = nickName;
         this.alarm = alarm;

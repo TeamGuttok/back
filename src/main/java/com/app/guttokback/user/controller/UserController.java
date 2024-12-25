@@ -21,9 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/{email}")
-    public UserDetailDto userDetail(@PathVariable String email) {
-        return userService.userDetail(email);
+    @GetMapping("/{pk}")
+    public ResponseEntity<UserDetailDto> userDetail(@PathVariable Long pk) {
+        UserDetailDto userDetailDto = userService.userDetail(pk);
+        return ResponseEntity.ok(userDetailDto);
     }
 
     @PostMapping("/signup")
@@ -32,27 +33,27 @@ public class UserController {
         return ResponseEntity.ok("유저 저장 성공");
     }
 
-    @PatchMapping("password/{email}/{password}")
-    public ResponseEntity<String> userPasswordUpdate(@PathVariable String email, @PathVariable String password) {
-        userService.userPasswordUpdate(email, password);
+    @PatchMapping("password/{pk}/{password}")
+    public ResponseEntity<String> userPasswordUpdate(@PathVariable Long pk, @PathVariable String password) {
+        userService.userPasswordUpdate(pk, password);
         return ResponseEntity.ok("비밀번호 수정 성공");
     }
 
-    @PatchMapping("nickname/{email}/{nickName}")
-    public ResponseEntity<String> userNicknameUpdate(@PathVariable String email, @PathVariable String nickName) {
-        userService.userNicknameUpdate(email, nickName);
+    @PatchMapping("nickname/{pk}/{nickName}")
+    public ResponseEntity<String> userNicknameUpdate(@PathVariable Long pk, @PathVariable String nickName) {
+        userService.userNicknameUpdate(pk, nickName);
         return ResponseEntity.ok("닉네임 수정 성공");
     }
 
-    @PatchMapping("alarm/{email}")
-    public ResponseEntity<String> userAlarmdUpdate(@PathVariable String email) {
-        userService.userAlarmUpdate(email);
+    @PatchMapping("alarm/{pk}")
+    public ResponseEntity<String> userAlarmdUpdate(@PathVariable Long pk) {
+        userService.userAlarmUpdate(pk);
         return ResponseEntity.ok("알림 수정 성공");
     }
 
-    @DeleteMapping("{email}")
-    public ResponseEntity<String> userDelete(@PathVariable String email) {
-        userService.userDelete(email);
+    @DeleteMapping("{pk}")
+    public ResponseEntity<String> userDelete(@PathVariable Long pk) {
+        userService.userDelete(pk);
         return ResponseEntity.ok("유저 삭제 성공");
     }
 }
