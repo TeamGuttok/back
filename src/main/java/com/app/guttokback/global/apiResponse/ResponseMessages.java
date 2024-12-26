@@ -1,4 +1,4 @@
-package com.app.guttokback.global.response;
+package com.app.guttokback.global.apiResponse;
 
 public class ResponseMessages {
     public static final String USER_RETRIEVE_SUCCESS = "유저 상세 조회 성공";

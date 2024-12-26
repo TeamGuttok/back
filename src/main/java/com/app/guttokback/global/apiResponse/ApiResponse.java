@@ -1,4 +1,4 @@
-package com.app.guttokback.global.response;
+package com.app.guttokback.global.apiResponse;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.app.guttokback.user.controller;
 
-import com.app.guttokback.global.response.ApiResponse;
+import com.app.guttokback.global.apiResponse.ApiResponse;
 import com.app.guttokback.user.dto.controllerDto.UserSaveRequestDto;
 import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
 import com.app.guttokback.user.service.UserService;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.app.guttokback.global.response.ResponseMessages.*;
+import static com.app.guttokback.global.apiResponse.ResponseMessages.*;
 
 @RequiredArgsConstructor
 @RestController

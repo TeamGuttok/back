@@ -1,6 +1,6 @@
 package com.app.guttokback.user;
 
-import com.app.guttokback.global.response.ResponseMessages;
+import com.app.guttokback.global.apiResponse.ResponseMessages;
 import com.app.guttokback.user.controller.UserController;
 import com.app.guttokback.user.dto.controllerDto.UserSaveRequestDto;
 import com.app.guttokback.user.service.UserService;
