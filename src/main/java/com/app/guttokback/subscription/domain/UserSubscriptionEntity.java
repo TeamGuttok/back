@@ -4,6 +4,7 @@ import com.app.guttokback.global.jpa.AuditInformation;
 import com.app.guttokback.user.domain.UserEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
@@ -59,4 +60,26 @@ public class UserSubscriptionEntity extends AuditInformation {
     @Comment("사용자 메모")
     private String memo;
 
+    @Builder
+    public UserSubscriptionEntity(UserEntity user,
+                                  String title,
+                                  SubscriptionEntity subscription,
+                                  long paymentAmount,
+                                  PaymentMethod paymentMethod,
+                                  LocalDate startDate,
+                                  PaymentCycle paymentCycle,
+                                  int paymentDay,
+                                  String memo
+    ) {
+        this.user = user;
+        this.title = title;
+        this.subscription = subscription;
+        this.paymentAmount = paymentAmount;
+        this.paymentMethod = paymentMethod;
+        this.paymentStatus = PaymentStatus.PENDING;
+        this.startDate = startDate;
+        this.paymentCycle = paymentCycle;
+        this.paymentDay = paymentDay;
+        this.memo = memo;
+    }
 }
