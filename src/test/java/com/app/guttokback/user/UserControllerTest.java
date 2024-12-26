@@ -34,7 +34,7 @@ class UserControllerTest {
     @MockitoBean
     private UserService userService;
 
-    private final Long testPk = 1L;
+    private final Long testId = 1L;
     private final String testEmail = "test@example.com";
     private final String testPassword = "securePass123!";
     private final String testNickName = "Tester";
@@ -73,12 +73,12 @@ class UserControllerTest {
     void testUserPasswordUpdate() throws Exception {
         String newPassword = "newSecurePass123!";
 
-        mockMvc.perform(patch("/api/users/password/{pk}/{password}", testPk, newPassword)
+        mockMvc.perform(patch("/api/users/password/{id}/{password}", testId, newPassword)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(ResponseMessages.PASSWORD_UPDATE_SUCCESS));
 
-        verify(userService).userPasswordUpdate(testPk, newPassword);
+        verify(userService).userPasswordUpdate(testId, newPassword);
     }
 
     @Test
@@ -86,33 +86,33 @@ class UserControllerTest {
     void testUserNicknameUpdate() throws Exception {
         String newNickName = "UpdatedTester";
 
-        mockMvc.perform(patch("/api/users/nickname/{pk}/{nickName}", testPk, newNickName)
+        mockMvc.perform(patch("/api/users/nickname/{id}/{nickName}", testId, newNickName)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(ResponseMessages.NICKNAME_UPDATE_SUCCESS));
 
-        verify(userService).userNicknameUpdate(testPk, newNickName);
+        verify(userService).userNicknameUpdate(testId, newNickName);
     }
 
     @Test
     @DisplayName("알림 수정 테스트")
     void testUserAlarmUpdate() throws Exception {
-        mockMvc.perform(patch("/api/users/alarm/{pk}", testPk)
+        mockMvc.perform(patch("/api/users/alarm/{id}", testId)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(ResponseMessages.ALARM_UPDATE_SUCCESS));
 
-        verify(userService).userAlarmUpdate(testPk);
+        verify(userService).userAlarmUpdate(testId);
     }
 
     @Test
     @DisplayName("유저 삭제 테스트")
     void testUserDelete() throws Exception {
-        mockMvc.perform(delete("/api/users/{pk}", testPk)
+        mockMvc.perform(delete("/api/users/{id}", testId)
                         .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(ResponseMessages.USER_DELETE_SUCCESS));
 
-        verify(userService).userDelete(testPk);
+        verify(userService).userDelete(testId);
     }
 }
