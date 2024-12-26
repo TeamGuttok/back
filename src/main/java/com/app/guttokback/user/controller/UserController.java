@@ -1,5 +1,6 @@
 package com.app.guttokback.user.controller;
 
+import com.app.guttokback.global.response.ApiResponse;
 import com.app.guttokback.user.dto.controllerDto.UserSaveRequestDto;
 import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
 import com.app.guttokback.user.service.UserService;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.app.guttokback.global.response.ResponseMessages.*;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/users")
@@ -22,38 +25,38 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{pk}")
-    public ResponseEntity<UserDetailDto> userDetail(@PathVariable Long pk) {
+    public ResponseEntity<ApiResponse<UserDetailDto>> userDetail(@PathVariable Long pk) {
         UserDetailDto userDetailDto = userService.userDetail(pk);
-        return ResponseEntity.ok(userDetailDto);
+        return ApiResponse.success(USER_RETRIEVE_SUCCESS, userDetailDto);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> userSave(@Valid @RequestBody UserSaveRequestDto userSaveRequestDto) {
+    public ResponseEntity<ApiResponse<Object>> userSave(@Valid @RequestBody UserSaveRequestDto userSaveRequestDto) {
         userService.userSave(userSaveRequestDto.userSaveDto());
-        return ResponseEntity.ok("유저 저장 성공");
+        return ApiResponse.success(USER_SAVE_SUCCESS);
     }
 
     @PatchMapping("password/{pk}/{password}")
-    public ResponseEntity<String> userPasswordUpdate(@PathVariable Long pk, @PathVariable String password) {
+    public ResponseEntity<ApiResponse<Object>> userPasswordUpdate(@PathVariable Long pk, @PathVariable String password) {
         userService.userPasswordUpdate(pk, password);
-        return ResponseEntity.ok("비밀번호 수정 성공");
+        return ApiResponse.success(PASSWORD_UPDATE_SUCCESS);
     }
 
     @PatchMapping("nickname/{pk}/{nickName}")
-    public ResponseEntity<String> userNicknameUpdate(@PathVariable Long pk, @PathVariable String nickName) {
+    public ResponseEntity<ApiResponse<Object>> userNicknameUpdate(@PathVariable Long pk, @PathVariable String nickName) {
         userService.userNicknameUpdate(pk, nickName);
-        return ResponseEntity.ok("닉네임 수정 성공");
+        return ApiResponse.success(NICKNAME_UPDATE_SUCCESS);
     }
 
     @PatchMapping("alarm/{pk}")
-    public ResponseEntity<String> userAlarmdUpdate(@PathVariable Long pk) {
+    public ResponseEntity<ApiResponse<Object>> userAlarmUpdate(@PathVariable Long pk) {
         userService.userAlarmUpdate(pk);
-        return ResponseEntity.ok("알림 수정 성공");
+        return ApiResponse.success(ALARM_UPDATE_SUCCESS);
     }
 
     @DeleteMapping("{pk}")
-    public ResponseEntity<String> userDelete(@PathVariable Long pk) {
+    public ResponseEntity<ApiResponse<Object>> userDelete(@PathVariable Long pk) {
         userService.userDelete(pk);
-        return ResponseEntity.ok("유저 삭제 성공");
+        return ApiResponse.success(USER_DELETE_SUCCESS);
     }
 }
