@@ -12,6 +12,7 @@ public class UserSubscriptionSaveInfo {
     private final Long userId;
 
     private final String title;
+    
     private final Long subscriptionId;
 
     private final long paymentAmount;
