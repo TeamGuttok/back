@@ -35,42 +35,42 @@ public class UserService {
     }
 
     @Transactional
-    public void userPasswordUpdate(Long pk, String password) {
-        UserEntity userEntity = userFindById(pk);
+    public void userPasswordUpdate(Long id, String password) {
+        UserEntity userEntity = userFindById(id);
         userEntity.passwordChange(passwordEncoder.encode(password));
     }
 
     @Transactional
-    public void userNicknameUpdate(Long pk, String nickName) {
-        UserEntity userEntity = userFindById(pk);
+    public void userNicknameUpdate(Long id, String nickName) {
+        UserEntity userEntity = userFindById(id);
         userEntity.nickNameChange(nickName);
     }
 
     @Transactional
-    public void userAlarmUpdate(Long pk) {
-        UserEntity userEntity = userFindById(pk);
+    public void userAlarmUpdate(Long id) {
+        UserEntity userEntity = userFindById(id);
         userEntity.alarmChange();
     }
 
     @Transactional
-    public void userDelete(Long pk) {
-        UserEntity userEntity = userFindById(pk);
+    public void userDelete(Long id) {
+        UserEntity userEntity = userFindById(id);
         userRepository.delete(userEntity);
     }
 
-    public UserDetailDto userDetail(Long pk) {
-        UserEntity userEntity = userFindById(pk);
+    public UserDetailDto userDetail(Long id) {
+        UserEntity userEntity = userFindById(id);
         return UserDetailDto.builder()
-                .pk(userEntity.getId())
+                .id(userEntity.getId())
                 .email(userEntity.getEmail())
                 .nickName(userEntity.getNickName())
                 .alarm(userEntity.isAlarm())
                 .build();
     }
 
-    public UserEntity userFindById(Long pk) {
-        return userRepository.findById(pk)
-                .orElseThrow(() -> new CustomApplicationException(ErrorCode.PK_NOT_FOUND));
+    public UserEntity userFindById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new CustomApplicationException(ErrorCode.ID_NOT_FOUND));
     }
 
     public boolean isEmailDuplicate(String email) {

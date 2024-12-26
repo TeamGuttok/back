@@ -24,9 +24,9 @@ import static com.app.guttokback.global.apiResponse.ResponseMessages.*;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/{pk}")
-    public ResponseEntity<ApiResponse<UserDetailDto>> userDetail(@PathVariable Long pk) {
-        UserDetailDto userDetailDto = userService.userDetail(pk);
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<UserDetailDto>> userDetail(@PathVariable Long id) {
+        UserDetailDto userDetailDto = userService.userDetail(id);
         return ApiResponse.success(USER_RETRIEVE_SUCCESS, userDetailDto);
     }
 
@@ -36,27 +36,27 @@ public class UserController {
         return ApiResponse.success(USER_SAVE_SUCCESS);
     }
 
-    @PatchMapping("password/{pk}/{password}")
-    public ResponseEntity<ApiResponse<Object>> userPasswordUpdate(@PathVariable Long pk, @PathVariable String password) {
-        userService.userPasswordUpdate(pk, password);
+    @PatchMapping("password/{id}/{password}")
+    public ResponseEntity<ApiResponse<Object>> userPasswordUpdate(@PathVariable Long id, @PathVariable String password) {
+        userService.userPasswordUpdate(id, password);
         return ApiResponse.success(PASSWORD_UPDATE_SUCCESS);
     }
 
-    @PatchMapping("nickname/{pk}/{nickName}")
-    public ResponseEntity<ApiResponse<Object>> userNicknameUpdate(@PathVariable Long pk, @PathVariable String nickName) {
-        userService.userNicknameUpdate(pk, nickName);
+    @PatchMapping("nickname/{id}/{nickName}")
+    public ResponseEntity<ApiResponse<Object>> userNicknameUpdate(@PathVariable Long id, @PathVariable String nickName) {
+        userService.userNicknameUpdate(id, nickName);
         return ApiResponse.success(NICKNAME_UPDATE_SUCCESS);
     }
 
-    @PatchMapping("alarm/{pk}")
-    public ResponseEntity<ApiResponse<Object>> userAlarmUpdate(@PathVariable Long pk) {
-        userService.userAlarmUpdate(pk);
+    @PatchMapping("alarm/{id}")
+    public ResponseEntity<ApiResponse<Object>> userAlarmUpdate(@PathVariable Long id) {
+        userService.userAlarmUpdate(id);
         return ApiResponse.success(ALARM_UPDATE_SUCCESS);
     }
 
-    @DeleteMapping("{pk}")
-    public ResponseEntity<ApiResponse<Object>> userDelete(@PathVariable Long pk) {
-        userService.userDelete(pk);
+    @DeleteMapping("{id}")
+    public ResponseEntity<ApiResponse<Object>> userDelete(@PathVariable Long id) {
+        userService.userDelete(id);
         return ApiResponse.success(USER_DELETE_SUCCESS);
     }
 }

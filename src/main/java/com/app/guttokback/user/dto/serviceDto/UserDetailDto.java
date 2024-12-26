@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserDetailDto {
 
-    private Long pk;
+    private Long id;
 
     private String email;
 
@@ -18,8 +18,8 @@ public class UserDetailDto {
     private boolean alarm;
 
     @Builder
-    public UserDetailDto(Long pk, String email, String nickName, boolean alarm) {
-        this.pk = pk;
+    public UserDetailDto(Long id, String email, String nickName, boolean alarm) {
+        this.id = id;
         this.email = email;
         this.nickName = nickName;
         this.alarm = alarm;
