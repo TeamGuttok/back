@@ -1,10 +1,13 @@
 package com.app.guttokback.user;
 
+import com.app.guttokback.global.response.ResponseMessages;
 import com.app.guttokback.user.controller.UserController;
 import com.app.guttokback.user.dto.controllerDto.UserSaveRequestDto;
 import com.app.guttokback.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -60,7 +63,7 @@ class UserControllerTest {
                         .with(csrf())
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("유저 저장 성공"));
+                .andExpect(jsonPath("$.message").value(ResponseMessages.USER_SAVE_SUCCESS));
 
         verify(userService).userSave(any());
     }
@@ -73,7 +76,7 @@ class UserControllerTest {
         mockMvc.perform(patch("/api/users/password/{pk}/{password}", testPk, newPassword)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(content().string("비밀번호 수정 성공"));
+                .andExpect(jsonPath("$.message").value(ResponseMessages.PASSWORD_UPDATE_SUCCESS));
 
         verify(userService).userPasswordUpdate(testPk, newPassword);
     }
@@ -86,7 +89,7 @@ class UserControllerTest {
         mockMvc.perform(patch("/api/users/nickname/{pk}/{nickName}", testPk, newNickName)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(content().string("닉네임 수정 성공"));
+                .andExpect(jsonPath("$.message").value(ResponseMessages.NICKNAME_UPDATE_SUCCESS));
 
         verify(userService).userNicknameUpdate(testPk, newNickName);
     }
@@ -97,7 +100,7 @@ class UserControllerTest {
         mockMvc.perform(patch("/api/users/alarm/{pk}", testPk)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(content().string("알림 수정 성공"));
+                .andExpect(jsonPath("$.message").value(ResponseMessages.ALARM_UPDATE_SUCCESS));
 
         verify(userService).userAlarmUpdate(testPk);
     }
@@ -108,7 +111,7 @@ class UserControllerTest {
         mockMvc.perform(delete("/api/users/{pk}", testPk)
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(content().string("유저 삭제 성공"));
+                .andExpect(jsonPath("$.message").value(ResponseMessages.USER_DELETE_SUCCESS));
 
         verify(userService).userDelete(testPk);
     }
