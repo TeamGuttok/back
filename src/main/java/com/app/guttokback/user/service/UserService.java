@@ -22,10 +22,7 @@ public class UserService {
 
     @Transactional
     public void userSave(UserSaveDto userSaveDto) {
-        if (isEmailDuplicate(userSaveDto.getEmail())) {
-            throw new CustomApplicationException(ErrorCode.EMAIL_SAME_FOUND);
-        }
-
+        isEmailDuplicate(userSaveDto.getEmail());
         userRepository.save(UserEntity.builder()
                 .email(userSaveDto.getEmail())
                 .password(passwordEncoder.encode(userSaveDto.getPassword()))
@@ -73,9 +70,10 @@ public class UserService {
                 .orElseThrow(() -> new CustomApplicationException(ErrorCode.ID_NOT_FOUND));
     }
 
-    public boolean isEmailDuplicate(String email) {
-        return userRepository.findAll().stream()
-                .anyMatch(user -> user.getEmail().equals(email));
+    public void isEmailDuplicate(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new CustomApplicationException(ErrorCode.EMAIL_SAME_FOUND);
+        }
     }
 }
 
