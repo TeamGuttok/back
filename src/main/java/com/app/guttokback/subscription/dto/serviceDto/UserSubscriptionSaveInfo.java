@@ -2,31 +2,36 @@ package com.app.guttokback.subscription.dto.serviceDto;
 
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserSubscriptionSaveInfo {
 
-    private final Long userId;
+    private Long userId;
 
-    private final String title;
-    
-    private final Long subscriptionId;
+    private String title;
 
-    private final long paymentAmount;
+    private Long subscriptionId;
 
-    private final PaymentMethod paymentMethod;
+    private long paymentAmount;
 
-    private final LocalDate startDate;
+    private PaymentMethod paymentMethod;
 
-    private final PaymentCycle paymentCycle;
+    private LocalDate startDate;
 
-    private final int paymentDay;
+    private PaymentCycle paymentCycle;
 
-    private final String memo;
+    private int paymentDay;
 
+    private String memo;
+
+    @Builder
     public UserSubscriptionSaveInfo(Long userId,
                                     String title,
                                     Long subscriptionId,
