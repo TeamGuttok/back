@@ -55,7 +55,7 @@ class UserSubscriptionServiceTest {
                 .build();
         UserEntity savedUser = userRepository.save(user);
 
-        SubscriptionEntity subscription = SubscriptionEntity.builder().name("test").build();
+        SubscriptionEntity subscription = new SubscriptionEntity("test");
         SubscriptionEntity savedSubscription = subscriptionRepository.save(subscription);
 
         UserSubscriptionSaveInfo savedUserSubscription = UserSubscriptionSaveInfo.builder()
@@ -89,7 +89,7 @@ class UserSubscriptionServiceTest {
     @DisplayName("존재하지 않는 회원이 구독항목 생성 시 예외가 발생한다.")
     public void saveUserSubscriptionByValidateUserTest() {
         // given
-        SubscriptionEntity subscription = SubscriptionEntity.builder().name("test").build();
+        SubscriptionEntity subscription = new SubscriptionEntity("test");
         SubscriptionEntity savedSubscription = subscriptionRepository.save(subscription);
 
         UserSubscriptionSaveInfo savedUserSubscription = UserSubscriptionSaveInfo.builder()
