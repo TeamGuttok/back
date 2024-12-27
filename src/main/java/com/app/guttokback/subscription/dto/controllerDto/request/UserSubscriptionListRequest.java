@@ -14,7 +14,7 @@ public class UserSubscriptionListRequest {
     private Long lastId;
 
     @Positive(message = "한 페이지에 조회 할 데이터 수는 양수여야 합니다.")
-    private long size = 10;
+    private long size;
 
     public UserSubscriptionListRequest(Long lastId, Long size) {
         this.lastId = lastId;
