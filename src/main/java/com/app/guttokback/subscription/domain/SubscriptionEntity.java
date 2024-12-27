@@ -16,4 +16,8 @@ public class SubscriptionEntity extends AuditInformation {
 
     @Column(length = 50, nullable = false)
     private String name;
+
+    public SubscriptionEntity(String name) {
+        this.name = name;
+    }
 }
