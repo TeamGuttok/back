@@ -1,26 +1,27 @@
 package com.app.guttokback.subscription.service;
 
+import com.app.guttokback.global.apiResponse.PageResponse;
 import com.app.guttokback.global.exception.CustomApplicationException;
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
 import com.app.guttokback.subscription.domain.SubscriptionEntity;
 import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
+import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
+import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionListInfo;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionSaveInfo;
 import com.app.guttokback.subscription.repository.SubscriptionRepository;
 import com.app.guttokback.subscription.repository.UserSubscriptionRepository;
 import com.app.guttokback.user.domain.UserEntity;
 import com.app.guttokback.user.repository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
@@ -42,21 +43,27 @@ class UserSubscriptionServiceTest {
         subscriptionRepository.deleteAllInBatch();
     }
 
-    @Test
-    @Transactional
-    @DisplayName("존재하는 회원이 구독항목 생성 시 구독항목이 정상적으로 저장된다.")
-    public void savedUserSubscriptionTest() {
-        // given
+    private UserEntity createUser() {
         UserEntity user = UserEntity.builder()
                 .email("test@test.com")
                 .password("!a1234567890")
                 .nickName("test")
                 .alarm(false)
                 .build();
-        UserEntity savedUser = userRepository.save(user);
+        return userRepository.save(user);
+    }
 
+    private SubscriptionEntity createSubscription() {
         SubscriptionEntity subscription = new SubscriptionEntity("test");
-        SubscriptionEntity savedSubscription = subscriptionRepository.save(subscription);
+        return subscriptionRepository.save(subscription);
+    }
+
+    @Test
+    @DisplayName("존재하는 회원이 구독항목 생성 시 구독항목이 정상적으로 저장된다.")
+    public void savedUserSubscriptionTest() {
+        // given
+        UserEntity savedUser = createUser();
+        SubscriptionEntity savedSubscription = createSubscription();
 
         UserSubscriptionSaveInfo savedUserSubscription = UserSubscriptionSaveInfo.builder()
                 .userId(savedUser.getId())
@@ -85,12 +92,10 @@ class UserSubscriptionServiceTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("존재하지 않는 회원이 구독항목 생성 시 예외가 발생한다.")
     public void saveUserSubscriptionByValidateUserTest() {
         // given
-        SubscriptionEntity subscription = new SubscriptionEntity("test");
-        SubscriptionEntity savedSubscription = subscriptionRepository.save(subscription);
+        SubscriptionEntity savedSubscription = createSubscription();
 
         UserSubscriptionSaveInfo savedUserSubscription = UserSubscriptionSaveInfo.builder()
                 .userId(-1L)
@@ -109,23 +114,16 @@ class UserSubscriptionServiceTest {
                 () -> userSubscriptionService.save(savedUserSubscription));
 
         // then
-        Assertions.assertThat(exception)
+        assertThat(exception)
                 .isInstanceOf(CustomApplicationException.class)
                 .hasMessage("회원을 찾을 수 없습니다");
     }
 
     @Test
-    @Transactional
     @DisplayName("구독서비스가 존재하지 않을 경우 구독항목 생성 시 예외가 발생한다.")
     public void saveUserSubscriptionByValidateSubscriptionTest() {
         // given
-        UserEntity user = UserEntity.builder()
-                .email("test@test.com")
-                .password("!a1234567890")
-                .nickName("test")
-                .alarm(false)
-                .build();
-        UserEntity savedUser = userRepository.save(user);
+        UserEntity savedUser = createUser();
 
         UserSubscriptionSaveInfo savedUserSubscription = UserSubscriptionSaveInfo.builder()
                 .userId(savedUser.getId())
@@ -144,8 +142,70 @@ class UserSubscriptionServiceTest {
                 () -> userSubscriptionService.save(savedUserSubscription));
 
         // then
-        Assertions.assertThat(exception)
+        assertThat(exception)
                 .isInstanceOf(CustomApplicationException.class)
                 .hasMessage("구독 서비스를 찾을 수 없습니다.");
+    }
+
+    @Test
+    @DisplayName("존재하는 회원이 생성한 구독항목에 대하여 조회된다.")
+    public void userSubscriptionListPageTest() {
+        // given
+        UserEntity savedUser = createUser();
+
+        SubscriptionEntity savedSubscription = createSubscription();
+
+        UserSubscriptionEntity userSubscription = UserSubscriptionEntity.builder()
+                .user(savedUser)
+                .title("test")
+                .subscription(savedSubscription)
+                .paymentAmount(10000)
+                .paymentMethod(PaymentMethod.CARD)
+                .startDate(LocalDate.parse("2024-12-27"))
+                .paymentCycle(PaymentCycle.MONTHLY)
+                .paymentDay(15)
+                .memo("test")
+                .build();
+        UserSubscriptionEntity savedUserSubscription = userSubscriptionRepository.save(userSubscription);
+
+        UserSubscriptionListInfo userSubscriptionListInfo = new UserSubscriptionListInfo(
+                savedUser.getId(), null, 5
+        );
+
+        // when
+        PageResponse<UserSubscriptionListResponse> list = userSubscriptionService.list(userSubscriptionListInfo);
+
+        // then
+        assertThat(list.getContents())
+                .hasSize(1)
+                .extracting(UserSubscriptionListResponse::getId)
+                .containsExactly(savedUserSubscription.getId());
+        assertThat(list.getContents()).extracting(UserSubscriptionListResponse::getTitle)
+                .containsExactly(userSubscription.getTitle());
+        assertThat(list.getContents()).extracting(UserSubscriptionListResponse::getPaymentAmount)
+                .containsExactly(userSubscription.getPaymentAmount());
+        assertThat(list.getContents()).extracting(UserSubscriptionListResponse::getPaymentMethod)
+                .containsExactly(userSubscription.getPaymentMethod());
+        assertThat(list.getContents()).extracting(UserSubscriptionListResponse::getPaymentCycle)
+                .containsExactly(userSubscription.getPaymentCycle());
+        assertThat(list.getContents()).extracting(UserSubscriptionListResponse::getPaymentDay)
+                .containsExactly(userSubscription.getPaymentDay());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 회원이 구독항목 조회 시 예외가 발생한다.")
+    public void userSubscriptionListPageUserValidateTest() {
+        // given
+        UserSubscriptionListInfo userSubscriptionListInfo = new UserSubscriptionListInfo(
+                -1L, null, 5
+        );
+
+        // when
+        CustomApplicationException exception = assertThrows(CustomApplicationException.class,
+                () -> userSubscriptionService.list(userSubscriptionListInfo));
+
+        // then
+        assertThat(exception).isInstanceOf(CustomApplicationException.class);
+        assertThat(exception.getMessage()).isEqualTo("회원을 찾을 수 없습니다");
     }
 }
