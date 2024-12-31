@@ -4,6 +4,7 @@ package com.app.guttokback.user.controller;
 import com.app.guttokback.global.apiResponse.ApiResponse;
 import com.app.guttokback.user.dto.controllerDto.LoginRequestDto;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,7 +23,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/signin")
-    public ResponseEntity<ApiResponse<Object>> signin(@RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
+    public ResponseEntity<ApiResponse<Object>> signin(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 loginRequestDto.loginDto().getEmail(),
                 loginRequestDto.loginDto().getPassword()
