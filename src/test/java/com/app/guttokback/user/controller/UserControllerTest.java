@@ -1,4 +1,4 @@
-package com.app.guttokback.user;
+package com.app.guttokback.user.controller;
 
 import com.app.guttokback.global.apiResponse.ResponseMessages;
 import com.app.guttokback.global.exception.CustomApplicationException;
