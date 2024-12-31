@@ -1,0 +1,37 @@
+package com.app.guttokback.user.controller;
+
+
+import com.app.guttokback.global.apiResponse.ApiResponse;
+import com.app.guttokback.user.dto.controllerDto.LoginRequestDto;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import static com.app.guttokback.global.apiResponse.ResponseMessages.USER_LOGIN_SUCCESS;
+
+@RestController
+@RequestMapping("/api/users")
+@RequiredArgsConstructor
+public class AuthController {
+
+    private final AuthenticationManager authenticationManager;
+
+    @PostMapping("/signin")
+    public ResponseEntity<ApiResponse<Object>> signin(@RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                loginRequestDto.loginDto().getEmail(),
+                loginRequestDto.loginDto().getPassword()
+        );
+
+        Authentication authentication = authenticationManager.authenticate(token);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+        return ApiResponse.success(USER_LOGIN_SUCCESS);
+    }
+}
