@@ -57,12 +57,11 @@ dependencies {
     // Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-    // Redis
+    // Redis Session
     implementation 'org.springframework.session:spring-session-data-redis'
 
     // Spring Data Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
 
 }
 
