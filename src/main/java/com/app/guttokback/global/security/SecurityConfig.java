@@ -24,11 +24,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 "/swagger", "/swagger-ui.html", "/swagger-ui/**",
-                                "/api-docs", "/api-docs/**", "/v3/api-docs/**"
+                                "/api-docs", "/api-docs/**", "/v3/api-docs/**",
+                                "/api/users/signup", "/api/users/signin"
                         ).permitAll()
                         .anyRequest().permitAll()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                );
         return http.build();
     }
 
