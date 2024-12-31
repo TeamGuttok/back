@@ -1,11 +1,12 @@
-package com.app.guttokback.user;
+package com.app.guttokback.user.controller;
 
 import com.app.guttokback.global.apiResponse.ResponseMessages;
 import com.app.guttokback.global.security.SecurityConfig;
-import com.app.guttokback.user.controller.AuthController;
 import com.app.guttokback.user.dto.controllerDto.LoginRequestDto;
+import com.app.guttokback.user.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthController.class)
-@Import(SecurityConfig.class) // SecurityConfig를 가져옴
+@Import(SecurityConfig.class)
 class AuthControllerTest {
 
     @Autowired
@@ -38,12 +39,14 @@ class AuthControllerTest {
     @MockitoBean
     private AuthenticationManager authenticationManager;
 
+    @MockitoBean
+    private UserRepository userRepository;
+
     private final String testEmail = "test@example.com";
     private final String testPassword = "securePass123!";
 
     @BeforeEach
     void setUp() {
-
         Authentication mockAuthentication = Mockito.mock(Authentication.class);
 
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
@@ -51,17 +54,20 @@ class AuthControllerTest {
     }
 
     @Test
+    @DisplayName("로그인 성공 테스트")
     void signin_Success() throws Exception {
         // given
-        LoginRequestDto loginRequestDto = new LoginRequestDto(testEmail, testPassword);
+        LoginRequestDto loginRequestDto = LoginRequestDto.builder()
+                .email(testEmail)
+                .password(testPassword)
+                .build();
 
         // when & then
         mockMvc.perform(post("/api/users/signin")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()) // CSRF 토큰 포함
+                        .with(csrf())
                         .content(objectMapper.writeValueAsString(loginRequestDto)))
-                .andExpect(status().isOk()) // 200 응답 예상
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(ResponseMessages.USER_LOGIN_SUCCESS));
     }
-
 }
