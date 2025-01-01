@@ -72,7 +72,6 @@ public class UserSubscriptionService {
     @Transactional
     public void update(Long id, UserSubscriptionUpdateInfo userSubscriptionUpdateInfo) {
         UserSubscriptionEntity userSubscription = findUserSubscriptionById(id);
-        System.out.println("!!!" + userSubscription.getTitle());
         userSubscription.update(
                 userSubscriptionUpdateInfo.getTitle(),
                 userSubscriptionUpdateInfo.getPaymentAmount(),
