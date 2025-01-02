@@ -75,5 +75,10 @@ public class UserService {
             throw new CustomApplicationException(ErrorCode.EMAIL_SAME_FOUND);
         }
     }
+
+    public UserEntity findByUserEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomApplicationException(ErrorCode.EMAIL_NOT_FOUND));
+    }
 }
 
