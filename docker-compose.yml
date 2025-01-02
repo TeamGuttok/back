@@ -21,8 +21,9 @@ services:
     container_name: guttok_redis
     restart: always
     ports:
-      - "6379:6379"
+      - "6380:6379"
     volumes:
       - ./db/redis/data:/data
+    command: ["redis-server", "--requirepass", "1234"]
     environment:
       TZ: Asia/Seoul
