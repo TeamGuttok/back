@@ -4,6 +4,7 @@ import com.app.guttokback.global.apiResponse.ApiResponse;
 import com.app.guttokback.global.apiResponse.PageResponse;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionListRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionSaveRequest;
+import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionUpdateRequest;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
 import com.app.guttokback.subscription.service.UserSubscriptionService;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static com.app.guttokback.global.apiResponse.ResponseMessages.USER_SUBSCRIPTION_SAVE_SUCCESS;
+import static com.app.guttokback.global.apiResponse.ResponseMessages.USER_SUBSCRIPTION_UPDATE_SUCCESS;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,5 +36,14 @@ public class UserSubscriptionController {
             @PathVariable Long userId
     ) {
         return userSubscriptionService.list(userSubscriptionListRequest.toListOption(userId));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> userSubscriptionUpdate(
+            @Valid @RequestBody UserSubscriptionUpdateRequest userSubscriptionUpdateRequest,
+            @PathVariable Long id
+    ) {
+        userSubscriptionService.update(id, userSubscriptionUpdateRequest.toUpdate());
+        return ApiResponse.success(USER_SUBSCRIPTION_UPDATE_SUCCESS);
     }
 }

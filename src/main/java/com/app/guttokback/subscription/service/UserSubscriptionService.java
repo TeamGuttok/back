@@ -8,7 +8,7 @@ import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionListInfo;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionSaveInfo;
-import com.app.guttokback.subscription.repository.SubscriptionRepository;
+import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionUpdateInfo;
 import com.app.guttokback.subscription.repository.UserSubscriptionQueryRepository;
 import com.app.guttokback.subscription.repository.UserSubscriptionRepository;
 import com.app.guttokback.user.domain.UserEntity;
@@ -25,14 +25,14 @@ import java.util.List;
 public class UserSubscriptionService {
 
     private final UserSubscriptionRepository userSubscriptionRepository;
-    private final SubscriptionRepository subscriptionRepository;
+    private final SubscriptionService subscriptionService;
     private final UserService userService;
     private final UserSubscriptionQueryRepository userSubscriptionQueryRepository;
 
     @Transactional
     public void save(UserSubscriptionSaveInfo userSubscriptionSaveInfo) {
         UserEntity user = userService.userFindById(userSubscriptionSaveInfo.getUserId());
-        SubscriptionEntity subscription = findSubscriptionById(userSubscriptionSaveInfo.getSubscriptionId());
+        SubscriptionEntity subscription = subscriptionService.findSubscriptionById(userSubscriptionSaveInfo.getSubscriptionId());
 
         userSubscriptionRepository.save(
                 UserSubscriptionEntity.builder()
@@ -69,8 +69,21 @@ public class UserSubscriptionService {
                 );
     }
 
-    private SubscriptionEntity findSubscriptionById(Long subscriptionId) {
-        return subscriptionRepository.findById(subscriptionId)
-                .orElseThrow(() -> new CustomApplicationException(ErrorCode.SUBSCRIPTION_NOT_FOUND));
+    @Transactional
+    public void update(Long id, UserSubscriptionUpdateInfo userSubscriptionUpdateInfo) {
+        UserSubscriptionEntity userSubscription = findUserSubscriptionById(id);
+        userSubscription.update(
+                userSubscriptionUpdateInfo.getTitle(),
+                userSubscriptionUpdateInfo.getPaymentAmount(),
+                userSubscriptionUpdateInfo.getPaymentMethod(),
+                userSubscriptionUpdateInfo.getStartDate(),
+                userSubscriptionUpdateInfo.getPaymentCycle(),
+                userSubscriptionUpdateInfo.getPaymentDay(),
+                userSubscriptionUpdateInfo.getMemo());
+    }
+
+    private UserSubscriptionEntity findUserSubscriptionById(Long id) {
+        return userSubscriptionRepository.findById(id)
+                .orElseThrow(() -> new CustomApplicationException(ErrorCode.USER_SUBSCRIPTION_NOT_FOUND));
     }
 }

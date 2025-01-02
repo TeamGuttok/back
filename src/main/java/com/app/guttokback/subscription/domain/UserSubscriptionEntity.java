@@ -82,4 +82,21 @@ public class UserSubscriptionEntity extends AuditInformation {
         this.paymentDay = paymentDay;
         this.memo = memo;
     }
+
+    public void update(String title,
+                       long paymentAmount,
+                       PaymentMethod paymentMethod,
+                       LocalDate startDate,
+                       PaymentCycle paymentCycle,
+                       int paymentDay,
+                       String memo
+    ) {
+        this.title = title;
+        this.paymentAmount = paymentAmount;
+        this.paymentMethod = paymentMethod;
+        this.startDate = startDate;
+        this.paymentCycle = paymentCycle;
+        this.paymentDay = paymentDay;
+        this.memo = memo;
+    }
 }

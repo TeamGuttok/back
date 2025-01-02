@@ -9,6 +9,7 @@ import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionListInfo;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionSaveInfo;
+import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionUpdateInfo;
 import com.app.guttokback.subscription.repository.SubscriptionRepository;
 import com.app.guttokback.subscription.repository.UserSubscriptionRepository;
 import com.app.guttokback.user.domain.UserEntity;
@@ -56,6 +57,23 @@ class UserSubscriptionServiceTest {
     private SubscriptionEntity createSubscription() {
         SubscriptionEntity subscription = new SubscriptionEntity("test");
         return subscriptionRepository.save(subscription);
+    }
+
+    private UserSubscriptionEntity createUserSubscription() {
+        UserEntity user = createUser();
+        SubscriptionEntity subscription = createSubscription();
+
+        UserSubscriptionEntity userSubscription = new UserSubscriptionEntity(
+                user,
+                "test",
+                subscription,
+                10000,
+                PaymentMethod.CARD,
+                LocalDate.parse("2025-01-01"),
+                PaymentCycle.MONTHLY,
+                1,
+                "test");
+        return userSubscriptionRepository.save(userSubscription);
     }
 
     @Test
@@ -207,5 +225,60 @@ class UserSubscriptionServiceTest {
         // then
         assertThat(exception).isInstanceOf(CustomApplicationException.class);
         assertThat(exception.getMessage()).isEqualTo("회원을 찾을 수 없습니다");
+    }
+
+    @Test
+    @DisplayName("존재하는 구독항목 수정 시 정상적으로 수정된다.")
+    public void userSubscriptionUpdateTest() {
+        // given
+        UserSubscriptionEntity savedUserSubscription = createUserSubscription();
+
+        UserSubscriptionUpdateInfo userSubscriptionUpdateInfo
+                = new UserSubscriptionUpdateInfo(
+                "update",
+                120000,
+                PaymentMethod.BANK_TRANSFER,
+                LocalDate.parse("2024-12-31"),
+                PaymentCycle.YEARLY,
+                15,
+                "test"
+        );
+
+        // when
+        userSubscriptionService.update(savedUserSubscription.getId(), userSubscriptionUpdateInfo);
+
+        // then
+        UserSubscriptionEntity userSubscription = userSubscriptionRepository.findAll().stream().findFirst().orElseThrow();
+        assertThat(userSubscription.getTitle()).isEqualTo("update");
+        assertThat(userSubscription.getPaymentAmount()).isEqualTo(120000);
+        assertThat(userSubscription.getPaymentMethod()).isEqualTo(PaymentMethod.BANK_TRANSFER);
+        assertThat(userSubscription.getStartDate()).isEqualTo(LocalDate.parse("2024-12-31"));
+        assertThat(userSubscription.getPaymentCycle()).isEqualTo(PaymentCycle.YEARLY);
+        assertThat(userSubscription.getPaymentDay()).isEqualTo(15);
+        assertThat(userSubscription.getMemo()).isEqualTo("test");
+    }
+
+    @Test
+    @DisplayName("사용자 구독항목이 존재하지 않을 시 예외가 발생한다.")
+    public void userSubscriptionUpdateValidateTest() {
+        // given
+        UserSubscriptionUpdateInfo userSubscriptionUpdateInfo
+                = new UserSubscriptionUpdateInfo(
+                "update",
+                120000,
+                PaymentMethod.BANK_TRANSFER,
+                LocalDate.parse("2024-12-31"),
+                PaymentCycle.YEARLY,
+                15,
+                "test"
+        );
+
+        // when
+        CustomApplicationException exception = assertThrows(CustomApplicationException.class,
+                () -> userSubscriptionService.update(-1L, userSubscriptionUpdateInfo));
+
+        // then
+        assertThat(exception).isInstanceOf(CustomApplicationException.class);
+        assertThat(exception.getMessage()).isEqualTo("사용자의 구독항목을 찾을 수 없습니다.");
     }
 }
