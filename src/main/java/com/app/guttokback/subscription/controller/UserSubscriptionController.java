@@ -38,7 +38,7 @@ public class UserSubscriptionController {
         return userSubscriptionService.list(userSubscriptionListRequest.toListOption(userId));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<Object>> userSubscriptionUpdate(
             @Valid @RequestBody UserSubscriptionUpdateRequest userSubscriptionUpdateRequest,
             @PathVariable Long id

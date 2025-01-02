@@ -117,7 +117,7 @@ class UserSubscriptionControllerTest {
                 .build();
 
         // when & then
-        mockMvc.perform(put("/api/subscriptions/{id}", testId)
+        mockMvc.perform(patch("/api/subscriptions/{id}", testId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                         .content(objectMapper.writeValueAsString(updateRequest)))
