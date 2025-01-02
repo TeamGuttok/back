@@ -25,8 +25,8 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<ApiResponse<Object>> signin(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                loginRequestDto.loginDto().getEmail(),
-                loginRequestDto.loginDto().getPassword()
+                loginRequestDto.getEmail(),
+                loginRequestDto.getPassword()
         );
 
         Authentication authentication = authenticationManager.authenticate(token);
