@@ -9,7 +9,10 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @Configuration
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
+@EnableRedisHttpSession(
+        maxInactiveIntervalInSeconds = 1800,
+        redisNamespace = "GUTTOK_SESSION"
+)
 public class RedisConfig {
 
     @Value("${spring.data.redis.host}")
