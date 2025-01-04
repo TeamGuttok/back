@@ -25,8 +25,4 @@ public class ApiResponse<T> {
     public static <T> ResponseEntity<ApiResponse<T>> success(String message) {
         return ResponseEntity.ok(new ApiResponse<>(message, null, HttpStatus.OK));
     }
-
-    public static ResponseEntity<ApiResponse<Object>> error(String message, HttpStatus status) {
-        return ResponseEntity.status(status).body(new ApiResponse<>(message, null, status));
-    }
 }
