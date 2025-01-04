@@ -23,7 +23,8 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/signin")
-    public ResponseEntity<ApiResponse<Object>> signin(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
+    public ResponseEntity<ApiResponse<String>> signin(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
+
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 loginRequestDto.getEmail(),
                 loginRequestDto.getPassword()
@@ -33,6 +34,6 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-        return ApiResponse.success(USER_LOGIN_SUCCESS);
+        return ApiResponse.success(USER_LOGIN_SUCCESS, SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }
