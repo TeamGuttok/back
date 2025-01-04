@@ -12,18 +12,17 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
-
 class CustomUserDetailsServiceTest {
 
-    private final UserRepository userRepository = Mockito.mock(UserRepository.class);
-    private final CustomUserDetailsService userDetailsService = new CustomUserDetailsService(userRepository);
+    private final UserService userService = Mockito.mock(UserService.class);
+    private final CustomUserDetailsService userDetailsService = new CustomUserDetailsService(userService);
 
     @Test
     @DisplayName("로그인 테스트 - 이메일 찾기 실패")
     void signin_EMAIL_NOT_FOUND() {
         // given
         String email = "notfound@example.com";
-        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+        when(userService.findByUserEmail(email)).thenThrow(new CustomApplicationException(ErrorCode.EMAIL_NOT_FOUND));
 
         // when
         CustomApplicationException exception = assertThrows(CustomApplicationException.class, () -> {
