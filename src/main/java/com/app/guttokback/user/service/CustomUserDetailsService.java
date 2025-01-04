@@ -1,8 +1,5 @@
 package com.app.guttokback.user.service;
 
-import com.app.guttokback.global.exception.CustomApplicationException;
-import com.app.guttokback.global.exception.ErrorCode;
-import com.app.guttokback.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
