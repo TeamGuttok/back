@@ -13,7 +13,12 @@ public enum ErrorCode {
     SUBSCRIPTION_NOT_FOUND(HttpStatus.NOT_FOUND, "구독 서비스를 찾을 수 없습니다."),
 
     // userSubscription
-    USER_SUBSCRIPTION_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자의 구독항목을 찾을 수 없습니다.");
+    USER_SUBSCRIPTION_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자의 구독항목을 찾을 수 없습니다."),
+
+    // auth
+    EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "계정을 찾을 수 없습니다"),
+    SESSION_PROBLEM(HttpStatus.UNAUTHORIZED, "세션이 없거나 만료됐습니다"),
+    USER_ACCESS_PROBLEM(HttpStatus.FORBIDDEN, "리소스에 접근할 권한이 없습니다");
 
     private final HttpStatus httpStatus;
     private final String message;
