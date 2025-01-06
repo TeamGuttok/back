@@ -4,6 +4,7 @@ import com.app.guttokback.global.apiResponse.PageResponse;
 import com.app.guttokback.global.apiResponse.ResponseMessages;
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
+import com.app.guttokback.subscription.domain.Subscription;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionListRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionSaveRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionUpdateRequest;
@@ -52,7 +53,7 @@ class UserSubscriptionControllerTest {
         UserSubscriptionSaveRequest saveRequest = UserSubscriptionSaveRequest.builder()
                 .userId(1L)
                 .title("test")
-                .subscriptionId(1L)
+                .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
                 .startDate(LocalDate.parse("2025-01-01"))
@@ -134,7 +135,7 @@ class UserSubscriptionControllerTest {
         UserSubscriptionSaveRequest saveRequest = UserSubscriptionSaveRequest.builder()
                 .userId(1L)
                 .title("test")
-                .subscriptionId(1L)
+                .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
                 .startDate(LocalDate.parse("2025-01-01"))

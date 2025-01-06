@@ -2,6 +2,7 @@ package com.app.guttokback.subscription.dto.controllerDto.request;
 
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
+import com.app.guttokback.subscription.domain.Subscription;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -22,7 +23,7 @@ class UserSubscriptionSaveRequestTest {
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
                 .userId(null)
                 .title("test")
-                .subscriptionId(1L)
+                .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
                 .startDate(LocalDate.parse("2024-12-27"))
@@ -49,7 +50,7 @@ class UserSubscriptionSaveRequestTest {
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
                 .userId(-1L)
                 .title("test")
-                .subscriptionId(1L)
+                .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
                 .startDate(LocalDate.parse("2024-12-27"))
@@ -76,7 +77,7 @@ class UserSubscriptionSaveRequestTest {
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
                 .userId(1L)
                 .title("test")
-                .subscriptionId(null)
+                .subscription(null)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
                 .startDate(LocalDate.parse("2024-12-27"))
@@ -91,34 +92,7 @@ class UserSubscriptionSaveRequestTest {
         // then
         Assertions.assertThat(violations)
                 .extracting(ConstraintViolation::getMessage)
-                .contains("구독 서비스 ID를 입력하세요.")
-                .hasSize(1);
-    }
-
-    @Test
-    @DisplayName("구독 서비스 ID가 음수 일 경우 예외가 발생한다.")
-    public void subscriptionIdNegativeValidationTest() {
-        // given
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
-                .userId(1L)
-                .title("test")
-                .subscriptionId(-1L)
-                .paymentAmount(10000)
-                .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2024-12-27"))
-                .paymentCycle(PaymentCycle.MONTHLY)
-                .paymentDay(15)
-                .memo("test")
-                .build();
-
-        // when
-        Set<ConstraintViolation<UserSubscriptionSaveRequest>> violations = validator.validate(userSubscriptionSaveRequest);
-
-        // then
-        Assertions.assertThat(violations)
-                .extracting(ConstraintViolation::getMessage)
-                .contains("구독 서비스 ID는 양수여야 합니다.")
+                .contains("항목을 선택하세요.")
                 .hasSize(1);
     }
 
@@ -130,7 +104,7 @@ class UserSubscriptionSaveRequestTest {
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
                 .userId(1L)
                 .title("test")
-                .subscriptionId(1L)
+                .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(-1)
                 .paymentMethod(PaymentMethod.CARD)
                 .startDate(LocalDate.parse("2024-12-27"))
@@ -157,7 +131,7 @@ class UserSubscriptionSaveRequestTest {
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
                 .userId(1L)
                 .title("test")
-                .subscriptionId(1L)
+                .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(null)
                 .startDate(LocalDate.parse("2024-12-27"))
@@ -184,7 +158,7 @@ class UserSubscriptionSaveRequestTest {
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
                 .userId(1L)
                 .title("test")
-                .subscriptionId(1L)
+                .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
                 .startDate(null)
@@ -211,7 +185,7 @@ class UserSubscriptionSaveRequestTest {
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
                 .userId(1L)
                 .title("test")
-                .subscriptionId(1L)
+                .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
                 .startDate(LocalDate.parse("2024-12-27"))
@@ -238,7 +212,7 @@ class UserSubscriptionSaveRequestTest {
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
                 .userId(1L)
                 .title("test")
-                .subscriptionId(1L)
+                .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
                 .startDate(LocalDate.parse("2024-12-27"))
@@ -265,7 +239,7 @@ class UserSubscriptionSaveRequestTest {
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
                 .userId(1L)
                 .title("test")
-                .subscriptionId(1L)
+                .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
                 .startDate(LocalDate.parse("2024-12-27"))
