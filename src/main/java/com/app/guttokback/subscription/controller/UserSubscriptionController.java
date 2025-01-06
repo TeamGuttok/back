@@ -12,8 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.app.guttokback.global.apiResponse.ResponseMessages.USER_SUBSCRIPTION_SAVE_SUCCESS;
-import static com.app.guttokback.global.apiResponse.ResponseMessages.USER_SUBSCRIPTION_UPDATE_SUCCESS;
+import static com.app.guttokback.global.apiResponse.ResponseMessages.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,5 +44,11 @@ public class UserSubscriptionController {
     ) {
         userSubscriptionService.update(id, userSubscriptionUpdateRequest.toUpdate());
         return ApiResponse.success(USER_SUBSCRIPTION_UPDATE_SUCCESS);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> userSubscriptionDelete(@PathVariable Long id) {
+        userSubscriptionService.delete(id);
+        return ApiResponse.success(USER_SUBSCRIPTION_DELETE_SUCCESS);
     }
 }

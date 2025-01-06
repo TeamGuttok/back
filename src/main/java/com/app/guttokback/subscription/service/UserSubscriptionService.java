@@ -82,6 +82,12 @@ public class UserSubscriptionService {
                 userSubscriptionUpdateInfo.getMemo());
     }
 
+    @Transactional
+    public void delete(Long id) {
+        UserSubscriptionEntity userSubscription = findUserSubscriptionById(id);
+        userSubscriptionRepository.delete(userSubscription);
+    }
+
     private UserSubscriptionEntity findUserSubscriptionById(Long id) {
         return userSubscriptionRepository.findById(id)
                 .orElseThrow(() -> new CustomApplicationException(ErrorCode.USER_SUBSCRIPTION_NOT_FOUND));

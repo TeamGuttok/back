@@ -281,4 +281,17 @@ class UserSubscriptionServiceTest {
         assertThat(exception).isInstanceOf(CustomApplicationException.class);
         assertThat(exception.getMessage()).isEqualTo("사용자의 구독항목을 찾을 수 없습니다.");
     }
+
+    @Test
+    @DisplayName("존재하는 구독항목 삭제 시 정상적으로 삭제된다.")
+    public void userSubscriptionDeleteTest() {
+        // given
+        UserSubscriptionEntity userSubscription = createUserSubscription();
+
+        // when
+        userSubscriptionService.delete(userSubscription.getId());
+
+        // then
+        assertThat(userSubscriptionRepository.findById(userSubscription.getId())).isEmpty();
+    }
 }
