@@ -21,25 +21,23 @@ public class UserSubscriptionEntity extends AuditInformation {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
+    @Column(length = 50, nullable = false)
+    @Comment("구독 서비스")
+    private Subscription subscription;
+
     @Column(length = 50, nullable = true)
     @Comment("사용자 지정 명")
     private String title;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subscription_id")
-    private SubscriptionEntity subscription;
 
     @Column(nullable = false)
     @Comment("납부 금액")
     private long paymentAmount;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Column(length = 50, nullable = false)
     @Comment("결제 수단")
     private PaymentMethod paymentMethod;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Column(length = 50, nullable = false)
     @Comment("결제 여부")
     private PaymentStatus paymentStatus;
 
@@ -48,7 +46,6 @@ public class UserSubscriptionEntity extends AuditInformation {
     private LocalDate startDate;
 
     @Column(length = 50, nullable = false)
-    @Enumerated(EnumType.STRING)
     @Comment("결제 주기")
     private PaymentCycle paymentCycle;
 
@@ -63,7 +60,7 @@ public class UserSubscriptionEntity extends AuditInformation {
     @Builder
     public UserSubscriptionEntity(UserEntity user,
                                   String title,
-                                  SubscriptionEntity subscription,
+                                  Subscription subscription,
                                   long paymentAmount,
                                   PaymentMethod paymentMethod,
                                   LocalDate startDate,

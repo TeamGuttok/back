@@ -9,11 +9,10 @@ public enum ErrorCode {
     ID_NOT_FOUND(HttpStatus.BAD_REQUEST, "회원을 찾을 수 없습니다"),
     EMAIL_SAME_FOUND(HttpStatus.CONFLICT, "중복된 회원이 존재합니다"),
 
-    // subscription
-    SUBSCRIPTION_NOT_FOUND(HttpStatus.NOT_FOUND, "구독 서비스를 찾을 수 없습니다."),
-
     // userSubscription
     USER_SUBSCRIPTION_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자의 구독항목을 찾을 수 없습니다."),
+    MISSING_TITLE(HttpStatus.BAD_REQUEST, "직접 입력 시 제목은 필수 입력입니다."),
+    INVALID_INPUT_TITLE(HttpStatus.BAD_REQUEST, "직접 입력 시에만 title 입력이 가능합니다."),
 
     // auth
     EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "계정을 찾을 수 없습니다"),

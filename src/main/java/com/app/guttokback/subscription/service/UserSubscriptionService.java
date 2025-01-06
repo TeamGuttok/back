@@ -3,7 +3,7 @@ package com.app.guttokback.subscription.service;
 import com.app.guttokback.global.apiResponse.PageResponse;
 import com.app.guttokback.global.exception.CustomApplicationException;
 import com.app.guttokback.global.exception.ErrorCode;
-import com.app.guttokback.subscription.domain.SubscriptionEntity;
+import com.app.guttokback.subscription.domain.Subscription;
 import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionListInfo;
@@ -25,20 +25,30 @@ import java.util.List;
 public class UserSubscriptionService {
 
     private final UserSubscriptionRepository userSubscriptionRepository;
-    private final SubscriptionService subscriptionService;
     private final UserService userService;
     private final UserSubscriptionQueryRepository userSubscriptionQueryRepository;
 
     @Transactional
     public void save(UserSubscriptionSaveInfo userSubscriptionSaveInfo) {
         UserEntity user = userService.userFindById(userSubscriptionSaveInfo.getUserId());
-        SubscriptionEntity subscription = subscriptionService.findSubscriptionById(userSubscriptionSaveInfo.getSubscriptionId());
+
+        if (userSubscriptionSaveInfo.getSubscription() == Subscription.CUSTOM_INPUT) {
+            // 구독 서비스가 CUSTOM_INPUT일 때 제목이 없으면 예외 처리
+            if (userSubscriptionSaveInfo.getTitle() == null || userSubscriptionSaveInfo.getTitle().isEmpty()) {
+                throw new CustomApplicationException(ErrorCode.MISSING_TITLE);
+            }
+        } else {
+            // 구독 서비스가 CUSTOM_INPUT이 아닐 때 제목이 존재하면 예외 처리
+            if (userSubscriptionSaveInfo.getTitle() != null && !userSubscriptionSaveInfo.getTitle().isEmpty()) {
+                throw new CustomApplicationException(ErrorCode.INVALID_INPUT_TITLE);
+            }
+        }
 
         userSubscriptionRepository.save(
                 UserSubscriptionEntity.builder()
                         .user(user)
                         .title(userSubscriptionSaveInfo.getTitle())
-                        .subscription(subscription)
+                        .subscription(userSubscriptionSaveInfo.getSubscription())
                         .paymentAmount(userSubscriptionSaveInfo.getPaymentAmount())
                         .paymentMethod(userSubscriptionSaveInfo.getPaymentMethod())
                         .startDate(userSubscriptionSaveInfo.getStartDate())
