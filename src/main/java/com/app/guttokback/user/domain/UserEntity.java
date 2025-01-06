@@ -66,4 +66,6 @@ public class UserEntity extends AuditInformation implements UserDetails {
     public String getUsername() {
         return this.nickName;
     }
+
+
 }
