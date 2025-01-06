@@ -2,6 +2,7 @@ package com.app.guttokback.subscription.dto.controllerDto.response;
 
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
+import com.app.guttokback.subscription.domain.Subscription;
 import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
@@ -19,7 +20,7 @@ public class UserSubscriptionListResponse {
 
     private String title;
 
-    private String subscription;
+    private Subscription subscription;
 
     private long paymentAmount;
 
@@ -38,7 +39,7 @@ public class UserSubscriptionListResponse {
     @Builder
     public UserSubscriptionListResponse(Long id,
                                         String title,
-                                        String subscription,
+                                        Subscription subscription,
                                         long paymentAmount,
                                         PaymentMethod paymentMethod,
                                         PaymentCycle paymentCycle,
@@ -62,7 +63,7 @@ public class UserSubscriptionListResponse {
         return UserSubscriptionListResponse.builder()
                 .id(userSubscriptionEntity.getId())
                 .title(userSubscriptionEntity.getTitle())
-                .subscription(userSubscriptionEntity.getSubscription().getName())
+                .subscription(userSubscriptionEntity.getSubscription())
                 .paymentAmount(userSubscriptionEntity.getPaymentAmount())
                 .paymentMethod(userSubscriptionEntity.getPaymentMethod())
                 .paymentCycle(userSubscriptionEntity.getPaymentCycle())

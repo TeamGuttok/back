@@ -2,6 +2,7 @@ package com.app.guttokback.subscription.dto.controllerDto.request;
 
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
+import com.app.guttokback.subscription.domain.Subscription;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionSaveInfo;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -24,9 +25,8 @@ public class UserSubscriptionSaveRequest {
 
     private String title;
 
-    @NotNull(message = "구독 서비스 ID를 입력하세요.")
-    @Positive(message = "구독 서비스 ID는 양수여야 합니다.")
-    private Long subscriptionId;
+    @NotNull(message = "항목을 선택하세요.")
+    private Subscription subscription;
 
     @Positive(message = "납부금액은 양수여야 합니다.")
     private long paymentAmount;
@@ -49,7 +49,7 @@ public class UserSubscriptionSaveRequest {
     @Builder
     public UserSubscriptionSaveRequest(Long userId,
                                        String title,
-                                       Long subscriptionId,
+                                       Subscription subscription,
                                        long paymentAmount,
                                        PaymentMethod paymentMethod,
                                        LocalDate startDate,
@@ -59,7 +59,7 @@ public class UserSubscriptionSaveRequest {
     ) {
         this.userId = userId;
         this.title = title;
-        this.subscriptionId = subscriptionId;
+        this.subscription = subscription;
         this.paymentAmount = paymentAmount;
         this.paymentMethod = paymentMethod;
         this.startDate = startDate;
@@ -72,7 +72,7 @@ public class UserSubscriptionSaveRequest {
         return UserSubscriptionSaveInfo.builder()
                 .userId(userId)
                 .title(title)
-                .subscriptionId(subscriptionId)
+                .subscription(subscription)
                 .paymentAmount(paymentAmount)
                 .paymentMethod(paymentMethod)
                 .startDate(startDate)

@@ -2,6 +2,7 @@ package com.app.guttokback.subscription.dto.serviceDto;
 
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
+import com.app.guttokback.subscription.domain.Subscription;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class UserSubscriptionSaveInfo {
 
     private String title;
 
-    private Long subscriptionId;
+    private Subscription subscription;
 
     private long paymentAmount;
 
@@ -34,7 +35,7 @@ public class UserSubscriptionSaveInfo {
     @Builder
     public UserSubscriptionSaveInfo(Long userId,
                                     String title,
-                                    Long subscriptionId,
+                                    Subscription subscription,
                                     long paymentAmount,
                                     PaymentMethod paymentMethod,
                                     LocalDate startDate,
@@ -44,7 +45,7 @@ public class UserSubscriptionSaveInfo {
     ) {
         this.userId = userId;
         this.title = title;
-        this.subscriptionId = subscriptionId;
+        this.subscription = subscription;
         this.paymentAmount = paymentAmount;
         this.paymentMethod = paymentMethod;
         this.startDate = startDate;
