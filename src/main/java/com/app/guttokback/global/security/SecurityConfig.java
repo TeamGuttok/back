@@ -1,4 +1,4 @@
-package com.app.guttokback.global.security.config;
+package com.app.guttokback.global.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

@@ -3,6 +3,7 @@ package com.app.guttokback.user.controller;
 
 import com.app.guttokback.global.apiResponse.ApiResponse;
 import com.app.guttokback.user.dto.controllerDto.LoginRequestDto;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,14 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/signin")
-    public ResponseEntity<ApiResponse<String>> signin(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpSession session) {
+    public ResponseEntity<ApiResponse<String>> signin(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        session = request.getSession(true);
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 loginRequestDto.getEmail(),
@@ -31,9 +39,14 @@ public class AuthController {
         );
 
         Authentication authentication = authenticationManager.authenticate(token);
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-        return ApiResponse.success(USER_LOGIN_SUCCESS, SecurityContextHolder.getContext().getAuthentication().getName());
+        session.setAttribute("email", loginRequestDto.getEmail());
+
+        return ApiResponse.success(USER_LOGIN_SUCCESS, authentication.getName());
     }
+
+
 }
