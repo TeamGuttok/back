@@ -103,7 +103,7 @@ class UserSubscriptionControllerTest {
     }
 
     @Test
-    @DisplayName("사용자 구독정보 저장 시 요청 데이터가 성공 응답을 반환한다.")
+    @DisplayName("사용자 구독정보 수정 시 요청 데이터가 성공 응답을 반환한다.")
     public void userSubscriptionUpdateTest() throws Exception {
         // given
         UserSubscriptionUpdateRequest updateRequest = UserSubscriptionUpdateRequest.builder()
@@ -127,4 +127,30 @@ class UserSubscriptionControllerTest {
         verify(userSubscriptionService).update(eq(testId), any(UserSubscriptionUpdateInfo.class));
     }
 
+    @Test
+    @DisplayName("사용자 구독정보 삭제 시 요청 데이터가 성공 응답을 반환한다.")
+    public void userSubscriptionDeleteTest() throws Exception {
+        // given
+        UserSubscriptionSaveRequest saveRequest = UserSubscriptionSaveRequest.builder()
+                .userId(1L)
+                .title("test")
+                .subscriptionId(1L)
+                .paymentAmount(10000)
+                .paymentMethod(PaymentMethod.CARD)
+                .startDate(LocalDate.parse("2025-01-01"))
+                .paymentCycle(PaymentCycle.MONTHLY)
+                .paymentDay(1)
+                .memo("test")
+                .build();
+
+        // when & then
+        mockMvc.perform(delete("/api/subscriptions/{id}", testId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .content(objectMapper.writeValueAsString(saveRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(ResponseMessages.USER_SUBSCRIPTION_DELETE_SUCCESS));
+
+        verify(userSubscriptionService).delete(testId);
+    }
 }
