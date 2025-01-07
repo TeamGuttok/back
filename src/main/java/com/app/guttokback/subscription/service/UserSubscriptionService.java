@@ -6,6 +6,7 @@ import com.app.guttokback.global.exception.ErrorCode;
 import com.app.guttokback.subscription.domain.Subscription;
 import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
+import com.app.guttokback.subscription.dto.serviceDto.SubscriptionListInfo;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionListInfo;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionSaveInfo;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionUpdateInfo;
@@ -17,7 +18,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -96,6 +99,12 @@ public class UserSubscriptionService {
     public void delete(Long id) {
         UserSubscriptionEntity userSubscription = findUserSubscriptionById(id);
         userSubscriptionRepository.delete(userSubscription);
+    }
+
+    public List<SubscriptionListInfo> subscriptionList() {
+        return Arrays.stream(Subscription.values())
+                .map(subscription -> new SubscriptionListInfo(subscription.name(), subscription.getName()))
+                .collect((Collectors.toList()));
     }
 
     private UserSubscriptionEntity findUserSubscriptionById(Long id) {

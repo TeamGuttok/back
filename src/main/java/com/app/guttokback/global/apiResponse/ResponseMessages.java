@@ -13,6 +13,7 @@ public class ResponseMessages {
     public static final String USER_SUBSCRIPTION_SAVE_SUCCESS = "구독항목 저장 성공";
     public static final String USER_SUBSCRIPTION_UPDATE_SUCCESS = "구독항목 수정 성공";
     public static final String USER_SUBSCRIPTION_DELETE_SUCCESS = "구독항목 삭제 성공";
+    public static final String SUBSCRIPTION_LIST_SUCCESS = "구독 서비스 응답 성공";
 
     // auth
     public static final String USER_LOGIN_SUCCESS = "사용자 로그인 성공";
