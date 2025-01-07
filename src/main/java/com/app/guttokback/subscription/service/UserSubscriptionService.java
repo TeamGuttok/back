@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -104,7 +103,7 @@ public class UserSubscriptionService {
     public List<SubscriptionListInfo> subscriptionList() {
         return Arrays.stream(Subscription.values())
                 .map(subscription -> new SubscriptionListInfo(subscription.name(), subscription.getName()))
-                .collect((Collectors.toList()));
+                .toList();
     }
 
     private UserSubscriptionEntity findUserSubscriptionById(Long id) {
