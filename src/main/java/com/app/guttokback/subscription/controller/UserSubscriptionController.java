@@ -6,11 +6,14 @@ import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptio
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionSaveRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionUpdateRequest;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
+import com.app.guttokback.subscription.dto.serviceDto.SubscriptionListInfo;
 import com.app.guttokback.subscription.service.UserSubscriptionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.app.guttokback.global.apiResponse.ResponseMessages.*;
 
@@ -50,5 +53,11 @@ public class UserSubscriptionController {
     public ResponseEntity<ApiResponse<Object>> userSubscriptionDelete(@PathVariable Long id) {
         userSubscriptionService.delete(id);
         return ApiResponse.success(USER_SUBSCRIPTION_DELETE_SUCCESS);
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<Object>> subscriptionList() {
+        List<SubscriptionListInfo> subscription = userSubscriptionService.subscriptionList();
+        return ApiResponse.success(SUBSCRIPTION_LIST_SUCCESS, subscription);
     }
 }
