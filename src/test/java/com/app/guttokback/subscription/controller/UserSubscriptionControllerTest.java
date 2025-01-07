@@ -9,6 +9,7 @@ import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptio
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionSaveRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionUpdateRequest;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
+import com.app.guttokback.subscription.dto.serviceDto.SubscriptionListInfo;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionListInfo;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionSaveInfo;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionUpdateInfo;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -153,5 +155,27 @@ class UserSubscriptionControllerTest {
                 .andExpect(jsonPath("$.message").value(ResponseMessages.USER_SUBSCRIPTION_DELETE_SUCCESS));
 
         verify(userSubscriptionService).delete(testId);
+    }
+
+    @Test
+    @DisplayName("구독 서비스 조회 시 성공 응답을 반환한다.")
+    public void subscriptionListTest() throws Exception {
+        // given
+        List<SubscriptionListInfo> mockResponse = Collections.singletonList(
+                new SubscriptionListInfo("YOUTUBE_PREMIUM", "유튜브 프리미엄")
+        );
+
+        when(userSubscriptionService.subscriptionList()).thenReturn(mockResponse);
+
+        // when & then
+        mockMvc.perform(get("/api/subscriptions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(ResponseMessages.SUBSCRIPTION_LIST_SUCCESS))
+                .andExpect(jsonPath("$.data[0].code").value("YOUTUBE_PREMIUM"))
+                .andExpect(jsonPath("$.data[0].name").value("유튜브 프리미엄"));
+
+        verify(userSubscriptionService).subscriptionList();
     }
 }
