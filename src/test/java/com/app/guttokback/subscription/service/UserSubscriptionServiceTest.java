@@ -7,6 +7,7 @@ import com.app.guttokback.subscription.domain.PaymentMethod;
 import com.app.guttokback.subscription.domain.Subscription;
 import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
+import com.app.guttokback.subscription.dto.serviceDto.SubscriptionListInfo;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionListInfo;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionSaveInfo;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionUpdateInfo;
@@ -20,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -250,5 +253,28 @@ class UserSubscriptionServiceTest {
 
         // then
         assertThat(userSubscriptionRepository.findById(userSubscription.getId())).isEmpty();
+    }
+
+    @Test
+    @DisplayName("구독 서비스 조회 시 Subscription 클래스가 응답된다.")
+    public void subscriptionListTest() {
+        // given
+        List<SubscriptionListInfo> subscriptions = Arrays.stream(Subscription.values())
+                .map(subscription -> new SubscriptionListInfo(subscription.name(), subscription.getName()))
+                .toList();
+
+        // when
+        List<SubscriptionListInfo> subscriptionList = userSubscriptionService.subscriptionList();
+
+        // then
+        assertThat(subscriptionList).isNotNull();
+        assertThat(subscriptionList).hasSize(Subscription.values().length);
+        for (int i = 0; i < subscriptions.size(); i++) {
+            SubscriptionListInfo expected = subscriptions.get(i);
+            SubscriptionListInfo actual = subscriptionList.get(i);
+
+            assertThat(actual.getCode()).isEqualTo(expected.getCode());
+            assertThat(actual.getName()).isEqualTo(expected.getName());
+        }
     }
 }
