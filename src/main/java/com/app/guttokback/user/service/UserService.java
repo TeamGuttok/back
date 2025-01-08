@@ -32,31 +32,31 @@ public class UserService {
     }
 
     @Transactional
-    public void userPasswordUpdate(Long id, String password) {
-        UserEntity userEntity = userFindById(id);
+    public void userPasswordUpdate(String email, String password) {
+        UserEntity userEntity = findByUserEmail(email);
         userEntity.passwordChange(passwordEncoder.encode(password));
     }
 
     @Transactional
-    public void userNicknameUpdate(Long id, String nickName) {
-        UserEntity userEntity = userFindById(id);
+    public void userNicknameUpdate(String email, String nickName) {
+        UserEntity userEntity = findByUserEmail(email);
         userEntity.nickNameChange(nickName);
     }
 
     @Transactional
-    public void userAlarmUpdate(Long id) {
-        UserEntity userEntity = userFindById(id);
+    public void userAlarmUpdate(String email) {
+        UserEntity userEntity = findByUserEmail(email);
         userEntity.alarmChange();
     }
 
     @Transactional
-    public void userDelete(Long id) {
-        UserEntity userEntity = userFindById(id);
+    public void userDelete(String email) {
+        UserEntity userEntity = findByUserEmail(email);
         userRepository.delete(userEntity);
     }
 
-    public UserDetailDto userDetail(Long id) {
-        UserEntity userEntity = userFindById(id);
+    public UserDetailDto userDetail(String email) {
+        UserEntity userEntity = findByUserEmail(email);
         return UserDetailDto.builder()
                 .id(userEntity.getId())
                 .email(userEntity.getEmail())

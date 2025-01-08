@@ -27,7 +27,7 @@ public class SecurityConfig {
                                 "/api-docs", "/api-docs/**", "/v3/api-docs/**",
                                 "/api/users/signup", "/api/users/signin"
                         ).permitAll()
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
         return http.build();
@@ -42,9 +42,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
-
-
-
-
 }
