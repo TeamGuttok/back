@@ -27,7 +27,7 @@ public class SecurityConfig {
                                 "/api-docs", "/api-docs/**", "/v3/api-docs/**",
                                 "/api/users/signup", "/api/users/signin"
                         ).permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
         return http.build();
