@@ -40,6 +40,7 @@ dependencies {
     testRuntimeOnly 'com.h2database:h2'
 
     // mail
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'software.amazon.awssdk:ses:2.29.46'
 
