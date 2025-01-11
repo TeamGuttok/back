@@ -3,13 +3,19 @@ package com.app.guttokback.user.controller;
 import com.app.guttokback.global.apiResponse.ResponseMessages;
 import com.app.guttokback.global.exception.CustomApplicationException;
 import com.app.guttokback.global.exception.ErrorCode;
+import com.app.guttokback.user.dto.controllerDto.UserNicknameUpdateRequestDto;
+import com.app.guttokback.user.dto.controllerDto.UserPasswordUpdateRequestDto;
 import com.app.guttokback.user.dto.controllerDto.UserSaveRequestDto;
+import com.app.guttokback.user.dto.serviceDto.UpdateNicknameDto;
+import com.app.guttokback.user.dto.serviceDto.UpdatePasswordDto;
 import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
 import com.app.guttokback.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -17,6 +23,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -34,6 +41,12 @@ class UserControllerTest {
 
     @MockitoBean
     private UserService userService;
+
+    @Captor
+    ArgumentCaptor<UpdatePasswordDto> passwordCaptor;
+
+    @Captor
+    ArgumentCaptor<UpdateNicknameDto> nicknameCaptor;
 
     private final Long testId = 1L;
     private final String testEmail = "test@example.com";
@@ -98,28 +111,40 @@ class UserControllerTest {
     @WithMockUser(username = "test@example.com")
     @DisplayName("비밀번호 수정 테스트")
     void testUserPasswordUpdate() throws Exception {
+        String testEmail = "test@example.com";
         String newPassword = "newSecurePass123!";
 
-        mockMvc.perform(patch("/api/users/password/{password}", newPassword)
-                        .with(csrf()))
+        UserPasswordUpdateRequestDto userPasswordUpdateRequestDto = new UserPasswordUpdateRequestDto(newPassword);
+
+        mockMvc.perform(patch("/api/users/password")
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(userPasswordUpdateRequestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(ResponseMessages.PASSWORD_UPDATE_SUCCESS));
 
-        verify(userService).userPasswordUpdate(testEmail, newPassword);
+        verify(userService).userPasswordUpdate(eq(testEmail), passwordCaptor.capture());
+        assertEquals(newPassword, passwordCaptor.getValue().getPassword());
     }
 
     @Test
     @WithMockUser(username = "test@example.com")
     @DisplayName("닉네임 수정 테스트")
     void testUserNicknameUpdate() throws Exception {
+        String testEmail = "test@example.com";
         String newNickName = "UpdatedTester";
 
-        mockMvc.perform(patch("/api/users/nickname/{nickName}", newNickName)
-                        .with(csrf()))
+        UserNicknameUpdateRequestDto userNicknameUpdateRequestDto = new UserNicknameUpdateRequestDto(newNickName);
+
+        mockMvc.perform(patch("/api/users/nickname")
+                        .with(csrf())
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(userNicknameUpdateRequestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(ResponseMessages.NICKNAME_UPDATE_SUCCESS));
 
-        verify(userService).userNicknameUpdate(testEmail, newNickName);
+        verify(userService).userNicknameUpdate(eq(testEmail), nicknameCaptor.capture());
+        assertEquals(newNickName, nicknameCaptor.getValue().getNickName());
     }
 
     @Test
