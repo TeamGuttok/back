@@ -21,7 +21,7 @@ public class UserSubscriptionListRequest {
         this.size = size == null ? 10L : size;
     }
 
-    public UserSubscriptionListInfo toListOption(Long userId) {
-        return new UserSubscriptionListInfo(userId, lastId, size);
+    public UserSubscriptionListInfo toListOption(String userEmail) {
+        return new UserSubscriptionListInfo(userEmail, lastId, size);
     }
 }

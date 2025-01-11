@@ -5,14 +5,14 @@ import lombok.Getter;
 @Getter
 public class UserSubscriptionListInfo {
 
-    private final Long userId;
+    private final String userEmail;
 
     private final Long lastId;
 
     private final long size;
 
-    public UserSubscriptionListInfo(Long userId, Long lastId, long size) {
-        this.userId = userId;
+    public UserSubscriptionListInfo(String userEmail, Long lastId, long size) {
+        this.userEmail = userEmail;
         this.lastId = lastId;
         this.size = size;
     }
