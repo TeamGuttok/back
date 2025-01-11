@@ -34,25 +34,25 @@ public class UserController {
     }
 
     @PatchMapping("password/{password}")
-    public ResponseEntity<ApiResponse<Object>> userPasswordUpdate(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String password, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<Object>> userPasswordUpdate(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String password) {
         userService.userPasswordUpdate(userDetails.getUsername(), password);
         return ApiResponse.success(PASSWORD_UPDATE_SUCCESS);
     }
 
     @PatchMapping("nickname/{nickName}")
-    public ResponseEntity<ApiResponse<Object>> userNicknameUpdate(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String nickName, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<Object>> userNicknameUpdate(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String nickName) {
         userService.userNicknameUpdate(userDetails.getUsername(), nickName);
         return ApiResponse.success(NICKNAME_UPDATE_SUCCESS);
     }
 
     @PatchMapping("alarm")
-    public ResponseEntity<ApiResponse<Object>> userAlarmUpdate(@AuthenticationPrincipal UserDetails userDetails, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<Object>> userAlarmUpdate(@AuthenticationPrincipal UserDetails userDetails) {
         userService.userAlarmUpdate(userDetails.getUsername());
         return ApiResponse.success(ALARM_UPDATE_SUCCESS);
     }
 
     @DeleteMapping
-    public ResponseEntity<ApiResponse<Object>> userDelete(@AuthenticationPrincipal UserDetails userDetails, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<Object>> userDelete(@AuthenticationPrincipal UserDetails userDetails) {
         userService.userDelete(userDetails.getUsername());
         return ApiResponse.success(USER_DELETE_SUCCESS);
     }
