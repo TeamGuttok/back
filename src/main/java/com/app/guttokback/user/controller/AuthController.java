@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import static com.app.guttokback.global.apiResponse.ResponseMessages.USER_LOGIN_SUCCESS;
+import static com.app.guttokback.global.apiResponse.ResponseMessages.USER_LOGOUT_SUCCESS;
 
 @RestController
 @RequestMapping("/api/users")
@@ -52,5 +53,16 @@ public class AuthController {
         return ApiResponse.success(USER_LOGIN_SUCCESS, userNickName);
     }
 
+    @PostMapping("/signout")
+    public ResponseEntity<ApiResponse<Object>> signout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
 
+        if (session != null) {
+            session.invalidate();
+        }
+
+        SecurityContextHolder.clearContext();
+
+        return ApiResponse.success(USER_LOGOUT_SUCCESS);
+    }
 }
