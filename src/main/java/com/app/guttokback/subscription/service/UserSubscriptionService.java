@@ -61,7 +61,7 @@ public class UserSubscriptionService {
     }
 
     public PageResponse<UserSubscriptionListResponse> list(UserSubscriptionListInfo userSubscriptionListInfo) {
-        userService.userFindById(userSubscriptionListInfo.getUserId());
+        userService.findByUserEmail(userSubscriptionListInfo.getUserEmail());
 
         List<UserSubscriptionEntity> userSubscriptions = userSubscriptionQueryRepository
                 .findPagedUserSubscriptions(userSubscriptionListInfo);

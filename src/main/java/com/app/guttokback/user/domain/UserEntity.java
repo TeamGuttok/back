@@ -64,8 +64,7 @@ public class UserEntity extends AuditInformation implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.nickName;
+        return this.email;
     }
-
 
 }

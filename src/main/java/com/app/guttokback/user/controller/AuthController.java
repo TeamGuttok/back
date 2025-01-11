@@ -3,6 +3,7 @@ package com.app.guttokback.user.controller;
 
 import com.app.guttokback.global.apiResponse.ApiResponse;
 import com.app.guttokback.user.dto.controllerDto.LoginRequestDto;
+import com.app.guttokback.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -22,6 +23,7 @@ import static com.app.guttokback.global.apiResponse.ResponseMessages.USER_LOGIN_
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     @PostMapping("/signin")
     public ResponseEntity<ApiResponse<String>> signin(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request) {
@@ -45,7 +47,9 @@ public class AuthController {
         session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
         session.setAttribute("email", loginRequestDto.getEmail());
 
-        return ApiResponse.success(USER_LOGIN_SUCCESS, authentication.getName());
+        String userNickName = userService.userDetail(authentication.getName()).getNickName();
+
+        return ApiResponse.success(USER_LOGIN_SUCCESS, userNickName);
     }
 
 

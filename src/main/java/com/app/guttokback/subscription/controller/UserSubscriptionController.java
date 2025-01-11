@@ -11,6 +11,8 @@ import com.app.guttokback.subscription.service.UserSubscriptionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,12 +34,12 @@ public class UserSubscriptionController {
         return ApiResponse.success(USER_SUBSCRIPTION_SAVE_SUCCESS);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user")
     public PageResponse<UserSubscriptionListResponse> userSubscriptionList(
             @Valid UserSubscriptionListRequest userSubscriptionListRequest,
-            @PathVariable Long userId
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        return userSubscriptionService.list(userSubscriptionListRequest.toListOption(userId));
+        return userSubscriptionService.list(userSubscriptionListRequest.toListOption(userDetails.getUsername()));
     }
 
     @PatchMapping("/{id}")

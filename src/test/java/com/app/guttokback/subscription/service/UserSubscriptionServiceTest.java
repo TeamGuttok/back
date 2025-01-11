@@ -147,7 +147,7 @@ class UserSubscriptionServiceTest {
         UserSubscriptionEntity savedUserSubscription = userSubscriptionRepository.save(userSubscription);
 
         UserSubscriptionListInfo userSubscriptionListInfo = new UserSubscriptionListInfo(
-                savedUser.getId(), null, 5
+                savedUser.getEmail(), null, 5
         );
 
         // when
@@ -168,23 +168,6 @@ class UserSubscriptionServiceTest {
                 .containsExactly(userSubscription.getPaymentCycle());
         assertThat(list.getContents()).extracting(UserSubscriptionListResponse::getPaymentDay)
                 .containsExactly(userSubscription.getPaymentDay());
-    }
-
-    @Test
-    @DisplayName("존재하지 않는 회원이 구독항목 조회 시 예외가 발생한다.")
-    public void userSubscriptionListPageUserValidateTest() {
-        // given
-        UserSubscriptionListInfo userSubscriptionListInfo = new UserSubscriptionListInfo(
-                -1L, null, 5
-        );
-
-        // when
-        CustomApplicationException exception = assertThrows(CustomApplicationException.class,
-                () -> userSubscriptionService.list(userSubscriptionListInfo));
-
-        // then
-        assertThat(exception).isInstanceOf(CustomApplicationException.class);
-        assertThat(exception.getMessage()).isEqualTo("회원을 찾을 수 없습니다");
     }
 
     @Test

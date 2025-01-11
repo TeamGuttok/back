@@ -93,7 +93,7 @@ class UserSubscriptionControllerTest {
                 .thenReturn(PageResponse.of(Collections.singletonList(mockResponse), 1L, false));
 
         // when & then
-        mockMvc.perform(get("/api/subscriptions/{userId}", testId)
+        mockMvc.perform(get("/api/subscriptions/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                         .content(objectMapper.writeValueAsString(listRequest)))
