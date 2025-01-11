@@ -3,6 +3,8 @@ package com.app.guttokback.user.service;
 import com.app.guttokback.global.exception.CustomApplicationException;
 import com.app.guttokback.global.exception.ErrorCode;
 import com.app.guttokback.user.domain.UserEntity;
+import com.app.guttokback.user.dto.serviceDto.UpdateNicknameDto;
+import com.app.guttokback.user.dto.serviceDto.UpdatePasswordDto;
 import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
 import com.app.guttokback.user.dto.serviceDto.UserSaveDto;
 import com.app.guttokback.user.repository.UserRepository;
@@ -32,15 +34,15 @@ public class UserService {
     }
 
     @Transactional
-    public void userPasswordUpdate(String email, String password) {
+    public void userPasswordUpdate(String email, UpdatePasswordDto updatePasswordDto) {
         UserEntity userEntity = findByUserEmail(email);
-        userEntity.passwordChange(passwordEncoder.encode(password));
+        userEntity.passwordChange(passwordEncoder.encode(updatePasswordDto.getPassword()));
     }
 
     @Transactional
-    public void userNicknameUpdate(String email, String nickName) {
+    public void userNicknameUpdate(String email, UpdateNicknameDto updateNicknameDto) {
         UserEntity userEntity = findByUserEmail(email);
-        userEntity.nickNameChange(nickName);
+        userEntity.nickNameChange(updateNicknameDto.getNickName());
     }
 
     @Transactional

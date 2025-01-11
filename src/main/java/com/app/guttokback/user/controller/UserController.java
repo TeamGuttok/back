@@ -1,6 +1,8 @@
 package com.app.guttokback.user.controller;
 
 import com.app.guttokback.global.apiResponse.ApiResponse;
+import com.app.guttokback.user.dto.controllerDto.UserNicknameUpdateRequestDto;
+import com.app.guttokback.user.dto.controllerDto.UserPasswordUpdateRequestDto;
 import com.app.guttokback.user.dto.controllerDto.UserSaveRequestDto;
 import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
 import com.app.guttokback.user.service.UserService;
@@ -33,15 +35,15 @@ public class UserController {
         return ApiResponse.success(USER_SAVE_SUCCESS);
     }
 
-    @PatchMapping("password/{password}")
-    public ResponseEntity<ApiResponse<Object>> userPasswordUpdate(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String password) {
-        userService.userPasswordUpdate(userDetails.getUsername(), password);
+    @PatchMapping("password")
+    public ResponseEntity<ApiResponse<Object>> userPasswordUpdate(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody UserPasswordUpdateRequestDto userPasswordUpdateRequestDto) {
+        userService.userPasswordUpdate(userDetails.getUsername(), userPasswordUpdateRequestDto.updatePasswordDto());
         return ApiResponse.success(PASSWORD_UPDATE_SUCCESS);
     }
 
-    @PatchMapping("nickname/{nickName}")
-    public ResponseEntity<ApiResponse<Object>> userNicknameUpdate(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String nickName) {
-        userService.userNicknameUpdate(userDetails.getUsername(), nickName);
+    @PatchMapping("nickname")
+    public ResponseEntity<ApiResponse<Object>> userNicknameUpdate(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody UserNicknameUpdateRequestDto userNicknameUpdateRequestDto) {
+        userService.userNicknameUpdate(userDetails.getUsername(), userNicknameUpdateRequestDto.updateNicknameDto());
         return ApiResponse.success(NICKNAME_UPDATE_SUCCESS);
     }
 
