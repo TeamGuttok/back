@@ -18,6 +18,13 @@ spring:
         show_sql: true
         format_sql: true
 
+aws:
+  ses:
+    access-key: ${AWS_ACCESS_KEY}
+    secret-key: ${AWS_SECRET_KEY}
+    send-mail-from: ${ADMIN_EMAIL}
+  region: ${AWS_REGION}
+
 logging:
   level:
     org:

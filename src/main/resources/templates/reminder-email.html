@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>납부 리마인드</title>
+</head>
+<body>
+<h1>🎉 안녕하세요, <span th:text="${nickName}">사용자 이름</span>님!</h1>
+<p>다음 구독 항목들에 대한 납부 기한이 다가오고 있습니다</p>
+<p>구독 서비스, 납부 일자, 납부 금액 순</p>
+<ul>
+    <li th:each="item : ${subscriptions}">
+        <span th:if="${item.subscription != item.subscription.CUSTOM_INPUT }"
+              th:text="${item.subscription.name}"></span>
+        <span th:if="${item.subscription == item.subscription.CUSTOM_INPUT}" th:text="${item.title}"></span>
+        <span th:text="${item.paymentDay}"></span>일
+        <span th:text="${item.paymentAmount}"></span>원
+    </li>
+</ul>
+<p>총 납부 금액: <span th:text="${totalAmount}"></span>원</p>
+<p>구똑 서비스를 지속적으로 이용해 주셔서 감사합니다.👏</p>
+</body>
+</html>
