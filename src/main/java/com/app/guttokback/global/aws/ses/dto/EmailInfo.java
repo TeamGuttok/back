@@ -17,7 +17,7 @@ public class EmailInfo {
     private String content;
 
     @Builder
-    public EmailInfo(String from, List<String> to, String subject, String content) {
+    public EmailInfo(List<String> to, String subject, String content) {
         this.to = to;
         this.subject = subject;
         this.content = content;
