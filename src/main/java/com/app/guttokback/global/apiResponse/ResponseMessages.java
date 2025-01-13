@@ -17,6 +17,7 @@ public class ResponseMessages {
 
     // auth
     public static final String USER_LOGIN_SUCCESS = "사용자 로그인 성공";
+    public static final String USER_LOGOUT_SUCCESS = "사용자 로그아웃 성공";
 
     // mail
     public static final String MAIL_SEND_SUCCESS = "이메일 발송 성공";

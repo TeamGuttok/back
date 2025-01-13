@@ -25,6 +25,7 @@ public class UserService {
     @Transactional
     public void userSave(UserSaveDto userSaveDto) {
         isEmailDuplicate(userSaveDto.getEmail());
+        isNickNameDuplicate(userSaveDto.getNickName());
         userRepository.save(UserEntity.builder()
                 .email(userSaveDto.getEmail())
                 .password(passwordEncoder.encode(userSaveDto.getPassword()))
@@ -75,6 +76,12 @@ public class UserService {
     public void isEmailDuplicate(String email) {
         if (userRepository.existsByEmail(email)) {
             throw new CustomApplicationException(ErrorCode.EMAIL_SAME_FOUND);
+        }
+    }
+
+    public void isNickNameDuplicate(String nickName) {
+        if (userRepository.existsByNickName(nickName)) {
+            throw new CustomApplicationException(ErrorCode.NICKNAME_SAME_FOUND);
         }
     }
 
