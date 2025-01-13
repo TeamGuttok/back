@@ -4,7 +4,9 @@ package com.app.guttokback.user.controller;
 import com.app.guttokback.global.apiResponse.ApiResponse;
 import com.app.guttokback.user.dto.controllerDto.LoginRequestDto;
 import com.app.guttokback.user.service.UserService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +56,7 @@ public class AuthController {
     }
 
     @PostMapping("/signout")
-    public ResponseEntity<ApiResponse<Object>> signout(HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<Object>> signout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
 
         if (session != null) {
@@ -62,6 +64,11 @@ public class AuthController {
         }
 
         SecurityContextHolder.clearContext();
+
+        Cookie cookie = new Cookie("SESSION", null);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
 
         return ApiResponse.success(USER_LOGOUT_SUCCESS);
     }
