@@ -11,6 +11,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CustomExceptionResponse> handleCustomApplicationException(CustomApplicationException exception) {
         CustomExceptionResponse errorResponse = new CustomExceptionResponse(
                 exception.getErrorCode().getHttpStatus(),
+                exception.getErrorCode().getErrorCode(),
                 exception.getErrorCode().getMessage()
         );
         return new ResponseEntity<>(errorResponse, exception.getErrorCode().getHttpStatus());
