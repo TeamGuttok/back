@@ -8,7 +8,7 @@ public enum ErrorCode {
     // user
     ID_NOT_FOUND(HttpStatus.BAD_REQUEST, "회원을 찾을 수 없습니다"),
     EMAIL_SAME_FOUND(HttpStatus.CONFLICT, "중복된 회원이 존재합니다"),
-    NICKNAME_SAME_FOUND(HttpStatus.CONFLICT, "중복된 이름이 존재합니다"),
+    NICKNAME_SAME_FOUND(HttpStatus.CONFLICT, "중복된 닉네임이 존재합니다"),
 
     // userSubscription
     USER_SUBSCRIPTION_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자의 구독항목을 찾을 수 없습니다."),
