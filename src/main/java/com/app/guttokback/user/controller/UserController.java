@@ -34,19 +34,19 @@ public class UserController {
         return ApiResponse.success(USER_SAVE_SUCCESS);
     }
 
-    @PatchMapping("password")
+    @PatchMapping("/password")
     public ResponseEntity<ApiResponse<Object>> userPasswordUpdate(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody UserPasswordUpdateRequestDto userPasswordUpdateRequestDto) {
         userService.userPasswordUpdate(userDetails.getUsername(), userPasswordUpdateRequestDto.updatePasswordDto());
         return ApiResponse.success(PASSWORD_UPDATE_SUCCESS);
     }
 
-    @PatchMapping("nickname")
+    @PatchMapping("/nickname")
     public ResponseEntity<ApiResponse<Object>> userNicknameUpdate(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody UserNicknameUpdateRequestDto userNicknameUpdateRequestDto) {
         userService.userNicknameUpdate(userDetails.getUsername(), userNicknameUpdateRequestDto.updateNicknameDto());
         return ApiResponse.success(NICKNAME_UPDATE_SUCCESS);
     }
 
-    @PatchMapping("alarm")
+    @PatchMapping("/alarm")
     public ResponseEntity<ApiResponse<Object>> userAlarmUpdate(@AuthenticationPrincipal UserDetails userDetails) {
         userService.userAlarmUpdate(userDetails.getUsername());
         return ApiResponse.success(ALARM_UPDATE_SUCCESS);
