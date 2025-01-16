@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.app.guttokback.global.apiResponse.ResponseMessages.MAIL_SEND_SUCCESS;
+import static com.app.guttokback.global.apiResponse.ResponseMessages.REMINDER_EMAIL_SEND_SUCCESS;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class EmailController {
     @PostMapping("/reminder")
     public ResponseEntity<ApiResponse<String>> sendReminder() {
         remainderService.sendReminder();
-        return ApiResponse.success(MAIL_SEND_SUCCESS);
+        return ApiResponse.success(REMINDER_EMAIL_SEND_SUCCESS);
     }
 }
 
