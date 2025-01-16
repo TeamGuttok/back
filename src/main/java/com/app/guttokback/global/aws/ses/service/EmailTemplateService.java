@@ -34,4 +34,18 @@ public class EmailTemplateService {
                 .content(content)
                 .build();
     }
+
+    public EmailInfo createCertificationNumberTemplate(String CertificationNumber, String email) {
+
+        Context context = new Context();
+        context.setVariable("authCode", CertificationNumber);
+
+        String content = templateEngine.process("CertificationNumber-email", context);
+
+        return EmailInfo.builder()
+                .to(Collections.singletonList(email))
+                .subject("구똑 - 인증코드")
+                .content(content)
+                .build();
+    }
 }
