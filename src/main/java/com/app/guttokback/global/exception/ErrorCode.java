@@ -18,7 +18,12 @@ public enum ErrorCode {
     // auth
     EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH_01", "계정을 찾을 수 없습니다"),
     SESSION_PROBLEM(HttpStatus.UNAUTHORIZED, "AUTH_02", "세션이 없거나 만료됐습니다"),
-    USER_ACCESS_PROBLEM(HttpStatus.FORBIDDEN, "AUTH_03", "리소스에 접근할 권한이 없습니다");
+    USER_ACCESS_PROBLEM(HttpStatus.FORBIDDEN, "AUTH_03", "리소스에 접근할 권한이 없습니다"),
+
+    // email
+    OVER_REQUEST_COUNT(HttpStatus.TOO_MANY_REQUESTS, "EMAIL_01", "인증코드 요청 횟수를 초과했습니다");
+
+
 
     private final HttpStatus httpStatus;
     private final String errorCode;
