@@ -1,11 +1,14 @@
 package com.app.guttokback.user.controller;
 
 import com.app.guttokback.global.apiResponse.ApiResponse;
+import com.app.guttokback.user.dto.controllerDto.UserCertificationNumberRequestDto;
 import com.app.guttokback.user.dto.controllerDto.UserNicknameUpdateRequestDto;
 import com.app.guttokback.user.dto.controllerDto.UserPasswordUpdateRequestDto;
 import com.app.guttokback.user.dto.controllerDto.UserSaveRequestDto;
 import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
+import com.app.guttokback.user.service.UserCertificationNumberService;
 import com.app.guttokback.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,7 @@ import static com.app.guttokback.global.apiResponse.ResponseMessages.*;
 @RequestMapping("api/users")
 public class UserController {
     private final UserService userService;
+    private final UserCertificationNumberService userCertificationNumberService;
 
     @GetMapping
     public ResponseEntity<ApiResponse<UserDetailDto>> userDetail(@AuthenticationPrincipal UserDetails userDetails) {
@@ -56,5 +60,11 @@ public class UserController {
     public ResponseEntity<ApiResponse<Object>> userDelete(@AuthenticationPrincipal UserDetails userDetails) {
         userService.userDelete(userDetails.getUsername());
         return ApiResponse.success(USER_DELETE_SUCCESS);
+    }
+
+    @PostMapping("/certification-number")
+    public ResponseEntity<ApiResponse<Object>> userCertificationNumber(@Valid @RequestBody UserCertificationNumberRequestDto userCertificationNumberRequestDto, HttpServletRequest request) {
+        userCertificationNumberService.responseSession(userCertificationNumberRequestDto.getCertificationNumberDto(), request);
+        return ApiResponse.success(CERTIFICATION_NUMBER_SUCCESS);
     }
 }
