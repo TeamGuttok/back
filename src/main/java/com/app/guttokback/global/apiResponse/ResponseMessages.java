@@ -20,5 +20,6 @@ public class ResponseMessages {
     public static final String USER_LOGOUT_SUCCESS = "사용자 로그아웃 성공";
 
     // mail
-    public static final String MAIL_SEND_SUCCESS = "이메일 발송 성공";
+    public static final String REMINDER_EMAIL_SEND_SUCCESS = "리마인더 이메일 발송 성공";
+    public static final String CERTIFICATION_EMAIL_SEND_SUCCESS = "인증코드 이메일 발송 성공";
 }
