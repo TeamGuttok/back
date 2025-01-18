@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,6 +21,8 @@ import java.util.Collections;
 @Getter
 @Table(name = "USERS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE USERS SET deleted = true WHERE id = ?")
+@SQLRestriction("deleted = false")
 public class UserEntity extends AuditInformation implements UserDetails {
 
     @Column(length = 100, nullable = false)
@@ -36,6 +40,10 @@ public class UserEntity extends AuditInformation implements UserDetails {
     @Column(nullable = false)
     @Comment("알림여부")
     private boolean alarm;
+
+    @Column(name = "deleted", columnDefinition = "BOOLEAN DEFAULT false")
+    @Comment("논리적삭제")
+    private boolean delete;
 
     @Builder
     public UserEntity(String password, String email, String nickName, boolean alarm) {
