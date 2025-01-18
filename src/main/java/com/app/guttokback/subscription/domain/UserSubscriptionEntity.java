@@ -53,6 +53,10 @@ public class UserSubscriptionEntity extends AuditInformation {
     @Comment("납부 일")
     private int paymentDay;
 
+    @Column(nullable = true)
+    @Comment("리마인드 이메일 발송 예정일")
+    private LocalDate reminderDate;
+
     @Column(length = 250, nullable = true)
     @Comment("사용자 메모")
     private String memo;
