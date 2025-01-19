@@ -1,7 +1,7 @@
 package com.app.guttokback.user.controller;
 
 import com.app.guttokback.global.apiResponse.ResponseMessages;
-import com.app.guttokback.global.security.SecurityConfig;
+import com.app.guttokback.global.security.config.SecurityConfig;
 import com.app.guttokback.user.dto.controllerDto.LoginRequestDto;
 import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
 import com.app.guttokback.user.repository.UserRepository;

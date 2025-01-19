@@ -2,6 +2,7 @@ package com.app.guttokback.user.service;
 
 import com.app.guttokback.global.exception.CustomApplicationException;
 import com.app.guttokback.global.exception.ErrorCode;
+import com.app.guttokback.global.security.role.Roles;
 import com.app.guttokback.user.domain.UserEntity;
 import com.app.guttokback.user.dto.serviceDto.UpdateNicknameDto;
 import com.app.guttokback.user.dto.serviceDto.UpdatePasswordDto;
@@ -27,6 +28,7 @@ public class UserService {
         isEmailDuplicate(userSaveDto.getEmail());
         isNickNameDuplicate(userSaveDto.getNickName());
         userRepository.save(UserEntity.builder()
+                .role(Roles.ROLE_USER)
                 .email(userSaveDto.getEmail())
                 .password(passwordEncoder.encode(userSaveDto.getPassword()))
                 .nickName(userSaveDto.getNickName())

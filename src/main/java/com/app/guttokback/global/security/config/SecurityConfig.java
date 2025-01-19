@@ -1,5 +1,6 @@
-package com.app.guttokback.global.security;
+package com.app.guttokback.global.security.config;
 
+import com.app.guttokback.global.security.role.Roles;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ public class SecurityConfig {
                                 "/api/users/signup", "/api/users/signin", "/api/users/find-password"
                         ).permitAll()
                         .anyRequest().permitAll()
+                        /*.requestMatchers("/api/subscriptions/**").hasRole(String.valueOf(Roles.ROLE_USER))*/
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
         return http.build();
