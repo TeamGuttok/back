@@ -5,6 +5,7 @@ import com.app.guttokback.subscription.repository.UserSubscriptionQueryRepositor
 import com.app.guttokback.subscription.repository.UserSubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +20,7 @@ public class ReminderService {
     private final EmailService emailService;
     private final EmailTemplateService emailTemplateService;
 
+    @Transactional
     public void sendReminder(LocalDate now) {
         userSubscriptionQueryRepository.findActiveUserSubscriptions(now)
                 .stream()
@@ -31,32 +33,14 @@ public class ReminderService {
                             .sum();
                     // 템플릿에 필요한 데이터 전달
                     emailService.sendEmail(emailTemplateService.createReminderTemplate(userSubscriptions, user, totalAmount));
-                    updateReminder(user.getId());
+                    userSubscriptions.forEach(UserSubscriptionEntity::updateReminderDate);
                 });
     }
 
     public void updateReminder(Long userId) {
         List<UserSubscriptionEntity> userSubscriptions = userSubscriptionRepository.findAllByUserId(userId);
-
-        userSubscriptions
-                .forEach(subscription -> {
-                    LocalDate reminderDate = calculateInitialReminderDate(subscription);
-                    subscription.updateReminderDate(reminderDate);
-                });
-
+        userSubscriptions.forEach(UserSubscriptionEntity::updateReminderDate);
         userSubscriptionRepository.saveAll(userSubscriptions);
     }
 
-    private LocalDate calculateInitialReminderDate(UserSubscriptionEntity userSubscriptionEntity) {
-        int paymentDay = userSubscriptionEntity.getPaymentDay();
-        LocalDate now = LocalDate.now();
-        LocalDate reminderSendDateTime = now.withDayOfMonth(paymentDay);
-
-        reminderSendDateTime = switch (userSubscriptionEntity.getPaymentCycle()) {
-            case YEARLY -> reminderSendDateTime.plusYears(1);
-            case MONTHLY -> reminderSendDateTime.plusMonths(1);
-            case WEEKLY -> reminderSendDateTime.plusWeeks(1);
-        };
-        return reminderSendDateTime;
-    }
 }

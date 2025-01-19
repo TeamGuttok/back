@@ -101,7 +101,17 @@ public class UserSubscriptionEntity extends AuditInformation {
         this.memo = memo;
     }
 
-    public void updateReminderDate(LocalDate reminderDate) {
-        this.reminderDate = reminderDate;
+    public void updateReminderDate() {
+        // 주기가 년월주에 따라서 reminderDate를 업데이트하는로직
+        int paymentDay = this.getPaymentDay();
+        LocalDate now = LocalDate.now();
+        LocalDate remainderSendDateTime = now.withDayOfMonth(paymentDay);
+
+        remainderSendDateTime = switch (this.getPaymentCycle()) {
+            case PaymentCycle.YEARLY -> remainderSendDateTime.plusYears(1);
+            case PaymentCycle.MONTHLY -> remainderSendDateTime.plusMonths(1);
+            case PaymentCycle.WEEKLY -> remainderSendDateTime.plusWeeks(1);
+        };
+        this.reminderDate = remainderSendDateTime;
     }
 }
