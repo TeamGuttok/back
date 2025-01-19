@@ -100,4 +100,8 @@ public class UserSubscriptionEntity extends AuditInformation {
         this.paymentDay = paymentDay;
         this.memo = memo;
     }
+
+    public void updateReminderDate(LocalDate reminderDate) {
+        this.reminderDate = reminderDate;
+    }
 }

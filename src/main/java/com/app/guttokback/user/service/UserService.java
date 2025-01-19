@@ -1,5 +1,6 @@
 package com.app.guttokback.user.service;
 
+import com.app.guttokback.global.aws.ses.service.ReminderService;
 import com.app.guttokback.global.exception.CustomApplicationException;
 import com.app.guttokback.global.exception.ErrorCode;
 import com.app.guttokback.global.security.role.Roles;
@@ -9,7 +10,6 @@ import com.app.guttokback.user.dto.serviceDto.UpdatePasswordDto;
 import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
 import com.app.guttokback.user.dto.serviceDto.UserSaveDto;
 import com.app.guttokback.user.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ReminderService reminderService;
 
     @Transactional
     public void userSave(UserSaveDto userSaveDto) {
@@ -52,6 +53,10 @@ public class UserService {
     public void userAlarmUpdate(String email) {
         UserEntity userEntity = findByUserEmail(email);
         userEntity.alarmChange();
+
+        if (userEntity.isAlarm()) {
+            reminderService.updateReminder(userEntity.getId());
+        }
     }
 
     @Transactional
