@@ -17,7 +17,7 @@ public class EmailTemplateService {
 
     private final TemplateEngine templateEngine;
 
-    public EmailInfo createRemainderTemplate(List<UserSubscriptionEntity> userSubscriptions, UserEntity user, long totalAmount) {
+    public EmailInfo createReminderTemplate(List<UserSubscriptionEntity> userSubscriptions, UserEntity user, long totalAmount) {
         // 사용자 정보 템플릿 데이터 설정
         Context context = new Context();
         context.setVariable("nickName", user.getNickName());
