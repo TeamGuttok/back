@@ -55,7 +55,7 @@ public class UserService {
         userEntity.alarmChange();
 
         if (userEntity.isAlarm()) {
-            reminderService.updateReminder(userEntity.getId());
+            reminderService.updateAllRemindersForUser(userEntity.getId());
         }
     }
 
