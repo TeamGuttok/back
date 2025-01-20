@@ -34,6 +34,7 @@ public class ReminderService {
                             .sum();
                     // 템플릿에 필요한 데이터 전달
                     emailService.sendEmail(emailTemplateService.createReminderTemplate(userSubscriptions, user, totalAmount));
+                    // 이메일 발송 된 구독항목 ReminderDate Payment Day, Cycle에 따른 변경
                     userSubscriptions.forEach(UserSubscriptionEntity::updateReminderDate);
                 });
     }
