@@ -1,5 +1,6 @@
 package com.app.guttokback.global.aws.ses.service;
 
+import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
 import com.app.guttokback.subscription.repository.UserSubscriptionQueryRepository;
 import com.app.guttokback.subscription.repository.UserSubscriptionRepository;
@@ -37,10 +38,32 @@ public class ReminderService {
                 });
     }
 
-    public void updateReminder(Long userId) {
+    // 유저 알림여부 변경 시 실행되는 메서드
+    public void updateAllRemindersForUser(Long userId) {
         List<UserSubscriptionEntity> userSubscriptions = userSubscriptionRepository.findAllByUserId(userId);
         userSubscriptions.forEach(UserSubscriptionEntity::updateReminderDate);
         userSubscriptionRepository.saveAll(userSubscriptions);
+    }
+
+    // 구독 서비스의 Payment Day, Cycle 변경 시 실행되는 메서드
+    public void updateReminderIfPaymentDetailsChanged(
+            UserSubscriptionEntity userSubscription,
+            int previousPaymentDay,
+            PaymentCycle previousPaymentCycle
+    ) {
+        boolean hasChanges = previousPaymentDay != userSubscription.getPaymentDay()
+                || previousPaymentCycle != userSubscription.getPaymentCycle();
+
+        if (hasChanges && userSubscription.getUser().isAlarm()) {
+            userSubscription.updateReminderDate();
+        }
+    }
+
+    // 새로운 구독 서비스 저장 시 실행되는 메서드
+    public void initializeReminder(UserSubscriptionEntity subscriptionEntity) {
+        if (subscriptionEntity.getUser().isAlarm()) {
+            subscriptionEntity.updateReminderDate();
+        }
     }
 
 }
