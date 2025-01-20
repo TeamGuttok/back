@@ -7,6 +7,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.app.guttokback.subscription.domain.QUserSubscriptionEntity.userSubscriptionEntity;
@@ -29,12 +30,13 @@ public class UserSubscriptionQueryRepository {
     }
 
     // 알림여부 승인한 유저와 구독항목 조회 쿼리
-    public List<UserSubscriptionEntity> findActiveUserSubscriptions() {
+    public List<UserSubscriptionEntity> findActiveUserSubscriptions(LocalDate now) {
         return jpaQueryFactory
                 .selectFrom(userSubscriptionEntity)
                 .innerJoin(userSubscriptionEntity.user, userEntity)
                 .fetchJoin()
-                .where(userEntity.alarm.eq(true))
+                .where(userEntity.alarm.eq(true)
+                        .and(userSubscriptionEntity.reminderDate.eq(now.plusDays(1))))
                 .fetch();
     }
 

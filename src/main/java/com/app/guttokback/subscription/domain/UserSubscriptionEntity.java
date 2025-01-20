@@ -53,6 +53,10 @@ public class UserSubscriptionEntity extends AuditInformation {
     @Comment("납부 일")
     private int paymentDay;
 
+    @Column(nullable = true)
+    @Comment("리마인드 이메일 발송 예정일")
+    private LocalDate reminderDate;
+
     @Column(length = 250, nullable = true)
     @Comment("사용자 메모")
     private String memo;
@@ -95,5 +99,19 @@ public class UserSubscriptionEntity extends AuditInformation {
         this.paymentCycle = paymentCycle;
         this.paymentDay = paymentDay;
         this.memo = memo;
+    }
+
+    public void updateReminderDate() {
+        // 주기가 년월주에 따라서 reminderDate를 업데이트하는로직
+        int paymentDay = this.getPaymentDay();
+        LocalDate now = LocalDate.now();
+        LocalDate remainderSendDateTime = now.withDayOfMonth(paymentDay);
+
+        remainderSendDateTime = switch (this.getPaymentCycle()) {
+            case PaymentCycle.YEARLY -> remainderSendDateTime.plusYears(1);
+            case PaymentCycle.MONTHLY -> remainderSendDateTime.plusMonths(1);
+            case PaymentCycle.WEEKLY -> remainderSendDateTime.plusWeeks(1);
+        };
+        this.reminderDate = remainderSendDateTime;
     }
 }

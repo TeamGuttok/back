@@ -8,8 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum PaymentCycle {
     YEARLY("연"),
     MONTHLY("월"),
-    WEEKLY("주"),
-    DAILY("일");
-
+    WEEKLY("주");
+    
     private final String cycle;
 }

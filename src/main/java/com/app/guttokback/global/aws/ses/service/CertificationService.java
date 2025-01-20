@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
-public class FindPasswordService {
+public class CertificationService {
 
     private final RedisTemplate<String, String> redisTemplate;
     private final EmailTemplateService emailTemplateService;
