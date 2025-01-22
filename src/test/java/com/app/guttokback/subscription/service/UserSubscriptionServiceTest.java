@@ -227,7 +227,7 @@ class UserSubscriptionServiceTest {
         UserSubscriptionEntity userSubscription = createUserSubscription(user);
 
         // when
-        userSubscriptionService.delete(userSubscription.getId());
+        userSubscriptionService.delete(userSubscription.getId(), user.getEmail());
 
         // then
         assertThat(userSubscriptionRepository.findById(userSubscription.getId())).isEmpty();

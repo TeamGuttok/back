@@ -44,19 +44,22 @@ public class UserSubscriptionController {
         return userSubscriptionService.list(userSubscriptionListRequest.toListOption(userDetails.getUsername()));
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{userSubscriptionId}")
     public ResponseEntity<ApiResponse<Object>> userSubscriptionUpdate(
             @Valid @RequestBody UserSubscriptionUpdateRequest userSubscriptionUpdateRequest,
             @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long id
+            @PathVariable Long userSubscriptionId
     ) {
-        userSubscriptionService.update(id, userSubscriptionUpdateRequest.toUpdate(userDetails.getUsername()));
+        userSubscriptionService.update(userSubscriptionId, userSubscriptionUpdateRequest.toUpdate(userDetails.getUsername()));
         return ApiResponse.success(USER_SUBSCRIPTION_UPDATE_SUCCESS);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Object>> userSubscriptionDelete(@PathVariable Long id) {
-        userSubscriptionService.delete(id);
+    @DeleteMapping("/{userSubscriptionId}")
+    public ResponseEntity<ApiResponse<Object>> userSubscriptionDelete(
+            @PathVariable Long userSubscriptionId,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        userSubscriptionService.delete(userSubscriptionId, userDetails.getUsername());
         return ApiResponse.success(USER_SUBSCRIPTION_DELETE_SUCCESS);
     }
 

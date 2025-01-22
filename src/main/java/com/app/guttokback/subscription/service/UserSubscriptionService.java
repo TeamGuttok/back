@@ -75,8 +75,8 @@ public class UserSubscriptionService {
     }
 
     @Transactional
-    public void update(Long id, UserSubscriptionUpdateInfo userSubscriptionUpdateInfo) {
-        UserSubscriptionEntity userSubscription = findUserSubscriptionById(id);
+    public void update(Long userSubscriptionId, UserSubscriptionUpdateInfo userSubscriptionUpdateInfo) {
+        UserSubscriptionEntity userSubscription = findUserSubscriptionById(userSubscriptionId);
         UserEntity user = userService.findByUserEmail(userSubscriptionUpdateInfo.getEmail());
 
         validateUserSubscriptionOwnership(userSubscription.getUser().getId(), user.getId());
@@ -98,8 +98,12 @@ public class UserSubscriptionService {
     }
 
     @Transactional
-    public void delete(Long id) {
-        UserSubscriptionEntity userSubscription = findUserSubscriptionById(id);
+    public void delete(Long userSubscriptionId, String email) {
+        UserSubscriptionEntity userSubscription = findUserSubscriptionById(userSubscriptionId);
+        UserEntity user = userService.findByUserEmail(email);
+
+        validateUserSubscriptionOwnership(userSubscription.getUser().getId(), user.getId());
+
         userSubscriptionRepository.delete(userSubscription);
     }
 

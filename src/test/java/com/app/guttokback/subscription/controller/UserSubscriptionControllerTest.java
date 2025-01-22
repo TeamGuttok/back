@@ -46,6 +46,7 @@ class UserSubscriptionControllerTest {
     private UserSubscriptionService userSubscriptionService;
 
     private final Long testId = 1L;
+    private final String testEmail = "example@example.com";
 
     @Test
     @DisplayName("사용자 구독정보 저장 시 요청 데이터가 성공 응답을 반환한다.")
@@ -128,6 +129,7 @@ class UserSubscriptionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "example@example.com")
     @DisplayName("사용자 구독정보 삭제 시 요청 데이터가 성공 응답을 반환한다.")
     public void userSubscriptionDeleteTest() throws Exception {
         // given
@@ -149,7 +151,7 @@ class UserSubscriptionControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(ResponseMessages.USER_SUBSCRIPTION_DELETE_SUCCESS));
 
-        verify(userSubscriptionService).delete(testId);
+        verify(userSubscriptionService).delete(testId, testEmail);
     }
 
     @Test
