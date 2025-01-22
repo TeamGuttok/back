@@ -4,10 +4,7 @@ import com.app.guttokback.global.apiResponse.PageResponse;
 import com.app.guttokback.global.exception.CustomApplicationException;
 import com.app.guttokback.subscription.domain.*;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
-import com.app.guttokback.subscription.dto.serviceDto.SubscriptionListInfo;
-import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionListInfo;
-import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionSaveInfo;
-import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionUpdateInfo;
+import com.app.guttokback.subscription.dto.serviceDto.*;
 import com.app.guttokback.subscription.repository.UserSubscriptionRepository;
 import com.app.guttokback.user.domain.UserEntity;
 import com.app.guttokback.user.repository.UserRepository;
@@ -240,12 +237,13 @@ class UserSubscriptionServiceTest {
     @DisplayName("구독 서비스 조회 시 Subscription 클래스가 응답된다.")
     public void subscriptionListTest() {
         // given
+        SubscriptionSearchInfo subscriptionSearchInfo = new SubscriptionSearchInfo(null);
         List<SubscriptionListInfo> subscriptions = Arrays.stream(Subscription.values())
                 .map(subscription -> new SubscriptionListInfo(subscription.name(), subscription.getName()))
                 .toList();
 
         // when
-        List<SubscriptionListInfo> subscriptionList = userSubscriptionService.subscriptionList();
+        List<SubscriptionListInfo> subscriptionList = userSubscriptionService.subscriptionList(subscriptionSearchInfo);
 
         // then
         assertThat(subscriptionList).isNotNull();

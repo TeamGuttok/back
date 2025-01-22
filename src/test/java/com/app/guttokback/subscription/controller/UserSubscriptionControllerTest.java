@@ -10,10 +10,7 @@ import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptio
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionSaveRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionUpdateRequest;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
-import com.app.guttokback.subscription.dto.serviceDto.SubscriptionListInfo;
-import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionListInfo;
-import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionSaveInfo;
-import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionUpdateInfo;
+import com.app.guttokback.subscription.dto.serviceDto.*;
 import com.app.guttokback.subscription.service.UserSubscriptionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -163,7 +160,7 @@ class UserSubscriptionControllerTest {
                 new SubscriptionListInfo("YOUTUBE_PREMIUM", "유튜브 프리미엄")
         );
 
-        when(userSubscriptionService.subscriptionList()).thenReturn(mockResponse);
+        when(userSubscriptionService.subscriptionList(any(SubscriptionSearchInfo.class))).thenReturn(mockResponse);
 
         // when & then
         mockMvc.perform(get("/api/subscriptions")
@@ -174,6 +171,6 @@ class UserSubscriptionControllerTest {
                 .andExpect(jsonPath("$.data[0].code").value("YOUTUBE_PREMIUM"))
                 .andExpect(jsonPath("$.data[0].name").value("유튜브 프리미엄"));
 
-        verify(userSubscriptionService).subscriptionList();
+        verify(userSubscriptionService).subscriptionList(any(SubscriptionSearchInfo.class));
     }
 }
