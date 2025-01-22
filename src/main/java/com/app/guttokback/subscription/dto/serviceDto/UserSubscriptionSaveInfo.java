@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserSubscriptionSaveInfo {
 
-    private Long userId;
+    private String email;
 
     private String title;
 
@@ -33,7 +33,7 @@ public class UserSubscriptionSaveInfo {
     private String memo;
 
     @Builder
-    public UserSubscriptionSaveInfo(Long userId,
+    public UserSubscriptionSaveInfo(String email,
                                     String title,
                                     Subscription subscription,
                                     long paymentAmount,
@@ -43,7 +43,7 @@ public class UserSubscriptionSaveInfo {
                                     int paymentDay,
                                     String memo
     ) {
-        this.userId = userId;
+        this.email = email;
         this.title = title;
         this.subscription = subscription;
         this.paymentAmount = paymentAmount;

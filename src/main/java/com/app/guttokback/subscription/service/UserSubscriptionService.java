@@ -35,7 +35,7 @@ public class UserSubscriptionService {
 
     @Transactional
     public void save(UserSubscriptionSaveInfo userSubscriptionSaveInfo) {
-        UserEntity user = userService.userFindById(userSubscriptionSaveInfo.getUserId());
+        UserEntity user = userService.findByUserEmail(userSubscriptionSaveInfo.getEmail());
 
         validateSubscriptionDetails(userSubscriptionSaveInfo);
 

@@ -28,9 +28,10 @@ public class UserSubscriptionController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<Object>> userSubscriptionSave(
-            @Valid @RequestBody UserSubscriptionSaveRequest userSubscriptionSaveRequest
+            @Valid @RequestBody UserSubscriptionSaveRequest userSubscriptionSaveRequest,
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        userSubscriptionService.save(userSubscriptionSaveRequest.toSave());
+        userSubscriptionService.save(userSubscriptionSaveRequest.toSave(userDetails.getUsername()));
         return ApiResponse.success(USER_SUBSCRIPTION_SAVE_SUCCESS);
     }
 
