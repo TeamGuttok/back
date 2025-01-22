@@ -45,7 +45,6 @@ public class UserSubscriptionService {
                 .subscription(userSubscriptionSaveInfo.getSubscription())
                 .paymentAmount(userSubscriptionSaveInfo.getPaymentAmount())
                 .paymentMethod(userSubscriptionSaveInfo.getPaymentMethod())
-                .startDate(userSubscriptionSaveInfo.getStartDate())
                 .paymentCycle(userSubscriptionSaveInfo.getPaymentCycle())
                 .paymentDay(userSubscriptionSaveInfo.getPaymentDay())
                 .memo(userSubscriptionSaveInfo.getMemo())
@@ -81,6 +80,9 @@ public class UserSubscriptionService {
     @Transactional
     public void update(Long id, UserSubscriptionUpdateInfo userSubscriptionUpdateInfo) {
         UserSubscriptionEntity userSubscription = findUserSubscriptionById(id);
+        UserEntity user = userService.findByUserEmail(userSubscriptionUpdateInfo.getEmail());
+
+        validateUserSubscriptionOwnership(userSubscription.getUser().getId(), user.getId());
 
         int previousPaymentDay = userSubscription.getPaymentDay();
         PaymentCycle previousPaymentCycle = userSubscription.getPaymentCycle();
@@ -89,7 +91,7 @@ public class UserSubscriptionService {
                 userSubscriptionUpdateInfo.getTitle(),
                 userSubscriptionUpdateInfo.getPaymentAmount(),
                 userSubscriptionUpdateInfo.getPaymentMethod(),
-                userSubscriptionUpdateInfo.getStartDate(),
+                userSubscriptionUpdateInfo.getPaymentStatus(),
                 userSubscriptionUpdateInfo.getPaymentCycle(),
                 userSubscriptionUpdateInfo.getPaymentDay(),
                 userSubscriptionUpdateInfo.getMemo());
@@ -126,6 +128,12 @@ public class UserSubscriptionService {
             if (userSubscriptionSaveInfo.getTitle() != null && !userSubscriptionSaveInfo.getTitle().isEmpty()) {
                 throw new CustomApplicationException(ErrorCode.INVALID_INPUT_TITLE);
             }
+        }
+    }
+
+    private void validateUserSubscriptionOwnership(Long userSubscriptionUserId, Long userId) {
+        if (!userSubscriptionUserId.equals(userId)) {
+            throw new CustomApplicationException(ErrorCode.PERMISSION_DENIED);
         }
     }
 }

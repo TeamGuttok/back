@@ -46,9 +46,10 @@ public class UserSubscriptionController {
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<Object>> userSubscriptionUpdate(
             @Valid @RequestBody UserSubscriptionUpdateRequest userSubscriptionUpdateRequest,
+            @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Long id
     ) {
-        userSubscriptionService.update(id, userSubscriptionUpdateRequest.toUpdate());
+        userSubscriptionService.update(id, userSubscriptionUpdateRequest.toUpdate(userDetails.getUsername()));
         return ApiResponse.success(USER_SUBSCRIPTION_UPDATE_SUCCESS);
     }
 

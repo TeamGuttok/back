@@ -2,6 +2,7 @@ package com.app.guttokback.subscription.dto.controllerDto.request;
 
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
+import com.app.guttokback.subscription.domain.PaymentStatus;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionUpdateInfo;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -11,8 +12,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,8 +25,8 @@ public class UserSubscriptionUpdateRequest {
     @NotNull(message = "결제수단을 선택하세요.")
     private PaymentMethod paymentMethod;
 
-    @NotNull(message = "첫 납부 날짜를 입력하세요.")
-    private LocalDate startDate;
+    @NotNull(message = "결제 상태를 선택하세요.")
+    private PaymentStatus paymentStatus;
 
     @NotNull(message = "결제주기를 선택하세요.")
     private PaymentCycle paymentCycle;
@@ -42,7 +41,7 @@ public class UserSubscriptionUpdateRequest {
     public UserSubscriptionUpdateRequest(String title,
                                          long paymentAmount,
                                          PaymentMethod paymentMethod,
-                                         LocalDate startDate,
+                                         PaymentStatus paymentStatus,
                                          PaymentCycle paymentCycle,
                                          int paymentDay,
                                          String memo
@@ -50,18 +49,19 @@ public class UserSubscriptionUpdateRequest {
         this.title = title;
         this.paymentAmount = paymentAmount;
         this.paymentMethod = paymentMethod;
-        this.startDate = startDate;
+        this.paymentStatus = paymentStatus;
         this.paymentCycle = paymentCycle;
         this.paymentDay = paymentDay;
         this.memo = memo;
     }
 
-    public UserSubscriptionUpdateInfo toUpdate() {
+    public UserSubscriptionUpdateInfo toUpdate(String email) {
         return UserSubscriptionUpdateInfo.builder()
+                .email(email)
                 .title(title)
                 .paymentAmount(paymentAmount)
                 .paymentMethod(paymentMethod)
-                .startDate(startDate)
+                .paymentStatus(paymentStatus)
                 .paymentCycle(paymentCycle)
                 .paymentDay(paymentDay)
                 .memo(memo)
