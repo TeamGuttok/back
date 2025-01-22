@@ -2,10 +2,7 @@ package com.app.guttokback.subscription.service;
 
 import com.app.guttokback.global.apiResponse.PageResponse;
 import com.app.guttokback.global.exception.CustomApplicationException;
-import com.app.guttokback.subscription.domain.PaymentCycle;
-import com.app.guttokback.subscription.domain.PaymentMethod;
-import com.app.guttokback.subscription.domain.Subscription;
-import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
+import com.app.guttokback.subscription.domain.*;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
 import com.app.guttokback.subscription.dto.serviceDto.SubscriptionListInfo;
 import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionListInfo;
@@ -19,8 +16,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,16 +50,13 @@ class UserSubscriptionServiceTest {
         return userRepository.save(user);
     }
 
-    private UserSubscriptionEntity createUserSubscription() {
-        UserEntity user = createUser();
-
+    private UserSubscriptionEntity createUserSubscription(UserEntity user) {
         UserSubscriptionEntity userSubscription = new UserSubscriptionEntity(
                 user,
                 "test",
                 Subscription.CUSTOM_INPUT,
                 10000,
                 PaymentMethod.CARD,
-                LocalDate.parse("2025-01-01"),
                 PaymentCycle.MONTHLY,
                 1,
                 "test");
@@ -81,7 +75,7 @@ class UserSubscriptionServiceTest {
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2024-12-27"))
+                .paymentStatus(PaymentStatus.COMPLETED)
                 .paymentCycle(PaymentCycle.MONTHLY)
                 .paymentDay(15)
                 .memo("test")
@@ -95,7 +89,6 @@ class UserSubscriptionServiceTest {
         assertThat(userSubscription.getTitle()).isEqualTo("test");
         assertThat(userSubscription.getPaymentAmount()).isEqualTo(10000);
         assertThat(userSubscription.getPaymentMethod()).isEqualTo(PaymentMethod.CARD);
-        assertThat(userSubscription.getStartDate()).isEqualTo(LocalDate.parse("2024-12-27"));
         assertThat(userSubscription.getPaymentCycle()).isEqualTo(PaymentCycle.MONTHLY);
         assertThat(userSubscription.getPaymentDay()).isEqualTo(15);
         assertThat(userSubscription.getMemo()).isEqualTo("test");
@@ -111,7 +104,7 @@ class UserSubscriptionServiceTest {
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2024-12-27"))
+                .paymentStatus(PaymentStatus.COMPLETED)
                 .paymentCycle(PaymentCycle.MONTHLY)
                 .paymentDay(15)
                 .memo("test")
@@ -139,7 +132,6 @@ class UserSubscriptionServiceTest {
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2024-12-27"))
                 .paymentCycle(PaymentCycle.MONTHLY)
                 .paymentDay(15)
                 .memo("test")
@@ -171,17 +163,20 @@ class UserSubscriptionServiceTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("존재하는 구독항목 수정 시 정상적으로 수정된다.")
     public void userSubscriptionUpdateTest() {
         // given
-        UserSubscriptionEntity savedUserSubscription = createUserSubscription();
+        UserEntity user = createUser();
+        UserSubscriptionEntity savedUserSubscription = createUserSubscription(user);
 
         UserSubscriptionUpdateInfo userSubscriptionUpdateInfo
                 = new UserSubscriptionUpdateInfo(
+                user.getEmail(),
                 "update",
                 120000,
                 PaymentMethod.BANK_TRANSFER,
-                LocalDate.parse("2024-12-31"),
+                PaymentStatus.COMPLETED,
                 PaymentCycle.YEARLY,
                 15,
                 "test"
@@ -195,7 +190,7 @@ class UserSubscriptionServiceTest {
         assertThat(userSubscription.getTitle()).isEqualTo("update");
         assertThat(userSubscription.getPaymentAmount()).isEqualTo(120000);
         assertThat(userSubscription.getPaymentMethod()).isEqualTo(PaymentMethod.BANK_TRANSFER);
-        assertThat(userSubscription.getStartDate()).isEqualTo(LocalDate.parse("2024-12-31"));
+        assertThat(userSubscription.getPaymentStatus()).isEqualTo(PaymentStatus.COMPLETED);
         assertThat(userSubscription.getPaymentCycle()).isEqualTo(PaymentCycle.YEARLY);
         assertThat(userSubscription.getPaymentDay()).isEqualTo(15);
         assertThat(userSubscription.getMemo()).isEqualTo("test");
@@ -205,12 +200,14 @@ class UserSubscriptionServiceTest {
     @DisplayName("사용자 구독항목이 존재하지 않을 시 예외가 발생한다.")
     public void userSubscriptionUpdateValidateTest() {
         // given
+        UserEntity user = createUser();
         UserSubscriptionUpdateInfo userSubscriptionUpdateInfo
                 = new UserSubscriptionUpdateInfo(
+                user.getEmail(),
                 "update",
                 120000,
                 PaymentMethod.BANK_TRANSFER,
-                LocalDate.parse("2024-12-31"),
+                PaymentStatus.COMPLETED,
                 PaymentCycle.YEARLY,
                 15,
                 "test"
@@ -229,7 +226,8 @@ class UserSubscriptionServiceTest {
     @DisplayName("존재하는 구독항목 삭제 시 정상적으로 삭제된다.")
     public void userSubscriptionDeleteTest() {
         // given
-        UserSubscriptionEntity userSubscription = createUserSubscription();
+        UserEntity user = createUser();
+        UserSubscriptionEntity userSubscription = createUserSubscription(user);
 
         // when
         userSubscriptionService.delete(userSubscription.getId());

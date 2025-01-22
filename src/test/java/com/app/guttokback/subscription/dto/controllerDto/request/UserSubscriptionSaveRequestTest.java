@@ -10,11 +10,10 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 class UserSubscriptionSaveRequestTest {
-    
+
     @Test
     @DisplayName("구독 서비스 ID가 null 일 경우 예외가 발생한다.")
     public void subscriptionIdIsNullValidationTest() {
@@ -25,7 +24,6 @@ class UserSubscriptionSaveRequestTest {
                 .subscription(null)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2024-12-27"))
                 .paymentCycle(PaymentCycle.MONTHLY)
                 .paymentDay(15)
                 .memo("test")
@@ -51,7 +49,6 @@ class UserSubscriptionSaveRequestTest {
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(-1)
                 .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2024-12-27"))
                 .paymentCycle(PaymentCycle.MONTHLY)
                 .paymentDay(15)
                 .memo("test")
@@ -77,7 +74,6 @@ class UserSubscriptionSaveRequestTest {
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(null)
-                .startDate(LocalDate.parse("2024-12-27"))
                 .paymentCycle(PaymentCycle.MONTHLY)
                 .paymentDay(15)
                 .memo("test")
@@ -94,32 +90,6 @@ class UserSubscriptionSaveRequestTest {
     }
 
     @Test
-    @DisplayName("첫 납부 날짜가 null 일 경우 예외가 발생한다.")
-    public void startDateIsNullValidationTest() {
-        // given
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
-                .title("test")
-                .subscription(Subscription.CUSTOM_INPUT)
-                .paymentAmount(10000)
-                .paymentMethod(PaymentMethod.CARD)
-                .startDate(null)
-                .paymentCycle(PaymentCycle.MONTHLY)
-                .paymentDay(15)
-                .memo("test")
-                .build();
-
-        // when
-        Set<ConstraintViolation<UserSubscriptionSaveRequest>> violations = validator.validate(userSubscriptionSaveRequest);
-
-        // then
-        Assertions.assertThat(violations)
-                .extracting(ConstraintViolation::getMessage)
-                .contains("첫 납부 날짜를 입력하세요.")
-                .hasSize(1);
-    }
-
-    @Test
     @DisplayName("결제주기가 null 일 경우 예외가 발생한다.")
     public void paymentCycleIsNullValidationTest() {
         // given
@@ -129,7 +99,6 @@ class UserSubscriptionSaveRequestTest {
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2024-12-27"))
                 .paymentCycle(null)
                 .paymentDay(15)
                 .memo("test")
@@ -155,7 +124,6 @@ class UserSubscriptionSaveRequestTest {
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2024-12-27"))
                 .paymentCycle(PaymentCycle.MONTHLY)
                 .paymentDay(0)
                 .memo("test")
@@ -181,7 +149,6 @@ class UserSubscriptionSaveRequestTest {
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2024-12-27"))
                 .paymentCycle(PaymentCycle.MONTHLY)
                 .paymentDay(32)
                 .memo("test")
