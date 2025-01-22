@@ -41,10 +41,6 @@ public class UserSubscriptionEntity extends AuditInformation {
     @Comment("결제 여부")
     private PaymentStatus paymentStatus;
 
-    @Column(nullable = false)
-    @Comment("첫 납부 날짜")
-    private LocalDate startDate;
-
     @Column(length = 50, nullable = false)
     @Comment("결제 주기")
     private PaymentCycle paymentCycle;
@@ -67,7 +63,6 @@ public class UserSubscriptionEntity extends AuditInformation {
                                   Subscription subscription,
                                   long paymentAmount,
                                   PaymentMethod paymentMethod,
-                                  LocalDate startDate,
                                   PaymentCycle paymentCycle,
                                   int paymentDay,
                                   String memo
@@ -78,7 +73,6 @@ public class UserSubscriptionEntity extends AuditInformation {
         this.paymentAmount = paymentAmount;
         this.paymentMethod = paymentMethod;
         this.paymentStatus = PaymentStatus.PENDING;
-        this.startDate = startDate;
         this.paymentCycle = paymentCycle;
         this.paymentDay = paymentDay;
         this.memo = memo;
@@ -87,7 +81,7 @@ public class UserSubscriptionEntity extends AuditInformation {
     public void update(String title,
                        long paymentAmount,
                        PaymentMethod paymentMethod,
-                       LocalDate startDate,
+                       PaymentStatus paymentStatus,
                        PaymentCycle paymentCycle,
                        int paymentDay,
                        String memo
@@ -95,7 +89,7 @@ public class UserSubscriptionEntity extends AuditInformation {
         this.title = title;
         this.paymentAmount = paymentAmount;
         this.paymentMethod = paymentMethod;
-        this.startDate = startDate;
+        this.paymentStatus = paymentStatus;
         this.paymentCycle = paymentCycle;
         this.paymentDay = paymentDay;
         this.memo = memo;

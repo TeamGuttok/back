@@ -2,13 +2,12 @@ package com.app.guttokback.subscription.dto.serviceDto;
 
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
+import com.app.guttokback.subscription.domain.PaymentStatus;
 import com.app.guttokback.subscription.domain.Subscription;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,7 +23,7 @@ public class UserSubscriptionSaveInfo {
 
     private PaymentMethod paymentMethod;
 
-    private LocalDate startDate;
+    private PaymentStatus paymentStatus;
 
     private PaymentCycle paymentCycle;
 
@@ -38,7 +37,7 @@ public class UserSubscriptionSaveInfo {
                                     Subscription subscription,
                                     long paymentAmount,
                                     PaymentMethod paymentMethod,
-                                    LocalDate startDate,
+                                    PaymentStatus paymentStatus,
                                     PaymentCycle paymentCycle,
                                     int paymentDay,
                                     String memo
@@ -48,7 +47,7 @@ public class UserSubscriptionSaveInfo {
         this.subscription = subscription;
         this.paymentAmount = paymentAmount;
         this.paymentMethod = paymentMethod;
-        this.startDate = startDate;
+        this.paymentStatus = paymentStatus;
         this.paymentCycle = paymentCycle;
         this.paymentDay = paymentDay;
         this.memo = memo;

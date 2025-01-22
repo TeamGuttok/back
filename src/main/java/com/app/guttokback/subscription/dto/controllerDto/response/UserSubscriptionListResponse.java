@@ -1,9 +1,6 @@
 package com.app.guttokback.subscription.dto.controllerDto.response;
 
-import com.app.guttokback.subscription.domain.PaymentCycle;
-import com.app.guttokback.subscription.domain.PaymentMethod;
-import com.app.guttokback.subscription.domain.Subscription;
-import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
+import com.app.guttokback.subscription.domain.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,6 +23,8 @@ public class UserSubscriptionListResponse {
 
     private PaymentMethod paymentMethod;
 
+    private PaymentStatus paymentStatus;
+
     private PaymentCycle paymentCycle;
 
     private int paymentDay;
@@ -42,6 +41,7 @@ public class UserSubscriptionListResponse {
                                         Subscription subscription,
                                         long paymentAmount,
                                         PaymentMethod paymentMethod,
+                                        PaymentStatus paymentStatus,
                                         PaymentCycle paymentCycle,
                                         int paymentDay,
                                         LocalDateTime registerDate,
@@ -53,6 +53,7 @@ public class UserSubscriptionListResponse {
         this.subscription = subscription;
         this.paymentAmount = paymentAmount;
         this.paymentMethod = paymentMethod;
+        this.paymentStatus = paymentStatus;
         this.paymentCycle = paymentCycle;
         this.paymentDay = paymentDay;
         this.registerDate = registerDate;
@@ -66,6 +67,7 @@ public class UserSubscriptionListResponse {
                 .subscription(userSubscriptionEntity.getSubscription())
                 .paymentAmount(userSubscriptionEntity.getPaymentAmount())
                 .paymentMethod(userSubscriptionEntity.getPaymentMethod())
+                .paymentStatus(userSubscriptionEntity.getPaymentStatus())
                 .paymentCycle(userSubscriptionEntity.getPaymentCycle())
                 .paymentDay(userSubscriptionEntity.getPaymentDay())
                 .registerDate(userSubscriptionEntity.getRegisterDate())

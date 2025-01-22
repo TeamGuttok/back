@@ -4,6 +4,7 @@ import com.app.guttokback.global.apiResponse.PageResponse;
 import com.app.guttokback.global.apiResponse.ResponseMessages;
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
+import com.app.guttokback.subscription.domain.PaymentStatus;
 import com.app.guttokback.subscription.domain.Subscription;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionListRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionSaveRequest;
@@ -24,12 +25,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -57,7 +59,6 @@ class UserSubscriptionControllerTest {
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2025-01-01"))
                 .paymentCycle(PaymentCycle.MONTHLY)
                 .paymentDay(1)
                 .memo("test")
@@ -112,7 +113,7 @@ class UserSubscriptionControllerTest {
                 .title("update")
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2025-01-01"))
+                .paymentStatus(PaymentStatus.COMPLETED)
                 .paymentCycle(PaymentCycle.MONTHLY)
                 .paymentDay(1)
                 .memo("update")
@@ -138,7 +139,6 @@ class UserSubscriptionControllerTest {
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2025-01-01"))
                 .paymentCycle(PaymentCycle.MONTHLY)
                 .paymentDay(1)
                 .memo("test")

@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,7 +58,6 @@ class UserSubscriptionQueryRepositoryTest {
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
                 .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2024-12-27"))
                 .paymentCycle(PaymentCycle.MONTHLY)
                 .paymentDay(15)
                 .memo("test")
@@ -84,8 +82,6 @@ class UserSubscriptionQueryRepositoryTest {
                 .containsExactly(savedUserSubscription.getPaymentAmount());
         assertThat(list).extracting(UserSubscriptionEntity::getPaymentMethod)
                 .containsExactly(savedUserSubscription.getPaymentMethod());
-        assertThat(list).extracting(UserSubscriptionEntity::getStartDate)
-                .containsExactly(savedUserSubscription.getStartDate());
         assertThat(list).extracting(UserSubscriptionEntity::getPaymentCycle)
                 .containsExactly(savedUserSubscription.getPaymentCycle());
         assertThat(list).extracting(UserSubscriptionEntity::getMemo)
