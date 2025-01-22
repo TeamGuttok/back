@@ -19,10 +19,6 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserSubscriptionSaveRequest {
 
-    @NotNull(message = "회원 ID를 입력하세요.")
-    @Positive(message = "회원 ID는 양수여야 합니다.")
-    private Long userId;
-
     private String title;
 
     @NotNull(message = "항목을 선택하세요.")
@@ -47,8 +43,7 @@ public class UserSubscriptionSaveRequest {
     private String memo;
 
     @Builder
-    public UserSubscriptionSaveRequest(Long userId,
-                                       String title,
+    public UserSubscriptionSaveRequest(String title,
                                        Subscription subscription,
                                        long paymentAmount,
                                        PaymentMethod paymentMethod,
@@ -57,7 +52,6 @@ public class UserSubscriptionSaveRequest {
                                        int paymentDay,
                                        String memo
     ) {
-        this.userId = userId;
         this.title = title;
         this.subscription = subscription;
         this.paymentAmount = paymentAmount;
@@ -68,9 +62,9 @@ public class UserSubscriptionSaveRequest {
         this.memo = memo;
     }
 
-    public UserSubscriptionSaveInfo toSave() {
+    public UserSubscriptionSaveInfo toSave(String email) {
         return UserSubscriptionSaveInfo.builder()
-                .userId(userId)
+                .email(email)
                 .title(title)
                 .subscription(subscription)
                 .paymentAmount(paymentAmount)
