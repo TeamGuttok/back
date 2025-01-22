@@ -8,10 +8,7 @@ import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.Subscription;
 import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
-import com.app.guttokback.subscription.dto.serviceDto.SubscriptionListInfo;
-import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionListInfo;
-import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionSaveInfo;
-import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionUpdateInfo;
+import com.app.guttokback.subscription.dto.serviceDto.*;
 import com.app.guttokback.subscription.repository.UserSubscriptionQueryRepository;
 import com.app.guttokback.subscription.repository.UserSubscriptionRepository;
 import com.app.guttokback.user.domain.UserEntity;
@@ -106,8 +103,13 @@ public class UserSubscriptionService {
         userSubscriptionRepository.delete(userSubscription);
     }
 
-    public List<SubscriptionListInfo> subscriptionList() {
+    public List<SubscriptionListInfo> subscriptionList(SubscriptionSearchInfo subscriptionSearchInfo) {
         return Arrays.stream(Subscription.values())
+                .filter(subscription ->
+                        (subscriptionSearchInfo.getName() == null ||
+                                subscription.name().toLowerCase().contains(subscriptionSearchInfo.getName().toLowerCase()) ||
+                                subscription.getName().toLowerCase().contains(subscriptionSearchInfo.getName().toLowerCase()))
+                )
                 .map(subscription -> new SubscriptionListInfo(subscription.name(), subscription.getName()))
                 .toList();
     }

@@ -2,6 +2,7 @@ package com.app.guttokback.subscription.controller;
 
 import com.app.guttokback.global.apiResponse.ApiResponse;
 import com.app.guttokback.global.apiResponse.PageResponse;
+import com.app.guttokback.subscription.dto.controllerDto.request.SubscriptionSearchRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionListRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionSaveRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionUpdateRequest;
@@ -60,8 +61,8 @@ public class UserSubscriptionController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Object>> subscriptionList() {
-        List<SubscriptionListInfo> subscription = userSubscriptionService.subscriptionList();
+    public ResponseEntity<ApiResponse<Object>> subscriptionList(SubscriptionSearchRequest searchRequest) {
+        List<SubscriptionListInfo> subscription = userSubscriptionService.subscriptionList(searchRequest.toSearch());
         return ApiResponse.success(SUBSCRIPTION_LIST_SUCCESS, subscription);
     }
 }
