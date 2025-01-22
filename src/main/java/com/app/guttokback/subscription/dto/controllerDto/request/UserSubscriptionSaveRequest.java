@@ -13,8 +13,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserSubscriptionSaveRequest {
@@ -30,9 +28,6 @@ public class UserSubscriptionSaveRequest {
     @NotNull(message = "결제수단을 선택하세요.")
     private PaymentMethod paymentMethod;
 
-    @NotNull(message = "첫 납부 날짜를 입력하세요.")
-    private LocalDate startDate;
-
     @NotNull(message = "결제주기를 선택하세요.")
     private PaymentCycle paymentCycle;
 
@@ -47,7 +42,6 @@ public class UserSubscriptionSaveRequest {
                                        Subscription subscription,
                                        long paymentAmount,
                                        PaymentMethod paymentMethod,
-                                       LocalDate startDate,
                                        PaymentCycle paymentCycle,
                                        int paymentDay,
                                        String memo
@@ -56,7 +50,6 @@ public class UserSubscriptionSaveRequest {
         this.subscription = subscription;
         this.paymentAmount = paymentAmount;
         this.paymentMethod = paymentMethod;
-        this.startDate = startDate;
         this.paymentCycle = paymentCycle;
         this.paymentDay = paymentDay;
         this.memo = memo;
@@ -69,7 +62,6 @@ public class UserSubscriptionSaveRequest {
                 .subscription(subscription)
                 .paymentAmount(paymentAmount)
                 .paymentMethod(paymentMethod)
-                .startDate(startDate)
                 .paymentCycle(paymentCycle)
                 .paymentDay(paymentDay)
                 .memo(memo)
