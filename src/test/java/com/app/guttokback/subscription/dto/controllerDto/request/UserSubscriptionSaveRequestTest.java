@@ -14,68 +14,13 @@ import java.time.LocalDate;
 import java.util.Set;
 
 class UserSubscriptionSaveRequestTest {
-
-    @Test
-    @DisplayName("회원 ID가 null 일 경우 예외가 발생한다.")
-    public void userIdIsNullValidationTest() {
-        // given
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
-                .userId(null)
-                .title("test")
-                .subscription(Subscription.CUSTOM_INPUT)
-                .paymentAmount(10000)
-                .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2024-12-27"))
-                .paymentCycle(PaymentCycle.MONTHLY)
-                .paymentDay(15)
-                .memo("test")
-                .build();
-
-        // when
-        Set<ConstraintViolation<UserSubscriptionSaveRequest>> violations = validator.validate(userSubscriptionSaveRequest);
-
-        // then
-        Assertions.assertThat(violations)
-                .extracting(ConstraintViolation::getMessage)
-                .contains("회원 ID를 입력하세요.")
-                .hasSize(1);
-    }
-
-    @Test
-    @DisplayName("회원 ID가 음수 일 경우 예외가 발생한다.")
-    public void userIdNegativeValidationTest() {
-        // given
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
-                .userId(-1L)
-                .title("test")
-                .subscription(Subscription.CUSTOM_INPUT)
-                .paymentAmount(10000)
-                .paymentMethod(PaymentMethod.CARD)
-                .startDate(LocalDate.parse("2024-12-27"))
-                .paymentCycle(PaymentCycle.MONTHLY)
-                .paymentDay(15)
-                .memo("test")
-                .build();
-
-        // when
-        Set<ConstraintViolation<UserSubscriptionSaveRequest>> violations = validator.validate(userSubscriptionSaveRequest);
-
-        // then
-        Assertions.assertThat(violations)
-                .extracting(ConstraintViolation::getMessage)
-                .contains("회원 ID는 양수여야 합니다.")
-                .hasSize(1);
-    }
-
+    
     @Test
     @DisplayName("구독 서비스 ID가 null 일 경우 예외가 발생한다.")
     public void subscriptionIdIsNullValidationTest() {
         // given
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
-                .userId(1L)
                 .title("test")
                 .subscription(null)
                 .paymentAmount(10000)
@@ -102,7 +47,6 @@ class UserSubscriptionSaveRequestTest {
         // given
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
-                .userId(1L)
                 .title("test")
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(-1)
@@ -129,7 +73,6 @@ class UserSubscriptionSaveRequestTest {
         // given
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
-                .userId(1L)
                 .title("test")
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
@@ -156,7 +99,6 @@ class UserSubscriptionSaveRequestTest {
         // given
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
-                .userId(1L)
                 .title("test")
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
@@ -183,7 +125,6 @@ class UserSubscriptionSaveRequestTest {
         // given
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
-                .userId(1L)
                 .title("test")
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
@@ -210,7 +151,6 @@ class UserSubscriptionSaveRequestTest {
         // given
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
-                .userId(1L)
                 .title("test")
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
@@ -237,7 +177,6 @@ class UserSubscriptionSaveRequestTest {
         // given
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         UserSubscriptionSaveRequest userSubscriptionSaveRequest = UserSubscriptionSaveRequest.builder()
-                .userId(1L)
                 .title("test")
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)

@@ -53,7 +53,6 @@ class UserSubscriptionControllerTest {
     public void userSubscriptionSaveTest() throws Exception {
         // given
         UserSubscriptionSaveRequest saveRequest = UserSubscriptionSaveRequest.builder()
-                .userId(1L)
                 .title("test")
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
@@ -135,7 +134,6 @@ class UserSubscriptionControllerTest {
     public void userSubscriptionDeleteTest() throws Exception {
         // given
         UserSubscriptionSaveRequest saveRequest = UserSubscriptionSaveRequest.builder()
-                .userId(1L)
                 .title("test")
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)

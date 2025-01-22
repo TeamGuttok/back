@@ -76,7 +76,7 @@ class UserSubscriptionServiceTest {
         UserEntity savedUser = createUser();
 
         UserSubscriptionSaveInfo savedUserSubscription = UserSubscriptionSaveInfo.builder()
-                .userId(savedUser.getId())
+                .email(savedUser.getEmail())
                 .title("test")
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
@@ -106,7 +106,7 @@ class UserSubscriptionServiceTest {
     public void saveUserSubscriptionByValidateUserTest() {
         // given
         UserSubscriptionSaveInfo savedUserSubscription = UserSubscriptionSaveInfo.builder()
-                .userId(-1L)
+                .email(null)
                 .title("test")
                 .subscription(Subscription.CUSTOM_INPUT)
                 .paymentAmount(10000)
@@ -124,7 +124,7 @@ class UserSubscriptionServiceTest {
         // then
         assertThat(exception)
                 .isInstanceOf(CustomApplicationException.class)
-                .hasMessage("회원을 찾을 수 없습니다");
+                .hasMessage("계정을 찾을 수 없습니다");
     }
 
     @Test
