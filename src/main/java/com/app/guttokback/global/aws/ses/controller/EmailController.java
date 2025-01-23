@@ -21,7 +21,7 @@ public class EmailController {
     private final CertificationService certificationService;
 
     @PostMapping("/certification")
-    public ResponseEntity<ApiResponse<Object>> userFindPassword(@Valid @RequestBody UserEmailRequestDto userEmailRequestDto) {
+    public ResponseEntity<ApiResponse<Object>> userCertificationEmail(@Valid @RequestBody UserEmailRequestDto userEmailRequestDto) {
         certificationService.sendCertificationNumber(userEmailRequestDto.getEmailDto());
         return ApiResponse.success(CERTIFICATION_EMAIL_SEND_SUCCESS);
     }
