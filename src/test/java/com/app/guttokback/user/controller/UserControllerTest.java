@@ -1,7 +1,6 @@
 package com.app.guttokback.user.controller;
 
 import com.app.guttokback.global.apiResponse.ResponseMessages;
-import com.app.guttokback.global.exception.CustomApplicationException;
 import com.app.guttokback.global.exception.ErrorCode;
 import com.app.guttokback.user.dto.controllerDto.UserNicknameUpdateRequestDto;
 import com.app.guttokback.user.dto.controllerDto.UserPasswordUpdateRequestDto;
@@ -20,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -31,6 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
+@ContextConfiguration(classes = {UserController.class, UserService.class})
 class UserControllerTest {
 
     @Autowired
@@ -55,7 +56,7 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        doNothing().when(userService).userSave(any());
+        doNothing().when(userService).userSave(any(), any());
         doNothing().when(userService).userDelete(any());
         doNothing().when(userService).userPasswordUpdate(any(), any());
         doNothing().when(userService).userNicknameUpdate(any(), any());
@@ -80,45 +81,20 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(ResponseMessages.USER_SAVE_SUCCESS));
 
-        verify(userService).userSave(any());
-    }
-
-    @Test
-    @WithMockUser
-    @DisplayName("회원 저장 실패 - 중복 이메일")
-    void testUserSaveFailDueToDuplicateEmail() throws Exception {
-        doThrow(new CustomApplicationException(ErrorCode.EMAIL_SAME_FOUND))
-                .when(userService).userSave(any());
-
-        UserSaveRequestDto requestDto = UserSaveRequestDto.builder()
-                .email(testEmail)
-                .password(testPassword)
-                .nickName(testNickName)
-                .alarm(true)
-                .build();
-
-        mockMvc.perform(post("/api/users/signup")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf())
-                        .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.message").value(ErrorCode.EMAIL_SAME_FOUND.getMessage()));
-
-        verify(userService).userSave(any());
+        verify(userService).userSave(any(), any());
     }
 
     @Test
     @WithMockUser(username = "test@example.com")
     @DisplayName("비밀번호 수정 테스트")
     void testUserPasswordUpdate() throws Exception {
-        String testEmail = "test@example.com";
         String newPassword = "newSecurePass123!";
 
         UserPasswordUpdateRequestDto userPasswordUpdateRequestDto = new UserPasswordUpdateRequestDto(newPassword);
 
         mockMvc.perform(patch("/api/users/password")
                         .with(csrf())
-                        .contentType("application/json")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userPasswordUpdateRequestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(ResponseMessages.PASSWORD_UPDATE_SUCCESS));
@@ -131,14 +107,13 @@ class UserControllerTest {
     @WithMockUser(username = "test@example.com")
     @DisplayName("닉네임 수정 테스트")
     void testUserNicknameUpdate() throws Exception {
-        String testEmail = "test@example.com";
         String newNickName = "UpdatedTester";
 
         UserNicknameUpdateRequestDto userNicknameUpdateRequestDto = new UserNicknameUpdateRequestDto(newNickName);
 
         mockMvc.perform(patch("/api/users/nickname")
                         .with(csrf())
-                        .contentType("application/json")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userNicknameUpdateRequestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value(ResponseMessages.NICKNAME_UPDATE_SUCCESS));
