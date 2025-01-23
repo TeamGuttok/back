@@ -10,6 +10,8 @@ import com.app.guttokback.user.dto.serviceDto.UpdatePasswordDto;
 import com.app.guttokback.user.dto.serviceDto.UserDetailDto;
 import com.app.guttokback.user.dto.serviceDto.UserSaveDto;
 import com.app.guttokback.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,21 @@ public class UserService {
     private final ReminderService reminderService;
 
     @Transactional
-    public void userSave(UserSaveDto userSaveDto) {
+    public void userSave(UserSaveDto userSaveDto, HttpServletRequest request) {
+
+        // 세션에서 이메일 확인
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("email") == null) {
+            throw new CustomApplicationException(ErrorCode.INVALID_SESSION);
+        }
+
+        String sessionEmail = (String) session.getAttribute("email");
+
+        // 세션 이메일과 입력된 이메일이 일치하는지 확인
+        if (!sessionEmail.equals(userSaveDto.getEmail())) {
+            throw new CustomApplicationException(ErrorCode.EMAIL_NOT_MATCH);
+        }
+
         isEmailDuplicate(userSaveDto.getEmail());
         isNickNameDuplicate(userSaveDto.getNickName());
         userRepository.save(UserEntity.builder()
