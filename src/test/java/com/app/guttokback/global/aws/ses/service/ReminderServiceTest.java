@@ -7,6 +7,7 @@ import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
 import com.app.guttokback.subscription.repository.UserSubscriptionRepository;
 import com.app.guttokback.user.domain.UserEntity;
 import com.app.guttokback.user.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,12 @@ class ReminderServiceTest {
     private UserRepository userRepository;
     @Autowired
     private UserSubscriptionRepository userSubscriptionRepository;
+
+    @AfterEach
+    public void clear() {
+        userSubscriptionRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
+    }
 
     private UserEntity createUser(String email, boolean alarm) {
         UserEntity user = UserEntity.builder()
