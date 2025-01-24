@@ -72,4 +72,25 @@ public class UserCertificationNumberService {
         session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
     }
 
+    // 인증 코드 일치 시 권한 없는 세션 생성 및 반환
+    public void createUnauthenticatedSession(GetCertificationNumberDto getCertificationNumberDto, HttpServletRequest request) {
+
+        certification(getCertificationNumberDto);
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        session = request.getSession(true);
+
+        session.setMaxInactiveInterval(600);
+
+        String email = getCertificationNumberDto.getEmail();
+        session.setAttribute("email", email);
+
+        // 권한 없이 세션 반환
+        SecurityContextHolder.clearContext();
+    }
+
+
 }

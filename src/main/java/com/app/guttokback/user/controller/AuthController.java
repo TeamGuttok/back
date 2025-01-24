@@ -3,6 +3,8 @@ package com.app.guttokback.user.controller;
 
 import com.app.guttokback.global.apiResponse.ApiResponse;
 import com.app.guttokback.user.dto.controllerDto.LoginRequestDto;
+import com.app.guttokback.user.dto.controllerDto.UserCertificationNumberRequestDto;
+import com.app.guttokback.user.service.UserCertificationNumberService;
 import com.app.guttokback.user.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,8 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import static com.app.guttokback.global.apiResponse.ResponseMessages.USER_LOGIN_SUCCESS;
-import static com.app.guttokback.global.apiResponse.ResponseMessages.USER_LOGOUT_SUCCESS;
+import static com.app.guttokback.global.apiResponse.ResponseMessages.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -26,6 +27,7 @@ import static com.app.guttokback.global.apiResponse.ResponseMessages.USER_LOGOUT
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
+    private final UserCertificationNumberService userCertificationNumberService;
     private final UserService userService;
 
     @PostMapping("/signin")
@@ -71,5 +73,17 @@ public class AuthController {
         response.addCookie(cookie);
 
         return ApiResponse.success(USER_LOGOUT_SUCCESS);
+    }
+
+    @PostMapping("/certification-number")
+    public ResponseEntity<ApiResponse<Object>> userCertificationNumber(@Valid @RequestBody UserCertificationNumberRequestDto userCertificationNumberRequestDto, HttpServletRequest request) {
+        userCertificationNumberService.responseSession(userCertificationNumberRequestDto.getCertificationNumberDto(), request);
+        return ApiResponse.success(CERTIFICATION_NUMBER_SUCCESS);
+    }
+
+    @PostMapping("/email-verification")
+    public ResponseEntity<ApiResponse<Object>> userEmailVerification(@Valid @RequestBody UserCertificationNumberRequestDto userCertificationNumberRequestDto, HttpServletRequest request) {
+        userCertificationNumberService.createUnauthenticatedSession(userCertificationNumberRequestDto.getCertificationNumberDto(), request);
+        return ApiResponse.success(EMAIL_VERIFICATIOIN_SUCCESS);
     }
 }

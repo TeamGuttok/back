@@ -22,7 +22,7 @@ public class CertificationService {
     private String createCertificationNumber() {
         String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         SecureRandom random = new SecureRandom();
-        return random.ints(4, 0, chars.length())
+        return random.ints(6, 0, chars.length())
                 .mapToObj(chars::charAt)
                 .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
                 .toString();
