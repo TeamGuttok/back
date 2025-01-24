@@ -61,7 +61,7 @@ class ReminderServiceTest {
 
     @Test
     @DisplayName("sendReminder가 유저의 구독 데이터를 기반으로 이메일을 보내고 ReminderDate를 업데이트한다.")
-    void sendReminder() {
+    public void sendReminderTest() {
         // given
         UserEntity user = createUser("test@test.com", true);
 
