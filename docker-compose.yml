@@ -10,11 +10,11 @@ services:
       - ./db/mysql/init:/docker-entrypoint-initdb.d # 로컬저장경로:도커저장경로 / 해당 경로에 작성된 DDL을 컨테이너 생성 시 자동 실행
     environment:
       #=== 환경 변수 ===#
-      MYSQL_ROOT_PASSWORD: 1234 # root 계정 비밀번호 설정
-      MYSQL_DATABASE: guttok # 데이터베이스 생성 이름
-      MYSQL_CHARSET: utf8mb4 # 인코딩 문자
-      MYSQL_COLLATION: utf8mb4_unicode_ci # 대조 문자
-      TZ: Asia/Seoul # 타임존 설정
+      MYSQL_ROOT_PASSWORD: ${DOCKER_MYSQL_PASSWORD} # root 계정 비밀번호 설정
+      MYSQL_DATABASE: ${DOCKER_MYSQL_DATABASE} # 데이터베이스 생성 이름
+      MYSQL_CHARSET: ${DOCKER_MYSQL_CHARSET} # 인코딩 문자
+      MYSQL_COLLATION: ${DOCKER_MYSQL_COLLATION} # 대조 문자
+      TZ: ${DOCKER_TZ} # 타임존 설정
 
   redis:
     image: redis:7.0
@@ -24,6 +24,6 @@ services:
       - "6380:6379"
     volumes:
       - ./db/redis/data:/data
-    command: ["redis-server", "--requirepass", "1234"]
+    command: [ "redis-server", "--requirepass", "${DOCKER_REDIS_PASSWORD}" ]
     environment:
-      TZ: Asia/Seoul
+      TZ: ${DOCKER_TZ}
