@@ -4,6 +4,7 @@ package com.app.guttokback.user.controller;
 import com.app.guttokback.global.apiResponse.ApiResponse;
 import com.app.guttokback.user.dto.controllerDto.LoginRequestDto;
 import com.app.guttokback.user.dto.controllerDto.UserCertificationNumberRequestDto;
+import com.app.guttokback.user.service.SessionService;
 import com.app.guttokback.user.service.UserCertificationNumberService;
 import com.app.guttokback.user.service.UserService;
 import jakarta.servlet.http.Cookie;
@@ -29,6 +30,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserCertificationNumberService userCertificationNumberService;
     private final UserService userService;
+    private final SessionService sessionService;
 
     @PostMapping("/signin")
     public ResponseEntity<ApiResponse<String>> signin(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request) {
@@ -85,5 +87,16 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Object>> userEmailVerification(@Valid @RequestBody UserCertificationNumberRequestDto userCertificationNumberRequestDto, HttpServletRequest request) {
         userCertificationNumberService.createUnauthenticatedSession(userCertificationNumberRequestDto.getCertificationNumberDto(), request);
         return ApiResponse.success(EMAIL_VERIFICATIOIN_SUCCESS);
+    }
+
+    @GetMapping("/check-session")
+    public ResponseEntity<ApiResponse<Object>> userCheckSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        sessionService.checkSession(session);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        sessionService.checkAuthentication(authentication);
+
+        return ApiResponse.success(SESSION_VALID);
     }
 }
