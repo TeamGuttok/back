@@ -23,6 +23,8 @@ public class ResponseMessages {
     public static final String SESSION_VALID = "유효 세션";
 
     // mail
-    public static final String REMINDER_EMAIL_SEND_SUCCESS = "리마인더 이메일 발송 성공";
     public static final String CERTIFICATION_EMAIL_SEND_SUCCESS = "인증코드 이메일 발송 성공";
+
+    // group
+    public static final String SUBSCRIPTION_GROUP_SAVE_SUCCESS = "그룹 생성 성공";
 }

@@ -7,7 +7,10 @@ import com.app.guttokback.subscription.domain.PaymentStatus;
 import com.app.guttokback.subscription.domain.Subscription;
 import com.app.guttokback.user.domain.UserEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import java.time.LocalDate;
@@ -15,6 +18,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Table(name = "SUBSCRIPTION_GROUPS")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SubscriptionGroupEntity extends AuditInformation {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,7 +28,7 @@ public class SubscriptionGroupEntity extends AuditInformation {
 
     @Column(length = 50, nullable = false)
     @Comment("그룹명")
-    private String name;
+    private String title;
 
     @Column(length = 50, nullable = false)
     @Comment("구독 서비스")
@@ -58,4 +62,24 @@ public class SubscriptionGroupEntity extends AuditInformation {
     @Comment("공지사항")
     private String notice;
 
+    @Builder
+    public SubscriptionGroupEntity(UserEntity user,
+                                   String title,
+                                   Subscription subscription,
+                                   long paymentAmount,
+                                   PaymentMethod paymentMethod,
+                                   PaymentCycle paymentCycle,
+                                   int paymentDay,
+                                   String notice
+    ) {
+        this.user = user;
+        this.title = title;
+        this.subscription = subscription;
+        this.paymentAmount = paymentAmount;
+        this.paymentMethod = paymentMethod;
+        this.paymentStatus = PaymentStatus.PENDING;
+        this.paymentCycle = paymentCycle;
+        this.paymentDay = paymentDay;
+        this.notice = notice;
+    }
 }

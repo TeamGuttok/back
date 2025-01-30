@@ -25,8 +25,10 @@ public enum ErrorCode {
     EMAIL_NOT_MATCH(HttpStatus.BAD_REQUEST, "AUTH_07", "입력된 이메일과 세션 이메일이 일치하지 않습니다."),
 
     // email
-    OVER_REQUEST_COUNT(HttpStatus.TOO_MANY_REQUESTS, "EMAIL_01", "인증코드 요청 횟수를 초과했습니다");
+    OVER_REQUEST_COUNT(HttpStatus.TOO_MANY_REQUESTS, "EMAIL_01", "인증코드 요청 횟수를 초과했습니다"),
 
+    // group
+    MEMBER_ALREADY_JOINED_GROUP(HttpStatus.CONFLICT, "GROUP_02", "이미 참가한 그룹입니다.");
 
 
     private final HttpStatus httpStatus;
