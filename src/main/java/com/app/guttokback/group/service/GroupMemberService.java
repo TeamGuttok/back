@@ -1,5 +1,7 @@
 package com.app.guttokback.group.service;
 
+import com.app.guttokback.global.exception.CustomApplicationException;
+import com.app.guttokback.global.exception.ErrorCode;
 import com.app.guttokback.group.domain.GroupMemberEntity;
 import com.app.guttokback.group.domain.SubscriptionGroupEntity;
 import com.app.guttokback.group.repository.GroupMemberRepository;
@@ -17,6 +19,7 @@ public class GroupMemberService {
 
     @Transactional
     public void addMember(UserEntity user, SubscriptionGroupEntity subscriptionGroup) {
+        validateMember(user, subscriptionGroup);
         GroupMemberEntity groupMemberEntity = GroupMemberEntity.builder()
                 .user(user)
                 .subscriptionGroup(subscriptionGroup)
@@ -24,4 +27,11 @@ public class GroupMemberService {
 
         groupMemberRepository.save(groupMemberEntity);
     }
+
+    private void validateMember(UserEntity user, SubscriptionGroupEntity subscriptionGroup) {
+        if (groupMemberRepository.existsByUserAndSubscriptionGroup(user, subscriptionGroup)) {
+            throw new CustomApplicationException(ErrorCode.MEMBER_ALREADY_JOINED_GROUP);
+        }
+    }
+
 }
