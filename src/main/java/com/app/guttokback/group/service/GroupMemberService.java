@@ -19,7 +19,7 @@ public class GroupMemberService {
 
     @Transactional
     public void addMember(UserEntity user, SubscriptionGroupEntity subscriptionGroup) {
-        validateMember(user, subscriptionGroup);
+        validateJoinGroup(user, subscriptionGroup);
         GroupMemberEntity groupMemberEntity = GroupMemberEntity.builder()
                 .user(user)
                 .subscriptionGroup(subscriptionGroup)
@@ -28,7 +28,7 @@ public class GroupMemberService {
         groupMemberRepository.save(groupMemberEntity);
     }
 
-    private void validateMember(UserEntity user, SubscriptionGroupEntity subscriptionGroup) {
+    private void validateJoinGroup(UserEntity user, SubscriptionGroupEntity subscriptionGroup) {
         if (groupMemberRepository.existsByUserAndSubscriptionGroup(user, subscriptionGroup)) {
             throw new CustomApplicationException(ErrorCode.MEMBER_ALREADY_JOINED_GROUP);
         }
