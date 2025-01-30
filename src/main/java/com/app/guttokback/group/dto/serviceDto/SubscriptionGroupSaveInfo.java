@@ -2,7 +2,6 @@ package com.app.guttokback.group.dto.serviceDto;
 
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
-import com.app.guttokback.subscription.domain.PaymentStatus;
 import com.app.guttokback.subscription.domain.Subscription;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -22,8 +21,6 @@ public class SubscriptionGroupSaveInfo {
     private long paymentAmount;
 
     private PaymentMethod paymentMethod;
-
-    private PaymentStatus paymentStatus;
 
     private PaymentCycle paymentCycle;
 
