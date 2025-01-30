@@ -37,7 +37,6 @@ public class SubscriptionGroupSaveInfo {
                                      Subscription subscription,
                                      long paymentAmount,
                                      PaymentMethod paymentMethod,
-                                     PaymentStatus paymentStatus,
                                      PaymentCycle paymentCycle,
                                      int paymentDay,
                                      String notice
@@ -47,7 +46,6 @@ public class SubscriptionGroupSaveInfo {
         this.subscription = subscription;
         this.paymentAmount = paymentAmount;
         this.paymentMethod = paymentMethod;
-        this.paymentStatus = paymentStatus;
         this.paymentCycle = paymentCycle;
         this.paymentDay = paymentDay;
         this.notice = notice;
