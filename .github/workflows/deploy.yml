@@ -3,7 +3,7 @@ name: Docker Build and Push
 on:
   push:
     branches:
-      #- main  # main 브랜치에 push될 때 실행
+      - GUTTOK-67  # 브랜치에 push될 때 실행
       - issue/**  # issue/** 브랜치에 push될 때 실행
 
 jobs:
