@@ -4,15 +4,20 @@ FROM openjdk:21-jdk-slim
 # Set working directory
 WORKDIR /app
 
-# Copy source code and Gradle files
+# Copy source code and Gradle wrapper
 COPY . /app
 
-# Install dependencies and build the application
-RUN ./gradlew clean bootJar
+# Grant execution permission for gradlew
+RUN chmod +x ./gradlew
 
-# Copy the built application JAR
-ARG JAR_FILE=./build/libs/guttok-back-0.0.1-SNAPSHOT.jar
-COPY ${JAR_FILE} /app.jar
+# Build application using bootJar
+RUN ./gradlew clean bootJar --stacktrace --info
+
+# Check if JAR file is created
+RUN ls -l ./build/libs
+
+# Copy the built JAR file
+ADD ./build/libs/*.jar /app.jar
 
 # Expose application port
 EXPOSE 8080
