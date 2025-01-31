@@ -7,17 +7,14 @@ WORKDIR /app
 # Copy source code and Gradle wrapper
 COPY . /app
 
-# Grant execution permission for gradlew
+# Grant execution permission for Gradlew
 RUN chmod +x ./gradlew
 
 # Build application using bootJar
 RUN ./gradlew clean bootJar --stacktrace --info
 
-# Check if JAR file is created
-RUN ls -l ./build/libs
-
 # Copy the built JAR file
-COPY ./build/libs/*.jar /app.jar
+COPY build/libs/app.jar /app.jar
 
 # Expose application port
 EXPOSE 8080

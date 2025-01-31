@@ -6,9 +6,7 @@ networks:
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     container_name: app
     restart: always
     ports:
@@ -22,6 +20,11 @@ services:
       REDIS_HOST: ${REDIS_HOST}
       REDIS_PORT: ${REDIS_PORT}
       REDIS_PASSWORD: ${REDIS_PASSWORD}
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - ./build/libs/app.jar:/app.jar # 로컬에서 빌드된 JAR 파일을 컨테이너에 마운트
 
   mysql:
     image: mysql:8.0
