@@ -1,26 +1,25 @@
-# Base image
-FROM openjdk:21-jdk-slim
+# 1️⃣ Build Stage
+FROM openjdk:21-jdk-slim AS build
 
-# Set working directory
 WORKDIR /app
 
-# Copy source code and Gradle wrapper
+# Gradle wrapper 및 소스 코드 복사
 COPY . /app
 
-# Grant execution permission for gradlew
+# 실행 권한 부여 및 빌드 실행
 RUN chmod +x ./gradlew
-
-# Build application using bootJar
 RUN ./gradlew clean bootJar --stacktrace --info
 
-# Check if JAR file is created
-RUN ls -l ./build/libs
+# Runtime Stage
+FROM openjdk:21-jdk-slim
 
-# Copy the built JAR file
-ADD ./build/libs/*.jar /app.jar
+WORKDIR /app
 
-# Expose application port
+# 빌드된 JAR 파일 복사
+COPY --from=build /app/build/libs/*.jar /app.jar
+
+# 포트 설정
 EXPOSE 8080
 
-# Run the application
+# 애플리케이션 실행
 CMD ["java", "-jar", "/app.jar"]
