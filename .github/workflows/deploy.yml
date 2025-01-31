@@ -61,6 +61,11 @@ jobs:
 
       - name: Build and push app image
         run: |
+          if [[ -z "${{ secrets.DOCKERHUB_USERNAME }}" ]]; then
+            echo "Error: DOCKERHUB_USERNAME is not set"
+            exit 1
+          fi
           docker-compose -f docker-compose-build.yml build
           docker tag app:latest ${{ secrets.DOCKERHUB_USERNAME }}/app:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/app:latest
+      
