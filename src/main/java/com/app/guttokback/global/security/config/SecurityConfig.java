@@ -26,7 +26,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/swagger", "/swagger-ui.html", "/swagger-ui/**",
                                 "/api-docs", "/api-docs/**", "/v3/api-docs/**",
-                                "/api/users/signup", "/api/users/signin", "/api/users/find-password"
+                                "/api/users/signup", "/api/users/signin", "/api/users/find-password",
+                                "/hello"
                         ).permitAll()
                         .anyRequest().permitAll()
                         /*.requestMatchers("/api/subscriptions/**").hasRole(String.valueOf(Roles.ROLE_USER))*/

@@ -1,0 +1,55 @@
+version: "3.8"
+
+networks:
+  back_network:
+    driver: bridge
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    restart: always
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      MYSQL_URL: jdbc:mysql://mysql:3306/${DOCKER_MYSQL_DATABASE}
+      MYSQL_USERNAME: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+
+  mysql:
+    image: mysql:8.0
+    container_name: guttok_mysql_out
+    restart: always
+    ports:
+      - "13306:3306"
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DOCKER_MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${DOCKER_MYSQL_DATABASE}
+      TZ: ${DOCKER_TZ}
+    command: [ "--character-set-server=${DOCKER_MYSQL_CHARSET}", "--collation-server=${DOCKER_MYSQL_COLLATION}" ]
+    volumes:
+      - ./db/mysql/data:/var/lib/mysql
+      - ./db/mysql/init:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:7.0
+    container_name: guttok_redis_out
+    restart: always
+    ports:
+      - "6380:6379"
+    env_file:
+      - .env
+    command: [ "sh", "-c", "redis-server --requirepass $DOCKER_REDIS_PASSWORD" ]
+    environment:
+      TZ: ${DOCKER_TZ}
+    volumes:
+      - ./db/redis/data:/data
