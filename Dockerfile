@@ -17,7 +17,7 @@ RUN ./gradlew clean bootJar --stacktrace --info
 RUN ls -l ./build/libs
 
 # Copy the built JAR file
-ADD ./build/libs/*.jar /app.jar
+COPY ./build/libs/*.jar /app.jar
 
 # Expose application port
 EXPOSE 8080
