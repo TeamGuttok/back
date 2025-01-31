@@ -13,8 +13,11 @@ RUN chmod +x ./gradlew
 # Build application using bootJar
 RUN ./gradlew clean bootJar --stacktrace --info
 
-# Copy the built JAR file
-COPY build/libs/app.jar /app.jar
+# Build arguments
+ARG JAR_FILE=build/libs/*.jar
+
+# Copy the application JAR
+COPY ${JAR_FILE} app.jar
 
 # Expose application port
 EXPOSE 8080
