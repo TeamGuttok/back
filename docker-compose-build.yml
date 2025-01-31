@@ -6,6 +6,7 @@ networks:
 
 services:
   app:
+    image: ${DOCKERHUB_NAME}/guttok_app:latest
     build:
       context: .
       dockerfile: Dockerfile
