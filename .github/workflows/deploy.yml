@@ -27,7 +27,7 @@ jobs:
         run: ./gradlew clean build -x test
 
       - name: Log in to Docker Hub
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Generate .env file
         run: |
@@ -58,6 +58,7 @@ jobs:
 
       - name: Build and push Docker images
         run: |
+          export IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/guttok:latest"
           docker-compose -f ${{ github.workspace }}/docker-compose-build.yml build
-          docker-compose -f ${{ github.workspace }}/docker-compose-build.yml push
-      
+          docker tag my-app:latest $IMAGE_NAME
+          docker push $IMAGE_NAME
