@@ -11,16 +11,16 @@ COPY . /app
 RUN chmod +x ./gradlew
 
 # Build application using bootJar
-RUN ./gradlew clean bootJar --stacktrace --info
+RUN ./gradlew clean bootJar --stacktrace --info || (echo "Gradle build failed!" && exit 1)
 
-# Build arguments
-ARG JAR_FILE=build/libs/*.jar
+# List the build/libs directory to check if JAR was created
+RUN ls -lh build/libs/
 
 # Copy the application JAR
-COPY ${JAR_FILE} app.jar
+COPY build/libs/*.jar /app/app.jar
 
 # Expose application port
 EXPOSE 8080
 
 # Run the application
-CMD ["java", "-jar", "/app.jar"]
+CMD ["java", "-jar", "/app/app.jar"]

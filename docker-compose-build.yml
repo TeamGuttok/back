@@ -23,7 +23,7 @@ services:
       - mysql
       - redis
     volumes:
-      - /home:/data
+      - ./build/libs:/app
 
   mysql:
     image: mysql:8.0
