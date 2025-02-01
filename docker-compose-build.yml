@@ -1,12 +1,8 @@
 version: "3.8"
 
-networks:
-  back_network:
-    driver: bridge
-
 services:
   app:
-    image: ${DOCKERHUB_NAME}/guttok_app:latest
+    image: guttok_app:latest
     build:
       context: .
       dockerfile: Dockerfile
