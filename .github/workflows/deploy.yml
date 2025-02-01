@@ -58,7 +58,7 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-          export IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/guttok:latest"
+          export IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/guttok:latest"
           docker-compose -f ${{ github.workspace }}/docker-compose-build.yml build
           docker tag my-app:latest $IMAGE_NAME
           docker push $IMAGE_NAME
