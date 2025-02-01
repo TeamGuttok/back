@@ -74,5 +74,5 @@ tasks.named('test') {
 }
 
 tasks.named('bootJar') {
-    mainClass = 'com.app.guttokback.GuttokbackApplication'
+    mainClass = 'com.app.guttokback.GuttokBackApplication'
 }
