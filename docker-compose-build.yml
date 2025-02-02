@@ -13,6 +13,13 @@ services:
     depends_on:
       - mysql
       - redis
+    environment:
+      - MYSQL_URL=jdbc:mysql://mysql:3306/${DOCKER_MYSQL_DATABASE}
+      - MYSQL_USERNAME=${DOCKER_MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${DOCKER_MYSQL_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     volumes:
       - ./build/libs/app.jar:/app/app.jar
       - /home:/data

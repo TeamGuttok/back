@@ -40,10 +40,10 @@ jobs:
       - name: Generate .env file
         run: |
           cat <<EOF > .env
-          MYSQL_URL=${{ secrets.MYSQL_URL }}
-          MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}
-          MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
-          REDIS_HOST=root
+          MYSQL_URL=jdbc:mysql://mysql:3306/${{ secrets.DOCKER_MYSQL_DATABASE }}
+          MYSQL_USERNAME=${{ secrets.DOCKER_MYSQL_USERNAME }}
+          MYSQL_PASSWORD=${{ secrets.DOCKER_MYSQL_PASSWORD }}
+          REDIS_HOST=redis
           REDIS_PORT=${{ secrets.REDIS_PORT }}
           REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
           AWS_REGION=${{ secrets.AWS_REGION }}
