@@ -4,19 +4,19 @@ FROM openjdk:21-jdk-slim
 # Set working directory
 WORKDIR /app
 
-# Copy source code and Gradle wrapper
+# Copy source code
 COPY . /app
 
-# Grant execution permission for Gradlew
+# Grant execution permission for Gradle
 RUN chmod +x ./gradlew
 
 # Build application using bootJar
-RUN ./gradlew clean bootJar --stacktrace --info || (echo "Gradle build failed!" && exit 1)
+RUN ./gradlew clean bootJar -x test --stacktrace --info || (echo "Gradle bootJar build failed!" && exit 1)
 
-# List the build/libs directory to check if JAR was created
+# 확인용 - 빌드된 JAR 파일 목록 출력
 RUN ls -lh build/libs/
 
-# Copy the application JAR
+# Copy the bootJar JAR file
 COPY build/libs/*.jar /app/app.jar
 
 # Expose application port
