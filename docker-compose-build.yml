@@ -15,7 +15,7 @@ services:
       - redis
     volumes:
       - ./build/libs/app.jar:/app/app.jar
-      - .env:/app/.env
+      - /home:/data
 
   mysql:
     image: mysql:8.0
