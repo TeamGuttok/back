@@ -10,20 +10,12 @@ services:
     restart: always
     ports:
       - "8080:8080"
-    env_file:
-      - .env
-    environment:
-      MYSQL_URL: jdbc:mysql://mysql:3306/${DOCKER_MYSQL_DATABASE}
-      MYSQL_USERNAME: ${MYSQL_USERNAME}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
     depends_on:
       - mysql
       - redis
     volumes:
       - ./build/libs/app.jar:/app/app.jar
+      - .env:/app/.env
 
   mysql:
     image: mysql:8.0
