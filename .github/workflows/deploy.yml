@@ -66,7 +66,5 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-          export COMBINED_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/guttok_combined:latest"
-          
-          docker build -t $COMBINED_IMAGE .
-          docker push $COMBINED_IMAGE
+          docker-compose -f ${{ github.workspace }}/docker-compose.yml build
+          docker-compose -f ${{ github.workspace }}/docker-compose.yml push
