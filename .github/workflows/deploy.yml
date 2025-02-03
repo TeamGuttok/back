@@ -3,8 +3,7 @@ name: Docker Build and Push
 on:
   push:
     branches:
-      - GUTTOK-67
-      - issue/**
+      - main
 
 jobs:
   build-and-push:
