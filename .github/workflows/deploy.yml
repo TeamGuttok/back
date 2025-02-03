@@ -64,7 +64,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build and push Docker images for app, mysql, and redis
+      - name: Build and push Docker images for app
         run: |
           export IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/guttok_app:latest"
           docker-compose -f ${{ github.workspace }}/docker-compose-build.yml build
