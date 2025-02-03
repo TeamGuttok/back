@@ -28,7 +28,10 @@ public enum ErrorCode {
     OVER_REQUEST_COUNT(HttpStatus.TOO_MANY_REQUESTS, "EMAIL_01", "인증코드 요청 횟수를 초과했습니다"),
 
     // group
-    MEMBER_ALREADY_JOINED_GROUP(HttpStatus.CONFLICT, "GROUP_02", "이미 참가한 그룹입니다.");
+    MEMBER_ALREADY_JOINED_GROUP(HttpStatus.CONFLICT, "GROUP_02", "이미 참가한 그룹입니다."),
+
+    // json
+    INVALID_JSON_INPUT(HttpStatus.BAD_REQUEST, "JSON_ERROR", "%s 필드 값이 잘못되었습니다. [%s] 타입이어야 합니다.");
 
 
     private final HttpStatus httpStatus;
