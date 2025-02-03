@@ -24,6 +24,8 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
     volumes:
       - /home:/data
+    env_file:
+      - .env
 
   mysql:
     image: mysql:8.0
