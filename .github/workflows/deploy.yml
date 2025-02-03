@@ -66,16 +66,7 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-          export APP_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/guttok_app:latest"
-          export MYSQL_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/guttok_mysql:latest"
-          export REDIS_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/guttok_redis:latest"
-            
-          docker-compose -f ${{ github.workspace }}/docker-compose-build.yml build
-            
-          docker tag guttok_app:latest $APP_IMAGE
-          docker tag guttok_mysql:latest $MYSQL_IMAGE
-          docker tag guttok_redis:latest $REDIS_IMAGE
-            
-          docker push $APP_IMAGE
-          docker push $MYSQL_IMAGE
-          docker push $REDIS_IMAGE
+          export COMBINED_IMAGE="${{ secrets.DOCKERHUB_USERNAME }}/guttok_combined:latest"
+          
+          docker build -t $COMBINED_IMAGE .
+          docker push $COMBINED_IMAGE
