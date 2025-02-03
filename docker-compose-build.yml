@@ -1,5 +1,8 @@
 version: "3.8"
 
+volumes:
+  mysql-data:
+
 services:
   app:
     image: guttok_app:latest
@@ -67,6 +70,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-
-volumes:
-  mysql-data:
