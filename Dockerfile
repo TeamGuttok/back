@@ -10,14 +10,14 @@ COPY . /app
 # Grant execution permission for Gradle
 RUN chmod +x ./gradlew
 
-# Copy the bootJar JAR file dynamically
-RUN JAR_FILE=$(ls build/libs/guttok-back-*.jar | tail -n 1) && cp "$JAR_FILE"
+# Remove existing JAR files and build application using bootJar
+RUN rm -rf build/libs/*.jar && ./gradlew clean bootJar -x test --stacktrace --info || (echo "Gradle bootJar build failed!" && exit 1)
 
 # 확인용 - 빌드된 JAR 파일 목록 출력
 RUN ls -lh build/libs/
 
-# Copy the specific bootJar JAR file
-RUN cp build/libs/guttok-back-0.0.1-SNAPSHOT.jar
+# Find the generated bootJar file dynamically and copy it to /app.jar
+RUN JAR_FILE=$(ls build/libs/*-back-*.jar | tail -n 1) && cp "$JAR_FILE" /app.jar
 
 # Expose application port
 EXPOSE 8080
