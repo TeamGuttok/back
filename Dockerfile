@@ -1,6 +1,12 @@
 # Base image
 FROM openjdk:21-jdk-slim
 
+# Set working directory
+WORKDIR /app
+
+# Copy source code
+COPY . /app
+
 # Grant execution permission for Gradle
 RUN chmod +x ./gradlew
 
