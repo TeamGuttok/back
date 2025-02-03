@@ -1,8 +1,5 @@
 version: "3.8"
 
-volumes:
-  mysql-data:
-
 services:
   app:
     image: guttok_app:latest
@@ -44,7 +41,7 @@ services:
       TZ: ${DOCKER_TZ}
     command: [ "--character-set-server=${DOCKER_MYSQL_CHARSET}", "--collation-server=${DOCKER_MYSQL_COLLATION}" ]
     volumes:
-      - mysql/data:/var/lib/mysql
+      - ./db/mysql/data:/var/lib/mysql
       - ./db/mysql/init:/docker-entrypoint-initdb.d
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_PASSWORD}" ]
