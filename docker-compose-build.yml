@@ -11,8 +11,17 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
-      - redis
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - MYSQL_URL=jdbc:mysql://mysql:3306/${DOCKER_MYSQL_DATABASE}
+      - MYSQL_USERNAME=${DOCKER_MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${DOCKER_MYSQL_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     volumes:
       - ./build/libs/app.jar:/app/app.jar
       - /home:/data
@@ -33,6 +42,11 @@ services:
     volumes:
       - ./db/mysql/data:/var/lib/mysql
       - ./db/mysql/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_PASSWORD}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   redis:
     image: redis:7.0
@@ -47,3 +61,8 @@ services:
       TZ: ${DOCKER_TZ}
     volumes:
       - ./db/redis/data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
