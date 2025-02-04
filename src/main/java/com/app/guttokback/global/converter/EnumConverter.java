@@ -1,5 +1,7 @@
 package com.app.guttokback.global.converter;
 
+import com.app.guttokback.notification.domain.Category;
+import com.app.guttokback.notification.domain.Status;
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
 import com.app.guttokback.subscription.domain.PaymentStatus;
@@ -54,6 +56,20 @@ public class EnumConverter<T extends Enum<T>> implements AttributeConverter<T, S
     public static class SubscriptionConverter extends EnumConverter<Subscription> {
         public SubscriptionConverter() {
             super(Subscription.class);
+        }
+    }
+
+    @Converter(autoApply = true)
+    public static class CategoryConverter extends EnumConverter<Category> {
+        public CategoryConverter() {
+            super(Category.class);
+        }
+    }
+
+    @Converter(autoApply = true)
+    public static class StatusConverter extends EnumConverter<Status> {
+        public StatusConverter() {
+            super(Status.class);
         }
     }
 }
