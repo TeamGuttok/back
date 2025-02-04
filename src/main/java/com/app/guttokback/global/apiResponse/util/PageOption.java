@@ -1,9 +1,9 @@
-package com.app.guttokback.subscription.dto.serviceDto;
+package com.app.guttokback.global.apiResponse.util;
 
 import lombok.Getter;
 
 @Getter
-public class UserSubscriptionListInfo {
+public class PageOption {
 
     private final String userEmail;
 
@@ -11,7 +11,7 @@ public class UserSubscriptionListInfo {
 
     private final long size;
 
-    public UserSubscriptionListInfo(String userEmail, Long lastId, long size) {
+    public PageOption(String userEmail, Long lastId, long size) {
         this.userEmail = userEmail;
         this.lastId = lastId;
         this.size = size;
