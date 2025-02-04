@@ -27,7 +27,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run tests with Gradle
-        run: ./gradlew test
+        run: ./gradlew clean build -Duser.language=ko -Duser.country=KR
 
   build-and-push:
     runs-on: ubuntu-latest
@@ -48,7 +48,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle (bootJar, with tests)
-        run: ./gradlew clean bootJar
+        run: ./gradlew clean build -Duser.language=ko -Duser.country=KR
 
       - name: Check built JAR files
         run: ls -lh build/libs/
