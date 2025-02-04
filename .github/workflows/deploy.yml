@@ -11,7 +11,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
 
     steps:
       - name: Checkout repository
@@ -48,7 +47,7 @@ jobs:
         shell: bash
 
       - name: Run tests with Gradle
-        run: ./gradlew clean build -x test
+        run: ./gradlew clean build -Duser.language=ko -Duser.country=KR
 
   build-and-push:
     runs-on: ubuntu-latest
