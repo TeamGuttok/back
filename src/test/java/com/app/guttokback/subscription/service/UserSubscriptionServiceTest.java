@@ -1,10 +1,14 @@
 package com.app.guttokback.subscription.service;
 
 import com.app.guttokback.global.apiResponse.PageResponse;
+import com.app.guttokback.global.apiResponse.util.PageOption;
 import com.app.guttokback.global.exception.CustomApplicationException;
 import com.app.guttokback.subscription.domain.*;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
-import com.app.guttokback.subscription.dto.serviceDto.*;
+import com.app.guttokback.subscription.dto.serviceDto.SubscriptionListInfo;
+import com.app.guttokback.subscription.dto.serviceDto.SubscriptionSearchInfo;
+import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionSaveInfo;
+import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionUpdateInfo;
 import com.app.guttokback.subscription.repository.UserSubscriptionRepository;
 import com.app.guttokback.user.domain.UserEntity;
 import com.app.guttokback.user.repository.UserRepository;
@@ -135,12 +139,12 @@ class UserSubscriptionServiceTest {
                 .build();
         UserSubscriptionEntity savedUserSubscription = userSubscriptionRepository.save(userSubscription);
 
-        UserSubscriptionListInfo userSubscriptionListInfo = new UserSubscriptionListInfo(
+        PageOption pageOption = new PageOption(
                 savedUser.getEmail(), null, 5
         );
 
         // when
-        PageResponse<UserSubscriptionListResponse> list = userSubscriptionService.list(userSubscriptionListInfo);
+        PageResponse<UserSubscriptionListResponse> list = userSubscriptionService.list(pageOption);
 
         // then
         assertThat(list.getContents())

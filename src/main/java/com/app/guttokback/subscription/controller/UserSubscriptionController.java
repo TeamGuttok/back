@@ -2,8 +2,8 @@ package com.app.guttokback.subscription.controller;
 
 import com.app.guttokback.global.apiResponse.ApiResponse;
 import com.app.guttokback.global.apiResponse.PageResponse;
+import com.app.guttokback.global.apiResponse.util.PageRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.SubscriptionSearchRequest;
-import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionListRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionSaveRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionUpdateRequest;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
@@ -38,10 +38,10 @@ public class UserSubscriptionController {
 
     @GetMapping("/user")
     public PageResponse<UserSubscriptionListResponse> userSubscriptionList(
-            @Valid UserSubscriptionListRequest userSubscriptionListRequest,
+            @Valid PageRequest pageRequest,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
-        return userSubscriptionService.list(userSubscriptionListRequest.toListOption(userDetails.getUsername()));
+        return userSubscriptionService.list(pageRequest.toListOption(userDetails.getUsername()));
     }
 
     @PatchMapping("/{userSubscriptionId}")

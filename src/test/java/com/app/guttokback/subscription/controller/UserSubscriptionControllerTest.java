@@ -2,15 +2,19 @@ package com.app.guttokback.subscription.controller;
 
 import com.app.guttokback.global.apiResponse.PageResponse;
 import com.app.guttokback.global.apiResponse.ResponseMessages;
+import com.app.guttokback.global.apiResponse.util.PageOption;
+import com.app.guttokback.global.apiResponse.util.PageRequest;
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
 import com.app.guttokback.subscription.domain.PaymentStatus;
 import com.app.guttokback.subscription.domain.Subscription;
-import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionListRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionSaveRequest;
 import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptionUpdateRequest;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
-import com.app.guttokback.subscription.dto.serviceDto.*;
+import com.app.guttokback.subscription.dto.serviceDto.SubscriptionListInfo;
+import com.app.guttokback.subscription.dto.serviceDto.SubscriptionSearchInfo;
+import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionSaveInfo;
+import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionUpdateInfo;
 import com.app.guttokback.subscription.service.UserSubscriptionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -77,7 +81,7 @@ class UserSubscriptionControllerTest {
     @DisplayName("사용자 구독정보 조회 시 요청 데이터가 성공 응답을 반환한다.")
     public void userSubscriptionListTest() throws Exception {
         // given
-        UserSubscriptionListRequest listRequest = new UserSubscriptionListRequest(testId, 1L);
+        PageRequest listRequest = new PageRequest(testId, 1L);
 
         UserSubscriptionListResponse mockResponse = UserSubscriptionListResponse.builder()
                 .title("test")
@@ -87,7 +91,7 @@ class UserSubscriptionControllerTest {
                 .paymentDay(1)
                 .build();
 
-        when(userSubscriptionService.list(any(UserSubscriptionListInfo.class)))
+        when(userSubscriptionService.list(any(PageOption.class)))
                 .thenReturn(PageResponse.of(Collections.singletonList(mockResponse), 1L, false));
 
         // when & then
@@ -100,7 +104,7 @@ class UserSubscriptionControllerTest {
                 .andExpect(jsonPath("$.size").value(1))
                 .andExpect(jsonPath("$.hasNext").value(false));
 
-        verify(userSubscriptionService).list(any(UserSubscriptionListInfo.class));
+        verify(userSubscriptionService).list(any(PageOption.class));
     }
 
     @Test
