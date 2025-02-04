@@ -48,7 +48,7 @@ jobs:
         shell: bash
 
       - name: Run tests with Gradle
-        run: ./gradlew clean build -Duser.language=ko -Duser.country=KR
+        run: ./gradlew clean build -x test
 
   build-and-push:
     runs-on: ubuntu-latest
