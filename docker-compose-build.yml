@@ -2,10 +2,7 @@ version: "3.8"
 
 services:
   app:
-    image: guttok_app:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${DOCKERHUB_USERNAME}/guttok_app:latest
     container_name: guttok_app
     restart: always
     ports:
