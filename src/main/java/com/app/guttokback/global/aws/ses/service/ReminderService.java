@@ -1,5 +1,6 @@
 package com.app.guttokback.global.aws.ses.service;
 
+import com.app.guttokback.notification.service.NotificationService;
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
 import com.app.guttokback.subscription.repository.UserSubscriptionQueryRepository;
@@ -20,6 +21,7 @@ public class ReminderService {
     private final UserSubscriptionRepository userSubscriptionRepository;
     private final EmailService emailService;
     private final EmailTemplateService emailTemplateService;
+    private final NotificationService notificationService;
 
     @Transactional
     public void sendReminder(LocalDate now) {
@@ -34,6 +36,10 @@ public class ReminderService {
                             .sum();
                     // 템플릿에 필요한 데이터 전달
                     emailService.sendEmail(emailTemplateService.createReminderTemplate(userSubscriptions, user, totalAmount));
+                    // 구독 항목 별 알림 저장
+                    userSubscriptions.forEach(subscription -> {
+                        notificationService.reminderNotification(user, subscription);
+                    });
                     // 이메일 발송 된 구독항목 ReminderDate Payment Day, Cycle에 따른 변경
                     userSubscriptions.forEach(UserSubscriptionEntity::updateReminderDate);
                 });
