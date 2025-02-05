@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -66,12 +68,12 @@ class NotificationServiceTest {
         return userSubscriptionRepository.save(userSubscription);
     }
 
-    private NotificationEntity createNotification(UserEntity user) {
+    private NotificationEntity createNotification(UserEntity user, Status status) {
         NotificationEntity notification = new NotificationEntity(
                 user,
                 Category.APPLICATION,
                 "test",
-                Status.UNREAD
+                status
         );
         return notificationRepository.save(notification);
     }
@@ -126,7 +128,7 @@ class NotificationServiceTest {
     public void notificationListTest() {
         // given
         UserEntity user = createUser("test2@test.com");
-        NotificationEntity notification = createNotification(user);
+        NotificationEntity notification = createNotification(user, Status.UNREAD);
 
         PageOption pageOption = new PageOption(
                 user.getEmail(), null, 5
@@ -150,7 +152,7 @@ class NotificationServiceTest {
     public void statusUpdateTest() {
         // given
         UserEntity user = createUser("test3@test.com");
-        NotificationEntity savedNotification = createNotification(user);
+        NotificationEntity savedNotification = createNotification(user, Status.UNREAD);
 
         // when
         notificationService.statusUpdate(user.getEmail());
@@ -159,6 +161,21 @@ class NotificationServiceTest {
         NotificationEntity notification = notificationRepository.findAll().getFirst();
         assertThat(savedNotification.getStatus()).isNotEqualTo(notification.getStatus());
         assertThat(notification.getStatus()).isEqualTo(Status.READ);
+    }
+
+    @Test
+    @DisplayName("회원에 대한 알림이 읽음 처리된 것에 대한 삭제가 정상적으로 처리된다.")
+    public void notificationDeleteTest() {
+        // given
+        UserEntity user = createUser("test4@test.com");
+        createNotification(user, Status.READ);
+
+        // when
+        notificationService.delete(user.getEmail());
+
+        // then
+        List<NotificationEntity> notifications = notificationRepository.findAll();
+        assertThat(notifications).isEmpty();
     }
 
 }
