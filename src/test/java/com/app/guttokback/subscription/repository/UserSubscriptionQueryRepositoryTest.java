@@ -1,11 +1,11 @@
 package com.app.guttokback.subscription.repository;
 
+import com.app.guttokback.global.apiResponse.util.PageOption;
 import com.app.guttokback.global.queryDsl.QueryDslConfig;
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
 import com.app.guttokback.subscription.domain.Subscription;
 import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
-import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionListInfo;
 import com.app.guttokback.user.domain.UserEntity;
 import com.app.guttokback.user.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -64,13 +64,13 @@ class UserSubscriptionQueryRepositoryTest {
                 .build();
         UserSubscriptionEntity savedUserSubscription = userSubscriptionRepository.save(userSubscription);
 
-        UserSubscriptionListInfo userSubscriptionListInfo = new UserSubscriptionListInfo(
+        PageOption pageOption = new PageOption(
                 null, null, 5
         );
 
         // when
         List<UserSubscriptionEntity> list
-                = userSubscriptionQueryRepository.findPagedUserSubscriptions(userSubscriptionListInfo);
+                = userSubscriptionQueryRepository.findPagedUserSubscriptions(pageOption);
 
         // then
         assertThat(list).hasSize(1);

@@ -1,6 +1,7 @@
 package com.app.guttokback.subscription.service;
 
 import com.app.guttokback.global.apiResponse.PageResponse;
+import com.app.guttokback.global.apiResponse.util.PageOption;
 import com.app.guttokback.global.aws.ses.service.ReminderService;
 import com.app.guttokback.global.exception.CustomApplicationException;
 import com.app.guttokback.global.exception.ErrorCode;
@@ -8,7 +9,10 @@ import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.Subscription;
 import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
-import com.app.guttokback.subscription.dto.serviceDto.*;
+import com.app.guttokback.subscription.dto.serviceDto.SubscriptionListInfo;
+import com.app.guttokback.subscription.dto.serviceDto.SubscriptionSearchInfo;
+import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionSaveInfo;
+import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionUpdateInfo;
 import com.app.guttokback.subscription.repository.UserSubscriptionQueryRepository;
 import com.app.guttokback.subscription.repository.UserSubscriptionRepository;
 import com.app.guttokback.user.domain.UserEntity;
@@ -53,23 +57,23 @@ public class UserSubscriptionService {
         userSubscriptionRepository.save(userSubscriptionEntity);
     }
 
-    public PageResponse<UserSubscriptionListResponse> list(UserSubscriptionListInfo userSubscriptionListInfo) {
-        userService.findByUserEmail(userSubscriptionListInfo.getUserEmail());
+    public PageResponse<UserSubscriptionListResponse> list(PageOption pageOption) {
+        userService.findByUserEmail(pageOption.getUserEmail());
 
         List<UserSubscriptionEntity> userSubscriptions = userSubscriptionQueryRepository
-                .findPagedUserSubscriptions(userSubscriptionListInfo);
+                .findPagedUserSubscriptions(pageOption);
 
-        boolean hasNext = userSubscriptions.size() > userSubscriptionListInfo.getSize();
+        boolean hasNext = userSubscriptions.size() > pageOption.getSize();
 
         List<UserSubscriptionEntity> pagedSubscriptions = userSubscriptions.stream()
-                .limit(userSubscriptionListInfo.getSize())
+                .limit(pageOption.getSize())
                 .toList();
 
         return PageResponse
                 .of(pagedSubscriptions.stream()
                                 .map(UserSubscriptionListResponse::of)
                                 .toList(),
-                        userSubscriptionListInfo.getSize(),
+                        pageOption.getSize(),
                         hasNext
                 );
     }

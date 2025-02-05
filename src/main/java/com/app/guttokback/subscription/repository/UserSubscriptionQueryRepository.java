@@ -1,7 +1,7 @@
 package com.app.guttokback.subscription.repository;
 
+import com.app.guttokback.global.apiResponse.util.PageOption;
 import com.app.guttokback.subscription.domain.UserSubscriptionEntity;
-import com.app.guttokback.subscription.dto.serviceDto.UserSubscriptionListInfo;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +20,12 @@ public class UserSubscriptionQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     // UserSubscription 리스트 페이징 조회 쿼리
-    public List<UserSubscriptionEntity> findPagedUserSubscriptions(UserSubscriptionListInfo userSubscriptionListInfo) {
+    public List<UserSubscriptionEntity> findPagedUserSubscriptions(PageOption pageOption) {
         return jpaQueryFactory
                 .selectFrom(userSubscriptionEntity)
-                .where(lastIdCondition(userSubscriptionListInfo.getLastId()))
+                .where(lastIdCondition(pageOption.getLastId()))
                 .orderBy(userSubscriptionEntity.id.desc())
-                .limit(userSubscriptionListInfo.getSize() + 1)
+                .limit(pageOption.getSize() + 1)
                 .fetch();
     }
 

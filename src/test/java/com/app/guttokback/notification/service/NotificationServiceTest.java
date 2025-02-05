@@ -1,9 +1,12 @@
 package com.app.guttokback.notification.service;
 
+import com.app.guttokback.global.apiResponse.PageResponse;
+import com.app.guttokback.global.apiResponse.util.PageOption;
 import com.app.guttokback.notification.domain.Category;
 import com.app.guttokback.notification.domain.Message;
 import com.app.guttokback.notification.domain.NotificationEntity;
 import com.app.guttokback.notification.domain.Status;
+import com.app.guttokback.notification.dto.controllerDto.response.NotificationListResponse;
 import com.app.guttokback.notification.repository.NotificationRepository;
 import com.app.guttokback.subscription.domain.PaymentCycle;
 import com.app.guttokback.subscription.domain.PaymentMethod;
@@ -63,6 +66,16 @@ class NotificationServiceTest {
         return userSubscriptionRepository.save(userSubscription);
     }
 
+    private NotificationEntity createNotification(UserEntity user) {
+        NotificationEntity notification = new NotificationEntity(
+                user,
+                Category.APPLICATION,
+                "test",
+                Status.UNREAD
+        );
+        return notificationRepository.save(notification);
+    }
+
     @Test
     @Transactional
     @DisplayName("회원가입 시 정상적으로 환영 알림이 읽지않음 상태로 저장된다.")
@@ -106,6 +119,30 @@ class NotificationServiceTest {
         assertThat(notification.getCategory()).isEqualTo(Category.REMINDER);
         assertThat(notification.getMessage()).isEqualTo(message);
         assertThat(notification.getStatus()).isEqualTo(Status.UNREAD);
+    }
+
+    @Test
+    @DisplayName("존재하는 회원에 대해 생성된 알림이 조회된다.")
+    public void notificationListTest() {
+        // given
+        UserEntity user = createUser("test2@test.com");
+        NotificationEntity notification = createNotification(user);
+
+        PageOption pageOption = new PageOption(
+                user.getEmail(), null, 5
+        );
+
+        // when
+        PageResponse<NotificationListResponse> list = notificationService.list(pageOption);
+
+        // then
+        assertThat(list.getContents())
+                .hasSize(1)
+                .extracting(NotificationListResponse::getId)
+                .containsExactly(notification.getId());
+        assertThat(list.getContents()).extracting(NotificationListResponse::getCategory).containsExactly(Category.APPLICATION);
+        assertThat(list.getContents()).extracting(NotificationListResponse::getMessage).containsExactly("test");
+        assertThat(list.getContents()).extracting(NotificationListResponse::getStatus).containsExactly(Status.UNREAD);
     }
 
 }
