@@ -145,4 +145,20 @@ class NotificationServiceTest {
         assertThat(list.getContents()).extracting(NotificationListResponse::getStatus).containsExactly(Status.UNREAD);
     }
 
+    @Test
+    @DisplayName("회원에 대한 알림이 정상적으로 읽음 처리 된다.")
+    public void statusUpdateTest() {
+        // given
+        UserEntity user = createUser("test3@test.com");
+        NotificationEntity savedNotification = createNotification(user);
+
+        // when
+        notificationService.statusUpdate(user.getEmail());
+
+        // then
+        NotificationEntity notification = notificationRepository.findAll().getFirst();
+        assertThat(savedNotification.getStatus()).isNotEqualTo(notification.getStatus());
+        assertThat(notification.getStatus()).isEqualTo(Status.READ);
+    }
+
 }
