@@ -24,8 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -85,4 +84,16 @@ class NotificationControllerTest {
         verify(notificationService).statusUpdate(testEmail);
     }
 
+    @Test
+    @WithMockUser(username = "test@test.com")
+    @DisplayName("회원에 대해 생성된 알림 읽음 업데이트 시 성공 응답을 반환한다.")
+    public void notificationDeleteTest() throws Exception {
+        mockMvc.perform(delete("/api/notifications")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value(ResponseMessages.NOTIFICATION_DELETE_SUCCESS));
+
+        verify(notificationService).delete(testEmail);
+    }
 }
