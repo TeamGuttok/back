@@ -38,4 +38,8 @@ public class NotificationEntity extends AuditInformation {
         this.message = message;
         this.status = status;
     }
+
+    public void statusUpdate(Status status) {
+        this.status = status;
+    }
 }

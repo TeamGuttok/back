@@ -27,4 +27,7 @@ public class ResponseMessages {
 
     // group
     public static final String SUBSCRIPTION_GROUP_SAVE_SUCCESS = "그룹 생성 성공";
+
+    // notification
+    public static final String NOTIFICATION_READ_SUCCESS = "알림 읽음 처리 성공";
 }

@@ -72,4 +72,10 @@ public class NotificationService {
                         hasNext
                 );
     }
+
+    @Transactional
+    public void statusUpdate(String userEmail) {
+        List<NotificationEntity> unReadNotifications = notificationQueryRepository.findUnReadNotifications(userEmail);
+        unReadNotifications.forEach(notificationEntity -> notificationEntity.statusUpdate(Status.READ));
+    }
 }

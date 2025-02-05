@@ -2,6 +2,7 @@ package com.app.guttokback.notification.repository;
 
 import com.app.guttokback.global.apiResponse.util.PageOption;
 import com.app.guttokback.notification.domain.NotificationEntity;
+import com.app.guttokback.notification.domain.Status;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,16 @@ public class NotificationQueryRepository {
                         .and(lastIdCondition(pageOption.getLastId())))
                 .orderBy(notificationEntity.id.desc())
                 .limit(pageOption.getSize() + 1)
+                .fetch();
+    }
+
+    public List<NotificationEntity> findUnReadNotifications(String userEmail) {
+        return jpaQueryFactory
+                .selectFrom(notificationEntity)
+                .innerJoin(notificationEntity.user, userEntity)
+                .fetchJoin()
+                .where(notificationEntity.status.eq(Status.UNREAD)
+                        .and(userEntity.email.eq(userEmail)))
                 .fetch();
     }
 
