@@ -1,0 +1,99 @@
+name: Docker Build and Push
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Grant execute permission for Gradle
+        run: chmod +x gradlew
+
+      - name: Generate .env file
+        run: |
+          cat <<EOF > .env
+          MYSQL_URL=jdbc:mysql://mysql:3306/${{ secrets.DOCKER_MYSQL_DATABASE }}
+          MYSQL_USERNAME=${{ secrets.DOCKER_MYSQL_USERNAME }}
+          MYSQL_PASSWORD=${{ secrets.DOCKER_MYSQL_PASSWORD }}
+          REDIS_HOST=redis
+          REDIS_PORT=${{ secrets.REDIS_PORT }}
+          REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+          AWS_REGION=${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          DOCKER_MYSQL_PASSWORD=${{ secrets.DOCKER_MYSQL_PASSWORD }}
+          DOCKER_MYSQL_DATABASE=${{ secrets.DOCKER_MYSQL_DATABASE }}
+          DOCKER_MYSQL_CHARSET=${{ secrets.DOCKER_MYSQL_CHARSET }}
+          DOCKER_MYSQL_COLLATION=${{ secrets.DOCKER_MYSQL_COLLATION }}
+          DOCKER_REDIS_PASSWORD=${{ secrets.DOCKER_REDIS_PASSWORD }}
+          DOCKER_TZ=${{ secrets.DOCKER_TZ }}
+          EOF
+        shell: bash
+
+      - name: Run tests with Gradle
+        run: ./gradlew clean bootjar -Duser.language=ko -Duser.country=KR
+
+  build-and-push:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Grant execute permission for Gradle
+        run: chmod +x gradlew
+
+      - name: Generate .env file
+        run: |
+          cat <<EOF > .env
+          MYSQL_URL=jdbc:mysql://mysql:3306/${{ secrets.DOCKER_MYSQL_DATABASE }}
+          MYSQL_USERNAME=${{ secrets.DOCKER_MYSQL_USERNAME }}
+          MYSQL_PASSWORD=${{ secrets.DOCKER_MYSQL_PASSWORD }}
+          REDIS_HOST=redis
+          REDIS_PORT=${{ secrets.REDIS_PORT }}
+          REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+          AWS_REGION=${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          DOCKER_MYSQL_PASSWORD=${{ secrets.DOCKER_MYSQL_PASSWORD }}
+          DOCKER_MYSQL_DATABASE=${{ secrets.DOCKER_MYSQL_DATABASE }}
+          DOCKER_MYSQL_CHARSET=${{ secrets.DOCKER_MYSQL_CHARSET }}
+          DOCKER_MYSQL_COLLATION=${{ secrets.DOCKER_MYSQL_COLLATION }}
+          DOCKER_REDIS_PASSWORD=${{ secrets.DOCKER_REDIS_PASSWORD }}
+          DOCKER_TZ=${{ secrets.DOCKER_TZ }}
+          EOF
+
+      - name: Build Docker Image
+        run: |
+          docker build -t guttok_app:latest .
+
+      - name: Tag and Push to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+          export IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/guttok_app:latest"
+          docker tag guttok_app:latest $IMAGE_NAME
+          docker push $IMAGE_NAME
