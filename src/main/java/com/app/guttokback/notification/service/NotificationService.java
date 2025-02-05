@@ -78,4 +78,10 @@ public class NotificationService {
         List<NotificationEntity> unReadNotifications = notificationQueryRepository.findUnReadNotifications(userEmail);
         unReadNotifications.forEach(notificationEntity -> notificationEntity.statusUpdate(Status.READ));
     }
+
+    @Transactional
+    public void delete(String userEmail) {
+        List<NotificationEntity> readNotifications = notificationQueryRepository.findReadNotifications(userEmail);
+        notificationRepository.deleteAll(readNotifications);
+    }
 }

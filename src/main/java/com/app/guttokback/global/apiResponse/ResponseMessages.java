@@ -30,4 +30,5 @@ public class ResponseMessages {
 
     // notification
     public static final String NOTIFICATION_READ_SUCCESS = "알림 읽음 처리 성공";
+    public static final String NOTIFICATION_DELETE_SUCCESS = "알림 삭제 처리 성공";
 }

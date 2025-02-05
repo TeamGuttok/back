@@ -41,6 +41,16 @@ public class NotificationQueryRepository {
                 .fetch();
     }
 
+    public List<NotificationEntity> findReadNotifications(String userEmail) {
+        return jpaQueryFactory
+                .selectFrom(notificationEntity)
+                .innerJoin(notificationEntity.user, userEntity)
+                .fetchJoin()
+                .where(notificationEntity.status.eq(Status.READ)
+                        .and(userEntity.email.eq(userEmail)))
+                .fetch();
+    }
+
     private BooleanExpression lastIdCondition(Long lastId) {
         return lastId != null ? notificationEntity.id.lt(lastId) : null;
     }

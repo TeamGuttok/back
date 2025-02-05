@@ -46,12 +46,12 @@ class NotificationQueryRepositoryTest {
         return userRepository.save(user);
     }
 
-    private NotificationEntity createNotification(UserEntity user) {
+    private NotificationEntity createNotification(UserEntity user, Status status) {
         NotificationEntity notification = new NotificationEntity(
                 user,
                 Category.APPLICATION,
                 "test",
-                Status.UNREAD
+                status
         );
         return notificationRepository.save(notification);
     }
@@ -61,7 +61,7 @@ class NotificationQueryRepositoryTest {
     public void findPageNotificationsTest() {
         // given
         UserEntity user = createUser("test@test.com");
-        NotificationEntity notification = createNotification(user);
+        NotificationEntity notification = createNotification(user, Status.UNREAD);
 
         PageOption pageOption = new PageOption(user.getEmail(), null, 5);
 
@@ -82,7 +82,7 @@ class NotificationQueryRepositoryTest {
     public void findUnReadNotificationsTest() {
         // given
         UserEntity user = createUser("test1@test.com");
-        NotificationEntity notification = createNotification(user);
+        NotificationEntity notification = createNotification(user, Status.UNREAD);
 
         // when
         List<NotificationEntity> notifications = notificationQueryRepository.findUnReadNotifications(user.getEmail());
@@ -94,6 +94,24 @@ class NotificationQueryRepositoryTest {
         assertThat(notifications).extracting(NotificationEntity::getCategory).containsExactly(notification.getCategory());
         assertThat(notifications).extracting(NotificationEntity::getMessage).containsExactly(notification.getMessage());
         assertThat(notifications).extracting(NotificationEntity::getStatus).containsExactly(Status.UNREAD);
+    }
+
+    @Test
+    public void findReadNotificationsTest() {
+        // given
+        UserEntity user = createUser("test2@test.com");
+        NotificationEntity notification = createNotification(user, Status.READ);
+
+        // when
+        List<NotificationEntity> notifications = notificationQueryRepository.findReadNotifications(user.getEmail());
+
+        // then
+        assertThat(notifications).hasSize(1);
+        assertThat(notifications).extracting(NotificationEntity::getId).containsExactly(notification.getId());
+        assertThat(notifications).extracting(NotificationEntity::getUser).containsExactly(notification.getUser());
+        assertThat(notifications).extracting(NotificationEntity::getCategory).containsExactly(notification.getCategory());
+        assertThat(notifications).extracting(NotificationEntity::getMessage).containsExactly(notification.getMessage());
+        assertThat(notifications).extracting(NotificationEntity::getStatus).containsExactly(Status.READ);
     }
 
 }

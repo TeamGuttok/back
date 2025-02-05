@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,10 +28,15 @@ public class NotificationController {
         return notificationService.list(pageRequest.toListOption(userDetails.getUsername()));
     }
 
-
     @PutMapping
     public ResponseEntity<ApiResponse<String>> notificationUpdate(@AuthenticationPrincipal UserDetails userDetails) {
         notificationService.statusUpdate(userDetails.getUsername());
         return ApiResponse.success(ResponseMessages.NOTIFICATION_READ_SUCCESS);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ApiResponse<String>> notificationDelete(@AuthenticationPrincipal UserDetails userDetails) {
+        notificationService.delete(userDetails.getUsername());
+        return ApiResponse.success(ResponseMessages.NOTIFICATION_DELETE_SUCCESS);
     }
 }
