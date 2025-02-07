@@ -2,10 +2,8 @@ package com.app.guttokback.global.scheduler;
 
 import com.app.guttokback.global.aws.ses.service.ReminderService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class SchedulerTask {
