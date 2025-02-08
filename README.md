@@ -65,15 +65,48 @@
 ## 🚀 Backend 서버 실행 방법
 
 ### 1. 프로젝트 클론
-```bash
-# 프로젝트 클론
-$ git clone https://github.com/TeamGuttok/back.git
 
-# 프로젝트 경로로 이동
-$ cd back
+```bash
+git clone https://github.com/TeamGuttok/back.git
 ```
 
-### 2. Docker Compose
+### 2. 프로젝트 경로 이동
+
+```bash
+cd back
+```
+
+### 3. `.env` 파일 생성
+```java
+// MySQL
+MYSQL_URL=jdbc:mysql://localhost:포트/스키마
+MYSQL_USERNAME=계정 이름
+MYSQL_PASSWORD=비밀번호
+
+// Redis
+REDIS_HOST=호스트명
+REDIS_PORT=포트
+REDIS_PASSWORD=비밀번호
+
+// AWS SES
+ADMIN_EMAIL=이메일을 발송 할 이메일
+AWS_REGION=ap-northeast-2 (지역을 서울로 지정)
+AWS_ACCESS_KEY=IAM accessKey
+AWS_SECRET_KEY=IAM secretKey
+
+// docker-compose
+DOCKER_MYSQL_PASSWORD=비밀번호
+DOCKER_MYSQL_DATABASE=스키마
+DOCKER_MYSQL_CHARSET=utf8mb4
+DOCKER_MYSQL_COLLATION=utf8mb4_unicode_ci
+DOCKER_REDIS_PASSWORD=비밀번호
+DOCKER_TZ=Asia/Seoul (지역)
+
+// docker hub
+DOCKERHUB_USERNAME=jucheolkang
+```
+
+### 4. Docker Compose
 ```bash
 $ docker-compose -f docker-compose-buile.yml up -d
 ```
