@@ -96,3 +96,6 @@ jobs:
           export IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/guttok_app:latest"
           docker tag guttok_app:latest $IMAGE_NAME
           docker push $IMAGE_NAME
+
+
+# test comment
