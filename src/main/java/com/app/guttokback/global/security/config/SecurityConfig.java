@@ -18,6 +18,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final CorsConfig corsConfig;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -28,10 +30,11 @@ public class SecurityConfig {
                                 "/api-docs", "/api-docs/**", "/v3/api-docs/**",
                                 "/api/users/signup", "/api/users/signin", "/api/users/find-password",
                                 "/hello"
-                        ).permitAll()
+                        ).authenticated()
                         .anyRequest().permitAll()
                         /*.requestMatchers("/api/subscriptions/**").hasRole(String.valueOf(Roles.ROLE_USER))*/
                 )
+                .addFilter(corsConfig.corsFilter())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
         return http.build();
     }
