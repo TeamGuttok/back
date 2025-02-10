@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,16 +24,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 "/swagger", "/swagger-ui.html", "/swagger-ui/**",
                                 "/api-docs", "/api-docs/**", "/v3/api-docs/**",
                                 "/api/users/signup", "/api/users/signin", "/api/users/find-password",
+                                "/api/users/certification-number", "/api/users/email-verification", "/api/users/check-session",
+                                "/api/mail/certification",
                                 "/hello"
-                        ).authenticated()
-                        .anyRequest().permitAll()
-                        /*.requestMatchers("/api/subscriptions/**").hasRole(String.valueOf(Roles.ROLE_USER))*/
+                        ).permitAll()
+                        .requestMatchers(
+                                "/api/subscriptions/**",
+                                "/api/notifications/**",
+                                "/api/users/**"
+                        ).hasAnyAuthority(Roles.ROLE_USER.toString())
+                        .anyRequest().authenticated()
                 )
                 .addFilter(corsConfig.corsFilter())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
