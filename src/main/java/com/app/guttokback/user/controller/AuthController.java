@@ -2,11 +2,13 @@ package com.app.guttokback.user.controller;
 
 
 import com.app.guttokback.global.apiResponse.ApiResponse;
+import com.app.guttokback.global.apiResponse.ResponseMessages;
 import com.app.guttokback.user.dto.controllerDto.LoginRequestDto;
 import com.app.guttokback.user.dto.controllerDto.UserCertificationNumberRequestDto;
 import com.app.guttokback.user.service.SessionService;
 import com.app.guttokback.user.service.UserCertificationNumberService;
 import com.app.guttokback.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,6 +34,7 @@ public class AuthController {
     private final UserService userService;
     private final SessionService sessionService;
 
+    @Operation(summary = "로그인", description = "로그인 요청")
     @PostMapping("/signin")
     public ResponseEntity<ApiResponse<String>> signin(@Valid @RequestBody LoginRequestDto loginRequestDto, HttpServletRequest request) {
 
@@ -59,8 +62,9 @@ public class AuthController {
         return ApiResponse.success(USER_LOGIN_SUCCESS, userNickName);
     }
 
+    @Operation(summary = "로그아웃", description = "로그아웃 요청")
     @PostMapping("/signout")
-    public ResponseEntity<ApiResponse<Object>> signout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<ApiResponse<ResponseMessages>> signout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
 
         if (session != null) {
@@ -77,20 +81,23 @@ public class AuthController {
         return ApiResponse.success(USER_LOGOUT_SUCCESS);
     }
 
+    @Operation(summary = "인증번호 검증", description = "인증번호 검증 요청")
     @PostMapping("/certification-number")
-    public ResponseEntity<ApiResponse<Object>> userCertificationNumber(@Valid @RequestBody UserCertificationNumberRequestDto userCertificationNumberRequestDto, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<ResponseMessages>> userCertificationNumber(@Valid @RequestBody UserCertificationNumberRequestDto userCertificationNumberRequestDto, HttpServletRequest request) {
         userCertificationNumberService.responseSession(userCertificationNumberRequestDto.getCertificationNumberDto(), request);
         return ApiResponse.success(CERTIFICATION_NUMBER_SUCCESS);
     }
 
+    @Operation(summary = "이메일 검증", description = "이메일 검증 요청")
     @PostMapping("/email-verification")
-    public ResponseEntity<ApiResponse<Object>> userEmailVerification(@Valid @RequestBody UserCertificationNumberRequestDto userCertificationNumberRequestDto, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<ResponseMessages>> userEmailVerification(@Valid @RequestBody UserCertificationNumberRequestDto userCertificationNumberRequestDto, HttpServletRequest request) {
         userCertificationNumberService.createUnauthenticatedSession(userCertificationNumberRequestDto.getCertificationNumberDto(), request);
         return ApiResponse.success(EMAIL_VERIFICATIOIN_SUCCESS);
     }
 
+    @Operation(summary = "세션 체크", description = "세션 체크 요청")
     @GetMapping("/check-session")
-    public ResponseEntity<ApiResponse<Object>> userCheckSession(HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<ResponseMessages>> userCheckSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         sessionService.checkSession(session);
 

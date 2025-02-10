@@ -4,6 +4,7 @@ import com.app.guttokback.global.apiResponse.ApiResponse;
 import com.app.guttokback.global.apiResponse.ResponseMessages;
 import com.app.guttokback.group.dto.controllerDto.SubscriptionGroupSaveRequest;
 import com.app.guttokback.group.service.SubscriptionGroupService;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,9 @@ public class SubscriptionGroupController {
 
     private final SubscriptionGroupService subscriptionGroupService;
 
+    @Hidden
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> SubscriptionGroupSave(
+    public ResponseEntity<ApiResponse<ResponseMessages>> SubscriptionGroupSave(
             @Valid @RequestBody SubscriptionGroupSaveRequest subscriptionGroupSaveRequest,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
