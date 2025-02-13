@@ -37,12 +37,7 @@ public class UserCertificationNumberService {
 
     }
 
-    // 일치하면 로그인과 같은 권한 부여
-    public void responseSession(GetCertificationNumberDto getCertificationNumberDto, HttpServletRequest request) {
-        // 인증 코드 검증
-        certification(getCertificationNumberDto);
-
-        // 세션 초기화 및 생성
+    private HttpSession initializeUserSession(GetCertificationNumberDto getCertificationNumberDto, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
@@ -56,7 +51,20 @@ public class UserCertificationNumberService {
         String email = getCertificationNumberDto.getEmail();
         session.setAttribute("email", email);
 
+        return session;
+    }
+
+
+    // 일치하면 로그인과 같은 권한 부여
+    public void responseSession(GetCertificationNumberDto getCertificationNumberDto, HttpServletRequest request) {
+        // 인증 코드 검증
+        certification(getCertificationNumberDto);
+
+        // 세션 초기화 및 생성
+        HttpSession session = initializeUserSession(getCertificationNumberDto, request);
+
         // 사용자 정보 가져오기
+        String email = getCertificationNumberDto.getEmail();
         var userDetails = customUserDetailsService.loadUserByUsername(email);
 
         // 인증 객체 생성 및 SecurityContext 설정
@@ -77,16 +85,7 @@ public class UserCertificationNumberService {
 
         certification(getCertificationNumberDto);
 
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        session = request.getSession(true);
-
-        session.setMaxInactiveInterval(600);
-
-        String email = getCertificationNumberDto.getEmail();
-        session.setAttribute("email", email);
+        HttpSession session = initializeUserSession(getCertificationNumberDto, request);
 
         // 권한 없이 세션 반환
         SecurityContextHolder.clearContext();
