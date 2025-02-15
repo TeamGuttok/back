@@ -81,14 +81,14 @@ public class AuthController {
         return ApiResponse.success(USER_LOGOUT_SUCCESS);
     }
 
-    @Operation(summary = "인증번호 검증", description = "인증번호 검증 요청")
+    @Operation(summary = "비밀번호 찾기 인증번호 검증", description = "비밀번호 찾기 인증번호 검증 요청")
     @PostMapping("/certification-number")
     public ResponseEntity<ApiResponse<ResponseMessages>> userCertificationNumber(@Valid @RequestBody UserCertificationNumberRequestDto userCertificationNumberRequestDto, HttpServletRequest request) {
         userCertificationNumberService.responseSession(userCertificationNumberRequestDto.getCertificationNumberDto(), request);
         return ApiResponse.success(CERTIFICATION_NUMBER_SUCCESS);
     }
 
-    @Operation(summary = "이메일 검증", description = "이메일 검증 요청")
+    @Operation(summary = "회원가입 이메일 인증번호 검증", description = "회원가입 이메일 인증번호 검증 요청")
     @PostMapping("/email-verification")
     public ResponseEntity<ApiResponse<ResponseMessages>> userEmailVerification(@Valid @RequestBody UserCertificationNumberRequestDto userCertificationNumberRequestDto, HttpServletRequest request) {
         userCertificationNumberService.createUnauthenticatedSession(userCertificationNumberRequestDto.getCertificationNumberDto(), request);
