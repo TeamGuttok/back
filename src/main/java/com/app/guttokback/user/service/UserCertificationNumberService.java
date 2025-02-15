@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -65,7 +66,7 @@ public class UserCertificationNumberService {
 
         // 사용자 정보 가져오기
         String email = getCertificationNumberDto.getEmail();
-        var userDetails = customUserDetailsService.loadUserByUsername(email);
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
         // 인증 객체 생성 및 SecurityContext 설정
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -85,7 +86,7 @@ public class UserCertificationNumberService {
 
         certification(getCertificationNumberDto);
 
-        HttpSession session = initializeUserSession(getCertificationNumberDto, request);
+        initializeUserSession(getCertificationNumberDto, request);
 
         // 권한 없이 세션 반환
         SecurityContextHolder.clearContext();
