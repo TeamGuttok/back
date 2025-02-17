@@ -1,4 +1,3 @@
-
 services:
   app:
     image: ${DOCKERHUB_USERNAME}/guttok_app:latest
@@ -15,17 +14,17 @@ services:
       - MYSQL_URL=jdbc:mysql://mysql:3306/${DOCKER_MYSQL_DATABASE}
       - MYSQL_USERNAME=${DOCKER_MYSQL_USERNAME}
       - MYSQL_PASSWORD=${DOCKER_MYSQL_PASSWORD}
-      - REDIS_HOST=redis
+      - REDIS_HOST=${REDIS_HOST}
       - REDIS_PORT=${REDIS_PORT}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PASSWORD=${DOCKER_REDIS_PASSWORD}
     volumes:
-      - /home:/data
+      - ./app/data:/data
     env_file:
       - .env
 
   mysql:
     image: mysql:8.0
-    container_name: guttok_mysql_out
+    container_name: guttok_mysql
     restart: always
     ports:
       - "13306:3306"
@@ -40,26 +39,26 @@ services:
       - ./db/mysql/data:/var/lib/mysql
       - ./db/mysql/init:/docker-entrypoint-initdb.d
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-p${MYSQL_PASSWORD}" ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DOCKER_MYSQL_PASSWORD}" ]
       interval: 10s
       timeout: 5s
       retries: 3
 
   redis:
     image: redis:7.0
-    container_name: guttok_redis_out
+    container_name: guttok_redis
     restart: always
     ports:
-      - "6380:6379"
+      - "6379:6379"
     env_file:
       - .env
-    command: [ "sh", "-c", "redis-server --requirepass $DOCKER_REDIS_PASSWORD" ]
+    command: [ "sh", "-c", "redis-server --requirepass ${DOCKER_REDIS_PASSWORD}" ]
     environment:
       TZ: ${DOCKER_TZ}
     volumes:
       - ./db/redis/data:/data
     healthcheck:
-      test: [ "CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping" ]
+      test: [ "CMD", "redis-cli", "-a", "${DOCKER_REDIS_PASSWORD}", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 3
