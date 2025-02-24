@@ -4,6 +4,7 @@ import com.app.guttokback.global.apiResponse.ApiResponse;
 import com.app.guttokback.global.apiResponse.ResponseMessages;
 import com.app.guttokback.group.dto.controllerDto.SubscriptionGroupSaveRequest;
 import com.app.guttokback.group.service.SubscriptionGroupService;
+import com.app.guttokback.user.service.SessionService;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SubscriptionGroupController {
 
     private final SubscriptionGroupService subscriptionGroupService;
+    private final SessionService sessionService;
 
     @Hidden
     @PostMapping
@@ -29,6 +31,7 @@ public class SubscriptionGroupController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         subscriptionGroupService.save(subscriptionGroupSaveRequest.toSave(userDetails.getUsername()));
+        sessionService.updateSessionTtl();
         return ApiResponse.success(ResponseMessages.SUBSCRIPTION_GROUP_SAVE_SUCCESS);
     }
 }
