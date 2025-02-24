@@ -84,7 +84,7 @@ public class UserEntity extends AuditInformation implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return roles;
     }
 
     @Override
