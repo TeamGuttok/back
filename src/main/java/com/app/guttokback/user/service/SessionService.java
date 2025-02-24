@@ -2,15 +2,12 @@ package com.app.guttokback.user.service;
 
 import com.app.guttokback.global.exception.CustomApplicationException;
 import com.app.guttokback.global.exception.ErrorCode;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
