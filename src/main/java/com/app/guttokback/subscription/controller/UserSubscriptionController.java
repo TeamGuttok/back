@@ -10,6 +10,7 @@ import com.app.guttokback.subscription.dto.controllerDto.request.UserSubscriptio
 import com.app.guttokback.subscription.dto.controllerDto.response.UserSubscriptionListResponse;
 import com.app.guttokback.subscription.dto.serviceDto.SubscriptionListInfo;
 import com.app.guttokback.subscription.service.UserSubscriptionService;
+import com.app.guttokback.user.service.SessionService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import static com.app.guttokback.global.apiResponse.ResponseMessages.*;
 public class UserSubscriptionController {
 
     private final UserSubscriptionService userSubscriptionService;
+    private final SessionService sessionService;
 
     @Operation(summary = "구독 항목 생성", description = "구독 항목 생성")
     @PostMapping
@@ -36,6 +38,7 @@ public class UserSubscriptionController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         userSubscriptionService.save(userSubscriptionSaveRequest.toSave(userDetails.getUsername()));
+        sessionService.updateSessionTtl();
         return ApiResponse.success(USER_SUBSCRIPTION_SAVE_SUCCESS);
     }
 
@@ -45,6 +48,7 @@ public class UserSubscriptionController {
             @Valid PageRequest pageRequest,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
+        sessionService.updateSessionTtl();
         return userSubscriptionService.list(pageRequest.toListOption(userDetails.getUsername()));
     }
 
@@ -56,6 +60,7 @@ public class UserSubscriptionController {
             @PathVariable Long userSubscriptionId
     ) {
         userSubscriptionService.update(userSubscriptionId, userSubscriptionUpdateRequest.toUpdate(userDetails.getUsername()));
+        sessionService.updateSessionTtl();
         return ApiResponse.success(USER_SUBSCRIPTION_UPDATE_SUCCESS);
     }
 
@@ -66,6 +71,7 @@ public class UserSubscriptionController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         userSubscriptionService.delete(userSubscriptionId, userDetails.getUsername());
+        sessionService.updateSessionTtl();
         return ApiResponse.success(USER_SUBSCRIPTION_DELETE_SUCCESS);
     }
 
@@ -73,6 +79,7 @@ public class UserSubscriptionController {
     @GetMapping
     public ResponseEntity<ApiResponse<List<SubscriptionListInfo>>> subscriptionList(SubscriptionSearchRequest searchRequest) {
         List<SubscriptionListInfo> subscription = userSubscriptionService.subscriptionList(searchRequest.toSearch());
+        sessionService.updateSessionTtl();
         return ApiResponse.success(SUBSCRIPTION_LIST_SUCCESS, subscription);
     }
 }

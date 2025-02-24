@@ -6,6 +6,7 @@ import com.app.guttokback.global.apiResponse.ResponseMessages;
 import com.app.guttokback.global.apiResponse.util.PageRequest;
 import com.app.guttokback.notification.dto.controllerDto.response.NotificationListResponse;
 import com.app.guttokback.notification.service.NotificationService;
+import com.app.guttokback.user.service.SessionService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class NotificationController {
 
     private final NotificationService notificationService;
+    private final SessionService sessionService;
 
     @Operation(summary = "알림 리스트", description = "알림 리스트 요청, 페이징 처리")
     @GetMapping
@@ -27,6 +29,7 @@ public class NotificationController {
             @Valid PageRequest pageRequest,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
+        sessionService.updateSessionTtl();
         return notificationService.list(pageRequest.toListOption(userDetails.getUsername()));
     }
 
@@ -34,6 +37,7 @@ public class NotificationController {
     @PutMapping
     public ResponseEntity<ApiResponse<ResponseMessages>> notificationUpdate(@AuthenticationPrincipal UserDetails userDetails) {
         notificationService.statusUpdate(userDetails.getUsername());
+        sessionService.updateSessionTtl();
         return ApiResponse.success(ResponseMessages.NOTIFICATION_READ_SUCCESS);
     }
 
@@ -41,6 +45,7 @@ public class NotificationController {
     @DeleteMapping
     public ResponseEntity<ApiResponse<ResponseMessages>> notificationDelete(@AuthenticationPrincipal UserDetails userDetails) {
         notificationService.delete(userDetails.getUsername());
+        sessionService.updateSessionTtl();
         return ApiResponse.success(ResponseMessages.NOTIFICATION_DELETE_SUCCESS);
     }
 }
