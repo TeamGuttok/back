@@ -1,10 +1,10 @@
 package com.app.guttokback.userSubscription.application.dto.controllerDto.response;
 
+import com.app.guttokback.userSubscription.domain.entity.UserSubscription;
 import com.app.guttokback.userSubscription.domain.enums.PaymentCycle;
 import com.app.guttokback.userSubscription.domain.enums.PaymentMethod;
 import com.app.guttokback.userSubscription.domain.enums.PaymentStatus;
 import com.app.guttokback.userSubscription.domain.enums.Subscription;
-import com.app.guttokback.userSubscription.domain.model.UserSubscription;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.Builder;

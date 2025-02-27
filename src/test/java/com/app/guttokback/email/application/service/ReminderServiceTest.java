@@ -1,11 +1,11 @@
 package com.app.guttokback.email.application.service;
 
-import com.app.guttokback.user.domain.model.User;
+import com.app.guttokback.user.domain.entity.User;
 import com.app.guttokback.user.domain.repository.UserRepository;
+import com.app.guttokback.userSubscription.domain.entity.UserSubscription;
 import com.app.guttokback.userSubscription.domain.enums.PaymentCycle;
 import com.app.guttokback.userSubscription.domain.enums.PaymentMethod;
 import com.app.guttokback.userSubscription.domain.enums.Subscription;
-import com.app.guttokback.userSubscription.domain.model.UserSubscription;
 import com.app.guttokback.userSubscription.domain.repository.UserSubscriptionRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

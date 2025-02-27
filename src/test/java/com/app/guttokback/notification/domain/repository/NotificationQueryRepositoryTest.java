@@ -2,10 +2,10 @@ package com.app.guttokback.notification.domain.repository;
 
 import com.app.guttokback.common.api.PageOption;
 import com.app.guttokback.common.infrastructure.config.QueryDslConfig;
+import com.app.guttokback.notification.domain.entity.Notification;
 import com.app.guttokback.notification.domain.enums.Category;
 import com.app.guttokback.notification.domain.enums.Status;
-import com.app.guttokback.notification.domain.model.Notification;
-import com.app.guttokback.user.domain.model.User;
+import com.app.guttokback.user.domain.entity.User;
 import com.app.guttokback.user.domain.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

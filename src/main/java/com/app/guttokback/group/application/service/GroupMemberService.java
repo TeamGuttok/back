@@ -2,10 +2,10 @@ package com.app.guttokback.group.application.service;
 
 import com.app.guttokback.common.exception.CustomApplicationException;
 import com.app.guttokback.common.exception.ErrorCode;
-import com.app.guttokback.group.domain.model.GroupMember;
-import com.app.guttokback.group.domain.model.SubscriptionGroup;
+import com.app.guttokback.group.domain.entity.GroupMember;
+import com.app.guttokback.group.domain.entity.SubscriptionGroup;
 import com.app.guttokback.group.domain.repository.GroupMemberRepository;
-import com.app.guttokback.user.domain.model.User;
+import com.app.guttokback.user.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

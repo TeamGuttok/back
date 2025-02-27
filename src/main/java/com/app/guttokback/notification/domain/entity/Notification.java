@@ -1,9 +1,9 @@
-package com.app.guttokback.notification.domain.model;
+package com.app.guttokback.notification.domain.entity;
 
 import com.app.guttokback.common.domain.BaseEntity;
 import com.app.guttokback.notification.domain.enums.Category;
 import com.app.guttokback.notification.domain.enums.Status;
-import com.app.guttokback.user.domain.model.User;
+import com.app.guttokback.user.domain.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

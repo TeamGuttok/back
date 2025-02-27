@@ -1,7 +1,7 @@
-package com.app.guttokback.group.domain.model;
+package com.app.guttokback.group.domain.entity;
 
 import com.app.guttokback.common.domain.BaseEntity;
-import com.app.guttokback.user.domain.model.User;
+import com.app.guttokback.user.domain.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

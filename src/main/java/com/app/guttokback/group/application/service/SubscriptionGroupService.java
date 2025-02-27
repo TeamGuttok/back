@@ -1,10 +1,10 @@
 package com.app.guttokback.group.application.service;
 
 import com.app.guttokback.group.application.dto.serviceDto.SubscriptionGroupSaveInfo;
-import com.app.guttokback.group.domain.model.SubscriptionGroup;
+import com.app.guttokback.group.domain.entity.SubscriptionGroup;
 import com.app.guttokback.group.domain.repository.SubscriptionGroupRepository;
 import com.app.guttokback.user.application.service.UserService;
-import com.app.guttokback.user.domain.model.User;
+import com.app.guttokback.user.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

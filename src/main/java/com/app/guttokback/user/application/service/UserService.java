@@ -9,7 +9,7 @@ import com.app.guttokback.user.application.dto.serviceDto.UpdateNicknameInfo;
 import com.app.guttokback.user.application.dto.serviceDto.UpdatePasswordInfo;
 import com.app.guttokback.user.application.dto.serviceDto.UserDetailInfo;
 import com.app.guttokback.user.application.dto.serviceDto.UserSaveInfo;
-import com.app.guttokback.user.domain.model.User;
+import com.app.guttokback.user.domain.entity.User;
 import com.app.guttokback.user.domain.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

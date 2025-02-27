@@ -1,8 +1,8 @@
 package com.app.guttokback.notification.domain.repository;
 
 import com.app.guttokback.common.api.PageOption;
+import com.app.guttokback.notification.domain.entity.Notification;
 import com.app.guttokback.notification.domain.enums.Status;
-import com.app.guttokback.notification.domain.model.Notification;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.app.guttokback.notification.domain.model.QNotification.notification;
-import static com.app.guttokback.user.domain.model.QUser.user;
+import static com.app.guttokback.notification.domain.entity.QNotification.notification;
+import static com.app.guttokback.user.domain.entity.QUser.user;
 
 @Repository
 @RequiredArgsConstructor

@@ -1,8 +1,8 @@
 package com.app.guttokback.email.application.service;
 
 import com.app.guttokback.notification.application.service.NotificationService;
+import com.app.guttokback.userSubscription.domain.entity.UserSubscription;
 import com.app.guttokback.userSubscription.domain.enums.PaymentCycle;
-import com.app.guttokback.userSubscription.domain.model.UserSubscription;
 import com.app.guttokback.userSubscription.domain.repository.UserSubscriptionQueryRepository;
 import com.app.guttokback.userSubscription.domain.repository.UserSubscriptionRepository;
 import lombok.RequiredArgsConstructor;

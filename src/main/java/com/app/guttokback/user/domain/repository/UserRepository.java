@@ -1,6 +1,6 @@
 package com.app.guttokback.user.domain.repository;
 
-import com.app.guttokback.user.domain.model.User;
+import com.app.guttokback.user.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

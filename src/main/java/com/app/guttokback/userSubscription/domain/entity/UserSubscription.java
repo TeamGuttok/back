@@ -1,7 +1,7 @@
-package com.app.guttokback.userSubscription.domain.model;
+package com.app.guttokback.userSubscription.domain.entity;
 
 import com.app.guttokback.common.domain.BaseEntity;
-import com.app.guttokback.user.domain.model.User;
+import com.app.guttokback.user.domain.entity.User;
 import com.app.guttokback.userSubscription.domain.enums.PaymentCycle;
 import com.app.guttokback.userSubscription.domain.enums.PaymentMethod;
 import com.app.guttokback.userSubscription.domain.enums.PaymentStatus;

@@ -2,12 +2,12 @@ package com.app.guttokback.subscription.domain.repository;
 
 import com.app.guttokback.common.api.PageOption;
 import com.app.guttokback.common.infrastructure.config.QueryDslConfig;
-import com.app.guttokback.user.domain.model.User;
+import com.app.guttokback.user.domain.entity.User;
 import com.app.guttokback.user.domain.repository.UserRepository;
+import com.app.guttokback.userSubscription.domain.entity.UserSubscription;
 import com.app.guttokback.userSubscription.domain.enums.PaymentCycle;
 import com.app.guttokback.userSubscription.domain.enums.PaymentMethod;
 import com.app.guttokback.userSubscription.domain.enums.Subscription;
-import com.app.guttokback.userSubscription.domain.model.UserSubscription;
 import com.app.guttokback.userSubscription.domain.repository.UserSubscriptionQueryRepository;
 import com.app.guttokback.userSubscription.domain.repository.UserSubscriptionRepository;
 import org.junit.jupiter.api.AfterEach;

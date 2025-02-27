@@ -1,8 +1,8 @@
 package com.app.guttokback.notification.application.dto;
 
+import com.app.guttokback.notification.domain.entity.Notification;
 import com.app.guttokback.notification.domain.enums.Category;
 import com.app.guttokback.notification.domain.enums.Status;
-import com.app.guttokback.notification.domain.model.Notification;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.Builder;

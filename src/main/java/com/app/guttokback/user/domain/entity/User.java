@@ -1,4 +1,4 @@
-package com.app.guttokback.user.domain.model;
+package com.app.guttokback.user.domain.entity;
 
 import com.app.guttokback.common.domain.BaseEntity;
 import com.app.guttokback.common.security.Roles;

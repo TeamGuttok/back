@@ -1,8 +1,8 @@
 package com.app.guttokback.email.application.service;
 
 import com.app.guttokback.email.application.dto.serviceDto.EmailInfo;
-import com.app.guttokback.user.domain.model.User;
-import com.app.guttokback.userSubscription.domain.model.UserSubscription;
+import com.app.guttokback.user.domain.entity.User;
+import com.app.guttokback.userSubscription.domain.entity.UserSubscription;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
