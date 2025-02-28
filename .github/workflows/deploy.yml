@@ -7,7 +7,6 @@ on:
       - GUTTOK-92
   pull_request:
 
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -89,11 +88,11 @@ jobs:
 
       - name: Build Local Docker Image
         run: |
-          docker build -f docker/Dockerfile.local -t guttok_app:local .
+          docker build -f Dockerfile.local -t guttok_app:local .
 
       - name: Build AWS Docker Image
         run: |
-          docker build -f docker/Dockerfile.aws -t guttok_app:aws .
+          docker build -f Dockerfile.aws -t guttok_app:aws .
 
       - name: Tag and Push Local Image to Docker Hub
         run: |
