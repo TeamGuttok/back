@@ -1,0 +1,41 @@
+spring:
+  config:
+    activate:
+      on-profile: aws
+    import: optional:file:.env[.properties]
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${AWS_MYSQL_URL}
+    username: ${AWS_MYSQL_USERNAME}
+    password: ${AWS_MYSQL_PASSWORD}
+  data:
+    redis:
+      host: ${AWS_REDIS_HOST}
+      port: ${AWS_REDIS_PORT}
+      usessl: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+aws:
+  ses:
+    access-key: ${AWS_ACCESS_KEY}
+    secret-key: ${AWS_SECRET_KEY}
+    send-mail-from: ${ADMIN_EMAIL}
+  region: ${AWS_REGION}
+
+logging:
+  level:
+    org:
+      hibernate:
+        sql: debug
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace
