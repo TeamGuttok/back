@@ -129,12 +129,15 @@ jobs:
             # 2. EC2에 .env 파일 생성
             echo "Generating .env file on EC2..."
             cat <<EOF > /home/${{ secrets.EC2_USER }}/guttok_app/.env
+            
             AWS_MYSQL_URL=${{ secrets.AWS_MYSQL_URL }}
-            MYSQL_USERNAME=${{ secrets.DOCKER_MYSQL_USERNAME }}
-            MYSQL_PASSWORD=${{ secrets.DOCKER_MYSQL_PASSWORD }}
-            REDIS_HOST=${{ secrets.REDIS_HOST }}
-            REDIS_PORT=${{ secrets.REDIS_PORT }}
-            REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+            MYSQL_USERNAME=${{ secrets.AWS_MYSQL_USERNAME }}
+            MYSQL_PASSWORD=${{ secrets.AWS_MYSQL_PASSWORD }}
+            
+            REDIS_HOST=${{ secrets.AWS_REDIS_HOST }}
+            REDIS_PORT=${{ secrets.AWS_REDIS_PORT }}
+            
+            
             AWS_REGION=${{ secrets.AWS_REGION }}
             AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}
             AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
