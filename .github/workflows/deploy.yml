@@ -30,7 +30,7 @@ jobs:
           MYSQL_URL=jdbc:mysql://mysql:3306/${{ secrets.DOCKER_MYSQL_DATABASE }}
           MYSQL_USERNAME=${{ secrets.DOCKER_MYSQL_USERNAME }}
           MYSQL_PASSWORD=${{ secrets.DOCKER_MYSQL_PASSWORD }}
-          REDIS_HOST=redis
+          REDIS_HOST=${{ secrets.REDIS_HOST }}
           REDIS_PORT=${{ secrets.REDIS_PORT }}
           REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
           AWS_REGION=${{ secrets.AWS_REGION }}
@@ -72,7 +72,7 @@ jobs:
           MYSQL_URL=jdbc:mysql://mysql:3306/${{ secrets.DOCKER_MYSQL_DATABASE }}
           MYSQL_USERNAME=${{ secrets.DOCKER_MYSQL_USERNAME }}
           MYSQL_PASSWORD=${{ secrets.DOCKER_MYSQL_PASSWORD }}
-          REDIS_HOST=redis
+          REDIS_HOST=${{ secrets.REDIS_HOST }}
           REDIS_PORT=${{ secrets.REDIS_PORT }}
           REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
           AWS_REGION=${{ secrets.AWS_REGION }}
@@ -112,6 +112,10 @@ jobs:
     #if: github.ref == 'refs/heads/main'
 
     steps:
+      - name: Get Github action IP
+        id: ip
+        uses: haythem/public-ip@v1.2
+
       - name: Set up SSH key
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem
@@ -126,10 +130,10 @@ jobs:
           script: |
             echo "Generating .env file on EC2..."
             cat <<EOF > /home/${{ secrets.EC2_USER }}/guttok_app/.env
-            MYSQL_URL=jdbc:mysql://mysql:3306/${{ secrets.DOCKER_MYSQL_DATABASE }}
+            AWS_MYSQL_URL=${{ secrets.AWS_MYSQL_URL}}
             MYSQL_USERNAME=${{ secrets.DOCKER_MYSQL_USERNAME }}
             MYSQL_PASSWORD=${{ secrets.DOCKER_MYSQL_PASSWORD }}
-            REDIS_HOST=redis
+            REDIS_HOST=${{ secrets.REDIS_HOST }}
             REDIS_PORT=${{ secrets.REDIS_PORT }}
             REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
             AWS_REGION=${{ secrets.AWS_REGION }}
