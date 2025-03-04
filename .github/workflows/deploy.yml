@@ -122,7 +122,11 @@ jobs:
           port: ${{ secrets.EC2_SSH_PORT }}
 
           script: |
-            # 3. EC2에 .env 파일 생성
+            # 1. 앱 디렉터리 생성
+            echo "Creating app directory..."
+            mkdir -p /home/${{ secrets.EC2_USER }}/guttok_app/
+
+            # 2. EC2에 .env 파일 생성
             echo "Generating .env file on EC2..."
             cat <<EOF > /home/${{ secrets.EC2_USER }}/guttok_app/.env
             AWS_MYSQL_URL=${{ secrets.AWS_MYSQL_URL }}
@@ -142,24 +146,29 @@ jobs:
             DOCKER_TZ=${{ secrets.DOCKER_TZ }}
             EOF
 
-            # 4. .env 파일에 대한 권한 설정
+            # 3. .env 파일에 대한 권한 설정
             echo "Setting permissions for .env file..."
             chmod 600 /home/${{ secrets.EC2_USER }}/guttok_app/.env
 
-            # 5. Docker Hub 로그인 및 최신 이미지 Pull
+            # 4. Docker Hub 로그인 및 최신 이미지 Pull
             echo "Pulling latest Docker image from DockerHub..."
-            docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+            
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/guttok_app:latest-aws
+            
 
-            # 6. 기존 컨테이너 중지 및 삭제
+            # 5. 기존 컨테이너 중지 및 삭제
             echo "Stopping and removing old container..."
             docker stop guttok_app || true
             docker rm guttok_app || true
+            
 
-            # 7. 새 컨테이너 실행
+            # 6. 새 컨테이너 실행
             echo "Running new container..."
             docker run -d --name guttok_app \
               --env-file /home/${{ secrets.EC2_USER }}/guttok_app/.env \
               -p 8080:8080 \
               ${{ secrets.DOCKERHUB_USERNAME }}/guttok_app:latest-aws
+            
+
   
