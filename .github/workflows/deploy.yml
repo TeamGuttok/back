@@ -131,11 +131,11 @@ jobs:
             cat <<EOF > /home/${{ secrets.EC2_USER }}/guttok_app/.env
             
             AWS_MYSQL_URL=${{ secrets.AWS_MYSQL_URL }}
-            MYSQL_USERNAME=${{ secrets.AWS_MYSQL_USERNAME }}
-            MYSQL_PASSWORD=${{ secrets.AWS_MYSQL_PASSWORD }}
+            AWS_MYSQL_USERNAME=${{ secrets.AWS_MYSQL_USERNAME }}
+            AWS_MYSQL_PASSWORD=${{ secrets.AWS_MYSQL_PASSWORD }}
             
-            REDIS_HOST=${{ secrets.AWS_REDIS_HOST }}
-            REDIS_PORT=${{ secrets.AWS_REDIS_PORT }}
+            AWS_REDIS_HOST=${{ secrets.AWS_REDIS_HOST }}
+            AWS_REDIS_PORT=${{ secrets.AWS_REDIS_PORT }}
             
             
             AWS_REGION=${{ secrets.AWS_REGION }}
