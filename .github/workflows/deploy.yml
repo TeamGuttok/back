@@ -116,11 +116,17 @@ jobs:
       # 1. Set up SSH key (비공개 키로 EC2에 SSH 접속)
       - name: Set up SSH key
         run: |
+          # 개인 키 파일 생성 및 권한 설정
           echo "${{ secrets.EC2_SSH_KEY }}" > private_key.pem
           chmod 600 private_key.pem
 
+          # ~/.ssh 디렉토리가 없다면 생성
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
           # EC2 퍼블릭 IP의 공개 키를 known_hosts에 추가
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
 
       # 2. Deploy to AWS EC2
       - name: Deploy to AWS EC2
