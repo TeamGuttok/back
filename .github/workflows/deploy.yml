@@ -119,6 +119,8 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_SSH_PORT }}
+
           script: |
             # 3. EC2에 .env 파일 생성
             echo "Generating .env file on EC2..."
