@@ -24,8 +24,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/swagger", "/swagger-ui.html", "/swagger-ui/**",
                                 "/api-docs", "/api-docs/**", "/v3/api-docs/**",
@@ -41,8 +42,8 @@ public class SecurityConfig {
                         ).hasAnyAuthority(Roles.ROLE_USER.toString())
                         .anyRequest().authenticated()
                 )
-                .addFilter(corsConfig.corsFilter())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+
         return http.build();
     }
 
