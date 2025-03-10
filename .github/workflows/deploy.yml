@@ -66,26 +66,6 @@ jobs:
       - name: Grant execute permission for Gradle
         run: chmod +x gradlew
 
-      - name: Generate .env file
-        run: |
-          cat <<EOF > .env
-          MYSQL_URL=jdbc:mysql://mysql:3306/${{ secrets.DOCKER_MYSQL_DATABASE }}
-          MYSQL_USERNAME=${{ secrets.DOCKER_MYSQL_USERNAME }}
-          MYSQL_PASSWORD=${{ secrets.DOCKER_MYSQL_PASSWORD }}
-          REDIS_HOST=${{ secrets.REDIS_HOST }}
-          REDIS_PORT=${{ secrets.REDIS_PORT }}
-          REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
-          AWS_REGION=${{ secrets.AWS_REGION }}
-          AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}
-          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-          DOCKER_MYSQL_PASSWORD=${{ secrets.DOCKER_MYSQL_PASSWORD }}
-          DOCKER_MYSQL_DATABASE=${{ secrets.DOCKER_MYSQL_DATABASE }}
-          DOCKER_MYSQL_CHARSET=${{ secrets.DOCKER_MYSQL_CHARSET }}
-          DOCKER_MYSQL_COLLATION=${{ secrets.DOCKER_MYSQL_COLLATION }}
-          DOCKER_REDIS_PASSWORD=${{ secrets.DOCKER_REDIS_PASSWORD }}
-          DOCKER_TZ=${{ secrets.DOCKER_TZ }}
-          EOF
-
       - name: Build Local Docker Image
         run: docker build -f Dockerfile.local -t guttok_app:local .
 
