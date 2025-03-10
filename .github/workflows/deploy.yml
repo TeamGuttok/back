@@ -121,6 +121,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: ${{ secrets.EC2_SSH_PORT }}
 
+
           script: |
             # 1. 앱 디렉터리 생성
             echo "Creating app directory..."
