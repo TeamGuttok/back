@@ -1,6 +1,6 @@
 services:
   app:
-    image: ${DOCKERHUB_USERNAME}/guttok_app:latest
+    image: ${DOCKERHUB_USERNAME}/guttok_app:latest-local
     container_name: guttok_app
     restart: always
     ports:
