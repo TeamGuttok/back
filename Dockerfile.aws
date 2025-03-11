@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Copy source code
 COPY . /app
+RUN rm -f /app/.env /app/*.env
 
 # Grant execution permission for Gradle
 RUN chmod +x ./gradlew
