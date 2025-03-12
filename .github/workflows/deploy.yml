@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - GUTTOK-96
   pull_request:
 
 jobs:
@@ -88,7 +89,7 @@ jobs:
   aws-pull:
     runs-on: ubuntu-latest
     needs: Docker-build-and-push
-    if: github.ref == 'refs/heads/main'
+    #if: github.ref == 'refs/heads/main'
 
     steps:
 
@@ -139,6 +140,7 @@ jobs:
             echo "Stopping and removing old container..."
             docker stop guttok_app || true
             docker rm guttok_app || true
+            docker image prune -af
             
 
             # 6. 새 컨테이너 실행
