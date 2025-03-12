@@ -139,6 +139,7 @@ jobs:
             echo "Stopping and removing old container..."
             docker stop guttok_app || true
             docker rm guttok_app || true
+            docker image prune -af
             
 
             # 6. 새 컨테이너 실행
