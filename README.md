@@ -62,6 +62,9 @@
   <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white" alt="Git">
   <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white" alt="Jira">
 
+## 🗺 Backend 서비스 아키텍처
+![Image](https://github.com/user-attachments/assets/92c1d8f3-2d91-4a44-9495-8459b3797b52)
+
 ## 🚀 Backend 서버 실행 방법
 
 ### 1. 프로젝트 클론
