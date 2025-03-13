@@ -13,7 +13,8 @@ spring:
     redis:
       host: ${AWS_REDIS_HOST}
       port: ${AWS_REDIS_PORT}
-      usessl: true
+      usessl: false
+      password: ""
 
   jpa:
     hibernate:
