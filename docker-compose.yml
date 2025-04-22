@@ -21,7 +21,7 @@ services:
     container_name: guttok_redis
     restart: always
     ports:
-      - "6380:6379"
+      - "6379:6379"
     volumes:
       - ./db/redis/data:/data
     command: [ "redis-server", "--requirepass", "${DOCKER_REDIS_PASSWORD}" ]
