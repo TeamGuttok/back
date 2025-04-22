@@ -15,7 +15,7 @@ public class SchedulerTask {
     private final ReminderService reminderService;
 
     //    @Scheduled(zone = "Asia/Seoul", cron = "0 0 9 * * ?") // 타임존 서울, 매일 09시 실행
-    @Scheduled(zone = "Asia/Seoul", cron = "0 * * * * ?")
+    @Scheduled(zone = "Asia/Seoul", cron = "0 * * * * ?") // 임시 생성
     @SchedulerLock(name = "reminder", lockAtMostFor = "1h", lockAtLeastFor = "5m")
     public void sendReminder() {
         reminderService.sendReminder(LocalDate.now());
