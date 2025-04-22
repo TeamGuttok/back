@@ -33,6 +33,8 @@ public class UserSubscriptionListResponse {
 
     private int paymentDay;
 
+    private String memo;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime registerDate;
 
@@ -48,6 +50,7 @@ public class UserSubscriptionListResponse {
                                         PaymentStatus paymentStatus,
                                         PaymentCycle paymentCycle,
                                         int paymentDay,
+                                        String memo,
                                         LocalDateTime registerDate,
                                         LocalDateTime updateDate
 
@@ -60,6 +63,7 @@ public class UserSubscriptionListResponse {
         this.paymentStatus = paymentStatus;
         this.paymentCycle = paymentCycle;
         this.paymentDay = paymentDay;
+        this.memo = memo;
         this.registerDate = registerDate;
         this.updateDate = updateDate;
     }
@@ -74,6 +78,7 @@ public class UserSubscriptionListResponse {
                 .paymentStatus(userSubscription.getPaymentStatus())
                 .paymentCycle(userSubscription.getPaymentCycle())
                 .paymentDay(userSubscription.getPaymentDay())
+                .memo(userSubscription.getMemo())
                 .registerDate(userSubscription.getRegisterDate())
                 .updateDate(userSubscription.getUpdateDate())
                 .build();
