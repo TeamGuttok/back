@@ -67,10 +67,10 @@ public class UserController {
 
     @Operation(summary = "알림 상태 변경", description = "알림 상태 변경 요청")
     @PatchMapping("/alarm")
-    public ResponseEntity<ApiResponse<ResponseMessages>> userAlarmUpdate(@AuthenticationPrincipal UserDetails userDetails) {
-        userService.userAlarmUpdate(userDetails.getUsername());
+    public ResponseEntity<ApiResponse<Boolean>> userAlarmUpdate(@AuthenticationPrincipal UserDetails userDetails) {
+        boolean userAlarm = userService.userAlarmUpdate(userDetails.getUsername());
         sessionService.updateSessionTtl();
-        return ApiResponse.success(ALARM_UPDATE_SUCCESS);
+        return ApiResponse.success(ALARM_UPDATE_SUCCESS, userAlarm);
     }
 
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 요청")
