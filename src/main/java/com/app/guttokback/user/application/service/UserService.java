@@ -69,13 +69,14 @@ public class UserService {
     }
 
     @Transactional
-    public void userAlarmUpdate(String email) {
+    public boolean userAlarmUpdate(String email) {
         User user = findByUserEmail(email);
         user.alarmChange();
 
         if (user.isAlarm()) {
             reminderService.updateAllRemindersForUser(user.getId());
         }
+        return user.isAlarm();
     }
 
     @Transactional
