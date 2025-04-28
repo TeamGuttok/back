@@ -39,9 +39,9 @@ public class CertificationService {
                 ? Integer.parseInt(redisTemplate.opsForValue().get(requestCountKey))
                 : 0;
 
-        if (currentCount >= 5) {
+        /*if (currentCount >= 5) {
             throw new CustomApplicationException(ErrorCode.OVER_REQUEST_COUNT);
-        }
+        }*/
 
         String code = createCertificationNumber();
 
