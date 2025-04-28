@@ -149,9 +149,11 @@ jobs:
             
             # 7. nginx 설치(첫 번째 배포시만 실행)
             if ! [ -x "$(command -v nginx)" ]; then
-            echo "Nginx is not installed. Installing Nginx..."
-            sudo apt-get update
-            sudo apt-get install -y nginx
+              echo "Nginx is not installed. Installing Nginx..."
+              sudo apt-get update
+              sudo apt-get install -y nginx
+            else
+              echo "Nginx is already installed. Skipping installation."
             fi
             
             # 8. nginx 설정
@@ -168,8 +170,11 @@ jobs:
                 listen 443 ssl;
                 server_name ${{ secrets.SERVER_NAME }};
             
+                ssl_certificate ${{ secrets.SSL_CERTIFICATE }};
+                ssl_certificate_key ${{ secrets.SSL_CERTIFICATE_KEY }};
+            
                 location / {
-                    proxy_pass ${{ secrets.EC2_HOST }};
+                    proxy_pass http://${{ secrets.EC2_HOST }}:8080;
                     proxy_http_version 1.1;
                     proxy_set_header Upgrade \$http_upgrade;
                     proxy_set_header Connection 'upgrade';
