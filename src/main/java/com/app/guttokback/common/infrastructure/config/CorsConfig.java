@@ -17,8 +17,7 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOriginPatterns(
                 List.of("http://localhost:3000",
-                        "https://www.guttok.site",
-                        "https://www.api.guttok.site"
+                        "https://www.guttok.site"
                 )
         );
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
