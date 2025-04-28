@@ -159,17 +159,17 @@ jobs:
             sudo tee /etc/nginx/sites-available/default > /dev/null <<EOF
             server {
                 listen 80;
-                server_name ${{ secrets.SERVER_NAME }}
+                server_name ${{ secrets.SERVER_NAME }};
             
                 return 301 https://$host$request_uri;
             }
             
             server {
                 listen 443 ssl;
-                server_name ${{ secrets.SERVER_NAME }}
+                server_name ${{ secrets.SERVER_NAME }};
             
                 location / {
-                    proxy_pass ${{ secrets.EC2_HOST }}
+                    proxy_pass ${{ secrets.EC2_HOST }};
                     proxy_http_version 1.1;
                     proxy_set_header Upgrade \$http_upgrade;
                     proxy_set_header Connection 'upgrade';
