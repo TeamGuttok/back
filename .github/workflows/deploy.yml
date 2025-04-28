@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - GUTTOK-104
   pull_request:
 
 jobs:
