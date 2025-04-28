@@ -134,14 +134,12 @@ jobs:
             
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/guttok_app:latest-aws
             
-
             # 5. 기존 컨테이너 중지 및 삭제
             echo "Stopping and removing old container..."
             docker stop guttok_app || true
             docker rm guttok_app || true
             docker image prune -af
             
-
             # 6. 새 컨테이너 실행
             echo "Running new container..."
             docker run -d --name guttok_app \
@@ -149,5 +147,38 @@ jobs:
               -p 8080:8080 \
               ${{ secrets.DOCKERHUB_USERNAME }}/guttok_app:latest-aws
             
-
-  
+            # 7. nginx 설치(첫 번째 배포시만 실행)
+            if ! [ -x "$(command -v nginx)" ]; then
+            echo "Nginx is not installed. Installing Nginx..."
+            sudo apt-get update
+            sudo apt-get install -y nginx
+            fi
+            
+            # 8. nginx 설정
+            echo "Setting up reverse proxy in nginx..."
+            sudo tee /etc/nginx/sites-available/default > /dev/null <<EOF
+            server {
+                listen 80;
+                server_name ${{ secrets.SERVER_NAME }}
+            
+                return 301 https://$host$request_uri;
+            }
+            
+            server {
+                listen 443 ssl;
+                server_name ${{ secrets.SERVER_NAME }}
+            
+                location / {
+                    proxy_pass ${{ secrets.EC2_HOST }}
+                    proxy_http_version 1.1;
+                    proxy_set_header Upgrade \$http_upgrade;
+                    proxy_set_header Connection 'upgrade';
+                    proxy_set_header Host \$host;
+                    proxy_cache_bypass \$http_upgrade;
+                }
+            }
+            EOF
+            
+            # 9. nginx 재시작
+            sudo systemctl restart nginx
+            sudo systemctl enable nginx
