@@ -16,6 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -44,7 +46,15 @@ public class SecurityConfig {
                         ).hasAnyAuthority(Roles.ROLE_USER.toString())
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            if (request.getSession(false) != null) {
+                                request.getSession(false).invalidate();
+                            }
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        })
+                );
 
         return http.build();
     }
