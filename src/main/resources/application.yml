@@ -22,10 +22,6 @@ spring:
         show_sql: true
         format_sql: true
 
-#  session:
-#    cookie:
-#    # 로컬에서는 domain 설정 제거
-
 aws:
   ses:
     access-key: ${AWS_ACCESS_KEY}

@@ -25,14 +25,6 @@ spring:
         show_sql: true
         format_sql: true
 
-#  session:
-#    cookie:
-#      name: SESSION
-#      domain: .guttok.site
-#      path: /
-#      secure: true
-#      same-site: None
-
 aws:
   ses:
     access-key: ${AWS_ACCESS_KEY}
