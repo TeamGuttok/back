@@ -73,7 +73,7 @@ public class SecurityConfig {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
         serializer.setSameSite("None");
         serializer.setUseSecureCookie(true);
-        serializer.setDomainName(".guttok.site");
+        serializer.setDomainName("guttok.site");
         return serializer;
     }
 }

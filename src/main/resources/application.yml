@@ -22,9 +22,9 @@ spring:
         show_sql: true
         format_sql: true
 
-  session:
-    cookie:
-    # 로컬에서는 domain 설정 제거
+#  session:
+#    cookie:
+#    # 로컬에서는 domain 설정 제거
 
 aws:
   ses:
