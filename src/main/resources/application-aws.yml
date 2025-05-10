@@ -28,7 +28,7 @@ spring:
   session:
     cookie:
       name: SESSION
-      domain: guttok.site
+      domain: .guttok.site
       path: /
       secure: true
       same-site: None
