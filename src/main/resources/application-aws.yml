@@ -9,6 +9,7 @@ spring:
     url: ${AWS_MYSQL_URL}
     username: ${AWS_MYSQL_USERNAME}
     password: ${AWS_MYSQL_PASSWORD}
+
   data:
     redis:
       host: ${AWS_REDIS_HOST}
@@ -23,6 +24,10 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+  session:
+    cookie:
+      domain: guttok.site
 
 aws:
   ses:

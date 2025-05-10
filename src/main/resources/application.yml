@@ -7,6 +7,7 @@ spring:
     url: ${MYSQL_URL}
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
+
   data:
     redis:
       host: ${REDIS_HOST}
@@ -20,6 +21,10 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+  session:
+    cookie:
+    # 로컬에서는 domain 설정 제거
 
 aws:
   ses:
