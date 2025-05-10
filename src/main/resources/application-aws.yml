@@ -27,7 +27,11 @@ spring:
 
   session:
     cookie:
+      name: SESSION
       domain: guttok.site
+      path: /
+      secure: true
+      same-site: None
 
 aws:
   ses:
