@@ -23,7 +23,10 @@ public class UserSubscriptionQueryRepository {
     public List<UserSubscription> findPagedUserSubscriptions(PageOption pageOption) {
         return jpaQueryFactory
                 .selectFrom(userSubscription)
-                .where(lastIdCondition(pageOption.getLastId()))
+                .where(
+                        user.email.eq(pageOption.getUserEmail()),
+                        lastIdCondition(pageOption.getLastId())
+                )
                 .orderBy(userSubscription.id.desc())
                 .limit(pageOption.getSize() + 1)
                 .fetch();
