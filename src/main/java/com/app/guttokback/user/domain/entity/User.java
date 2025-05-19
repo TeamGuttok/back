@@ -19,9 +19,9 @@ import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "USERS")
+@Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE USERS SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
 @SQLRestriction("deleted = false")
 public class User extends BaseEntity implements UserDetails {
 
