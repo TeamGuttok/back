@@ -9,7 +9,10 @@ import com.app.guttokback.user.application.dto.serviceDto.UserDetailInfo;
 import com.app.guttokback.user.application.service.SessionService;
 import com.app.guttokback.user.application.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -75,8 +78,29 @@ public class UserController {
 
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 요청")
     @DeleteMapping
-    public ResponseEntity<ApiResponse<ResponseMessages>> userDelete(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<ApiResponse<ResponseMessages>> userDelete(@AuthenticationPrincipal UserDetails userDetails,
+                                                                    HttpServletRequest request,
+                                                                    HttpServletResponse response) {
+
         userService.userDelete(userDetails.getUsername());
+
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("SESSION".equals(cookie.getName())) {
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                }
+            }
+        }
+
         return ApiResponse.success(USER_DELETE_SUCCESS);
     }
+
 }
