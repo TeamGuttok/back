@@ -3,7 +3,7 @@ package com.app.guttokback.email.application.service;
 import com.app.guttokback.common.security.Roles;
 import com.app.guttokback.email.domain.enums.EmailType;
 import com.app.guttokback.notification.application.service.NotificationService;
-import com.app.guttokback.user.application.service.TestAccountResetService;
+import com.app.guttokback.user.application.service.TestAccountService;
 import com.app.guttokback.userSubscription.domain.entity.UserSubscription;
 import com.app.guttokback.userSubscription.domain.enums.PaymentCycle;
 import com.app.guttokback.userSubscription.domain.repository.UserSubscriptionQueryRepository;
@@ -26,7 +26,7 @@ public class ReminderService {
     private final EmailTemplateService emailTemplateService;
     private final NotificationService notificationService;
     private final EmailLogService emailLogService;
-    private final TestAccountResetService testAccountResetService;
+    private final TestAccountService testAccountService;
 
     @Transactional
     public void sendReminder(LocalDate now) {
@@ -37,7 +37,7 @@ public class ReminderService {
                 .forEach((user, userSubscriptions) -> {
                     // 테스트 계정 처리
                     if (user.getRoles().contains(Roles.ROLE_TEST)) {
-                        testAccountResetService.processTestAccountReminders(user, userSubscriptions);
+                        testAccountService.processTestAccountReminders(user, userSubscriptions);
                         return;
                     }
                     // 유저 별 총 금액 연산
