@@ -43,6 +43,16 @@ public class UserSubscriptionQueryRepository {
                 .fetch();
     }
 
+    // 테스트 유저의 구독 항목 중 최신 3개 제외한 나머지를 조회
+    public List<UserSubscription> findSubscriptionsToDeleteForTestUser(Long userId) {
+        return jpaQueryFactory
+                .selectFrom(userSubscription)
+                .where(userSubscription.user.id.eq(userId))
+                .orderBy(userSubscription.registerDate.desc())
+                .offset(3)
+                .fetch();
+    }
+
     private BooleanExpression lastIdCondition(Long lastId) {
         return lastId != null ? userSubscription.id.lt(lastId) : null;
     }
