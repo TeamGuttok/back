@@ -3,7 +3,6 @@ package com.app.guttokback.user.application.service;
 import com.app.guttokback.common.exception.CustomApplicationException;
 import com.app.guttokback.common.exception.ErrorCode;
 import com.app.guttokback.common.security.Roles;
-import com.app.guttokback.email.application.service.ReminderService;
 import com.app.guttokback.notification.application.service.NotificationService;
 import com.app.guttokback.user.application.dto.serviceDto.UpdateNicknameInfo;
 import com.app.guttokback.user.application.dto.serviceDto.UpdatePasswordInfo;
@@ -11,12 +10,16 @@ import com.app.guttokback.user.application.dto.serviceDto.UserDetailInfo;
 import com.app.guttokback.user.application.dto.serviceDto.UserSaveInfo;
 import com.app.guttokback.user.domain.entity.User;
 import com.app.guttokback.user.domain.repository.UserRepository;
+import com.app.guttokback.userSubscription.domain.entity.UserSubscription;
+import com.app.guttokback.userSubscription.domain.repository.UserSubscriptionRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Service
@@ -25,8 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ReminderService reminderService;
     private final NotificationService notificationService;
+    private final UserSubscriptionRepository userSubscriptionRepository;
 
     @Transactional
     public void userSave(UserSaveInfo userSaveInfo, HttpServletRequest request) {
@@ -73,8 +76,11 @@ public class UserService {
         User user = findByUserEmail(email);
         user.alarmChange();
 
+        // 순환참조로 인한 로직 자체 처리
         if (user.isAlarm()) {
-            reminderService.updateAllRemindersForUser(user.getId());
+            List<UserSubscription> userSubscriptions = userSubscriptionRepository.findAllByUserId(user.getId());
+            userSubscriptions.forEach(UserSubscription::updateReminderDate);
+            userSubscriptionRepository.saveAll(userSubscriptions);
         }
         return user.isAlarm();
     }
@@ -82,7 +88,7 @@ public class UserService {
     @Transactional
     public void userDelete(String email) {
         User user = findByUserEmail(email);
-        if(user.getAuthorities().contains(Roles.ROLE_USER)) {
+        if (user.getAuthorities().contains(Roles.ROLE_USER)) {
             userRepository.delete(user);
         }
 
