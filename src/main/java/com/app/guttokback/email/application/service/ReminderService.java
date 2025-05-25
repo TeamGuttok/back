@@ -1,13 +1,14 @@
 package com.app.guttokback.email.application.service;
 
+import com.app.guttokback.common.security.Roles;
 import com.app.guttokback.email.domain.enums.EmailType;
 import com.app.guttokback.notification.application.service.NotificationService;
+import com.app.guttokback.user.application.service.TestAccountResetService;
 import com.app.guttokback.userSubscription.domain.entity.UserSubscription;
 import com.app.guttokback.userSubscription.domain.enums.PaymentCycle;
 import com.app.guttokback.userSubscription.domain.repository.UserSubscriptionQueryRepository;
 import com.app.guttokback.userSubscription.domain.repository.UserSubscriptionRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +16,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ReminderService {
@@ -26,6 +26,7 @@ public class ReminderService {
     private final EmailTemplateService emailTemplateService;
     private final NotificationService notificationService;
     private final EmailLogService emailLogService;
+    private final TestAccountResetService testAccountResetService;
 
     @Transactional
     public void sendReminder(LocalDate now) {
@@ -34,6 +35,11 @@ public class ReminderService {
                 // 유저 별 그룹화
                 .collect(Collectors.groupingBy(UserSubscription::getUser))
                 .forEach((user, userSubscriptions) -> {
+                    // 테스트 계정 처리
+                    if (user.getRoles().contains(Roles.ROLE_TEST)) {
+                        testAccountResetService.processTestAccountReminders(user, userSubscriptions);
+                        return;
+                    }
                     // 유저 별 총 금액 연산
                     long totalAmount = userSubscriptions.stream()
                             .mapToLong(UserSubscription::getPaymentAmount)
