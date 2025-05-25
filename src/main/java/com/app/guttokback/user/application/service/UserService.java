@@ -82,7 +82,10 @@ public class UserService {
     @Transactional
     public void userDelete(String email) {
         User user = findByUserEmail(email);
-        userRepository.delete(user);
+        if(user.getAuthorities().contains(Roles.ROLE_USER)) {
+            userRepository.delete(user);
+        }
+
     }
 
     public UserDetailInfo userDetail(String email) {

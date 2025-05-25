@@ -42,7 +42,7 @@ public class SecurityConfig {
                                 "/api/subscriptions/**",
                                 "/api/notifications/**",
                                 "/api/users/**"
-                        ).hasAnyAuthority(Roles.ROLE_USER.toString())
+                        ).hasAnyAuthority(Roles.ROLE_USER.toString(),Roles.ROLE_TEST.toString())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
