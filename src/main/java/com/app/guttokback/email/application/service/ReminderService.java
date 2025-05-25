@@ -1,6 +1,9 @@
 package com.app.guttokback.email.application.service;
 
+import com.app.guttokback.common.security.Roles;
+import com.app.guttokback.email.domain.enums.EmailType;
 import com.app.guttokback.notification.application.service.NotificationService;
+import com.app.guttokback.user.application.service.TestAccountResetService;
 import com.app.guttokback.userSubscription.domain.entity.UserSubscription;
 import com.app.guttokback.userSubscription.domain.enums.PaymentCycle;
 import com.app.guttokback.userSubscription.domain.repository.UserSubscriptionQueryRepository;
@@ -22,6 +25,8 @@ public class ReminderService {
     private final EmailService emailService;
     private final EmailTemplateService emailTemplateService;
     private final NotificationService notificationService;
+    private final EmailLogService emailLogService;
+    private final TestAccountResetService testAccountResetService;
 
     @Transactional
     public void sendReminder(LocalDate now) {
@@ -30,12 +35,19 @@ public class ReminderService {
                 // 유저 별 그룹화
                 .collect(Collectors.groupingBy(UserSubscription::getUser))
                 .forEach((user, userSubscriptions) -> {
+                    // 테스트 계정 처리
+                    if (user.getRoles().contains(Roles.ROLE_TEST)) {
+                        testAccountResetService.processTestAccountReminders(user, userSubscriptions);
+                        return;
+                    }
                     // 유저 별 총 금액 연산
                     long totalAmount = userSubscriptions.stream()
                             .mapToLong(UserSubscription::getPaymentAmount)
                             .sum();
                     // 템플릿에 필요한 데이터 전달
                     emailService.sendEmail(emailTemplateService.createReminderTemplate(userSubscriptions, user, totalAmount));
+                    // 이메일 발송 로그 저장
+                    emailLogService.save(user.getEmail(), EmailType.REMINDER);
                     // 구독 항목 별 알림 저장
                     userSubscriptions.forEach(subscription -> notificationService.reminderNotification(user, subscription));
                     // 이메일 발송 된 구독항목 ReminderDate Payment Day, Cycle에 따른 변경
@@ -51,10 +63,9 @@ public class ReminderService {
     }
 
     // 구독 서비스의 Payment Day, Cycle 변경 시 실행되는 메서드
-    public void updateReminderIfPaymentDetailsChanged(
-            UserSubscription userSubscription,
-            int previousPaymentDay,
-            PaymentCycle previousPaymentCycle
+    public void updateReminderIfPaymentDetailsChanged(UserSubscription userSubscription,
+                                                      int previousPaymentDay,
+                                                      PaymentCycle previousPaymentCycle
     ) {
         boolean hasChanges = previousPaymentDay != userSubscription.getPaymentDay()
                 || previousPaymentCycle != userSubscription.getPaymentCycle();

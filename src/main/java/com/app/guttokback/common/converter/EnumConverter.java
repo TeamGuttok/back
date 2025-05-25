@@ -1,5 +1,6 @@
 package com.app.guttokback.common.converter;
 
+import com.app.guttokback.email.domain.enums.EmailType;
 import com.app.guttokback.notification.domain.enums.Category;
 import com.app.guttokback.notification.domain.enums.Status;
 import com.app.guttokback.userSubscription.domain.enums.PaymentCycle;
@@ -70,6 +71,13 @@ public class EnumConverter<T extends Enum<T>> implements AttributeConverter<T, S
     public static class StatusConverter extends EnumConverter<Status> {
         public StatusConverter() {
             super(Status.class);
+        }
+    }
+
+    @Converter(autoApply = true)
+    public static class EmailTypeConverter extends EnumConverter<EmailType> {
+        public EmailTypeConverter() {
+            super(EmailType.class);
         }
     }
 }
