@@ -32,4 +32,8 @@ public class EmailLog extends BaseEntity {
         this.emailType = emailType;
         this.count = count;
     }
+
+    public void increaseCount() {
+        count += 1;
+    }
 }
