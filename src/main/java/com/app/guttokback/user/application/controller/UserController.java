@@ -82,20 +82,22 @@ public class UserController {
                                                                     HttpServletRequest request,
                                                                     HttpServletResponse response) {
 
-        userService.userDelete(userDetails.getUsername());
+        boolean status = userService.userDelete(userDetails.getUsername());
 
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
+        if(status) {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
 
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("SESSION".equals(cookie.getName())) {
-                    cookie.setMaxAge(0);
-                    cookie.setPath("/");
-                    response.addCookie(cookie);
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("SESSION".equals(cookie.getName())) {
+                        cookie.setMaxAge(0);
+                        cookie.setPath("/");
+                        response.addCookie(cookie);
+                    }
                 }
             }
         }
