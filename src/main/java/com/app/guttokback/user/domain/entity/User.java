@@ -45,7 +45,8 @@ public class User extends BaseEntity implements UserDetails {
     @Comment("논리적삭제")
     private boolean delete;
 
-    @Comment("논리적삭제")
+    @Column(nullable = false)
+    @Comment("약관 동의")
     private boolean policyConsent;
 
     @ElementCollection(fetch = FetchType.EAGER)
