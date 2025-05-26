@@ -23,6 +23,7 @@ public enum ErrorCode {
     PERMISSION_DENIED(HttpStatus.FORBIDDEN, "AUTH_05", "이 작업을 수행할 권한이 없습니다."),
     INVALID_SESSION(HttpStatus.UNAUTHORIZED, "AUTH_06", "유효하지 않은 세션입니다."),
     EMAIL_NOT_MATCH(HttpStatus.BAD_REQUEST, "AUTH_07", "입력된 이메일과 세션 이메일이 일치하지 않습니다."),
+    AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "AUTH_08", "아이디 또는 비밀번호가 올바르지 않습니다."),
 
     // email
     OVER_REQUEST_COUNT(HttpStatus.TOO_MANY_REQUESTS, "EMAIL_01", "인증코드 요청 횟수를 초과했습니다"),
