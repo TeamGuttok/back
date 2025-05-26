@@ -31,12 +31,15 @@ public class UserSaveRequest {
 
     private boolean alarm;
 
+    private boolean policyConsent;
+
     @Builder
-    public UserSaveRequest(String password, String email, String nickName, boolean alarm) {
+    public UserSaveRequest(String password, String email, String nickName, boolean alarm, boolean policyConsent) {
         this.password = password;
         this.email = email;
         this.nickName = nickName;
         this.alarm = alarm;
+        this.policyConsent = policyConsent;
     }
 
     public UserSaveInfo userSaveDto() {
@@ -45,6 +48,7 @@ public class UserSaveRequest {
                 .password(this.password)
                 .nickName(this.nickName)
                 .alarm(this.alarm)
+                .policyConsent(this.policyConsent)
                 .build();
     }
 }

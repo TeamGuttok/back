@@ -45,6 +45,10 @@ public class User extends BaseEntity implements UserDetails {
     @Comment("논리적삭제")
     private boolean delete;
 
+    @Column(nullable = false)
+    @Comment("약관 동의")
+    private boolean policyConsent;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "user_id"))
@@ -53,12 +57,13 @@ public class User extends BaseEntity implements UserDetails {
     private List<Roles> roles = new ArrayList<>();
 
     @Builder
-    public User(String password, String email, String nickName, boolean alarm, Roles role) {
+    public User(String password, String email, String nickName, boolean alarm, Roles role, boolean policyConsent) {
         this.password = password;
         this.email = email;
         this.nickName = nickName;
         this.alarm = alarm;
         this.roles.add(role);
+        this.policyConsent = policyConsent;
     }
 
     public void passwordChange(String password) {

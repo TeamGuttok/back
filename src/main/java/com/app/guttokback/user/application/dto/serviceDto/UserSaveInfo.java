@@ -17,11 +17,14 @@ public class UserSaveInfo {
 
     private boolean alarm;
 
+    private boolean policyConsent;
+
     @Builder
-    public UserSaveInfo(String password, String email, String nickName, boolean alarm) {
+    public UserSaveInfo(String password, String email, String nickName, boolean alarm, boolean policyConsent) {
         this.password = password;
         this.email = email;
         this.nickName = nickName;
         this.alarm = alarm;
+        this.policyConsent = policyConsent;
     }
 }
