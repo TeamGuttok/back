@@ -55,6 +55,7 @@ public class UserService {
                 .password(passwordEncoder.encode(userSaveInfo.getPassword()))
                 .nickName(userSaveInfo.getNickName())
                 .alarm(userSaveInfo.isAlarm())
+                .policyConsent(userSaveInfo.isPolicyConsent())
                 .build());
         notificationService.userSaveNotification(user);
     }
