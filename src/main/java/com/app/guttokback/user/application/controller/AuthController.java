@@ -3,6 +3,8 @@ package com.app.guttokback.user.application.controller;
 
 import com.app.guttokback.common.api.ApiResponse;
 import com.app.guttokback.common.api.ResponseMessages;
+import com.app.guttokback.common.exception.CustomApplicationException;
+import com.app.guttokback.common.exception.ErrorCode;
 import com.app.guttokback.user.application.dto.controllerDto.LoginRequest;
 import com.app.guttokback.user.application.dto.controllerDto.UserCertificationNumberRequest;
 import com.app.guttokback.user.application.service.SessionService;
@@ -19,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +53,12 @@ public class AuthController {
                 loginRequest.getPassword()
         );
 
-        Authentication authentication = authenticationManager.authenticate(token);
+        Authentication authentication;
+        try {
+            authentication = authenticationManager.authenticate(token);
+        } catch (AuthenticationException ex) {
+            throw new CustomApplicationException(ErrorCode.AUTHENTICATION_FAILED);
+        }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
