@@ -49,8 +49,7 @@ public class User extends BaseEntity implements UserDetails {
     @Comment("약관 동의")
     private boolean policyConsent;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     @Comment("사용자 권한")
