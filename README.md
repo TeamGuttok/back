@@ -44,7 +44,7 @@
 - ### CI/CD
   - GitHub Actions를 통한 CI/CD 파이프라인 구축
   - main 병합 시 Docker Hub에 jar이미지 업로드
-  - 배포 자동화 (예정)
+  - 배포 자동화
  
 ## 🛠️ 기술 스택
 
